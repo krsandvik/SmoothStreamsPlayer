@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">SmoothStreams Player</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_settings">Settings</string>
+
+    <string name="preferences_login_settings">Login Settings</string>
+    <string name="preferences_service">Service</string>
+    <string name="preferences_username">Username</string>
+    <string name="preferences_password">Password</string>
+    <string name="preferences_stream_settings">Stream Settings</string>
+    <string name="preferences_server_location">Server Location</string>
+    <string name="preferences_high_quality">High Quality</string>
+
+    <string name="preferences_europe">EUROPE</string>
+    <string name="preferences_amsterdam"> - Amsterdam</string>
+    <string name="preferences_london"> - London</string>
+    <string name="preferences_united_states">UNITED STATES</string>
+    <string name="preferences_east">East</string>
+    <string name="preferences_west">West</string>
+    <string name="preferences_asia">Asia</string>
+
+    <string name="pref_service_username_key" translatable="false">pref_service_username_key</string>
+    <string name="pref_service_password_key" translatable="false">pref_service_password_key</string>
+    <string name="pref_service_key" translatable="false">pref_service_key</string>
+    <string name="pref_server_key" translatable="false">pref_server_key</string>
+    <string name="pref_quality_key" translatable="false">pref_quality_key</string>
+
+    <string name="pref_ss_uid_key" translatable="false">pref_ss_uid_key</string>
+    <string name="pref_ss_password_key" translatable="false">pref_ss_password_key</string>
+
+    <string name="pref_service_default_value" translatable="false">live247</string>
+    <string name="pref_server_default_value" translatable="false">dEU.smoothstreams.tv</string>
+
+    <string-array name="list_services" translatable="false">
+        <item translatable="false">Live247</item>
+        <item translatable="false">MyStreams</item>
+        <item translatable="false">StarStreams</item>
+        <item translatable="false">MMA-TV</item>
+    </string-array>
+    <string-array name="list_services_values" translatable="false">
+        <item translatable="false">live247</item>
+        <item translatable="false">mystreams</item>
+        <item translatable="false">starstreams</item>
+        <item translatable="false">mma-tv</item>
+    </string-array>
+    <string-array name="list_servers" translatable="false">
+        <item>@string/preferences_europe</item>
+        <item>@string/preferences_amsterdam</item>
+        <item>@string/preferences_london</item>
+        <item>@string/preferences_united_states</item>
+        <item>@string/preferences_east</item>
+        <item>@string/preferences_west</item>
+        <item>@string/preferences_asia</item>
+    </string-array>
+    <string-array name="list_servers_values" translatable="false">
+        <item translatable="false">dEU.smoothstreams.tv</item>
+        <item translatable="false">d77.smoothstreams.tv</item>
+        <item translatable="false">d11.smoothstreams.tv</item>
+        <item translatable="false">dNA.smoothstreams.tv</item>
+        <item translatable="false">dNAe.smoothstreams.tv</item>
+        <item translatable="false">dNAw.smoothstreams.tv</item>
+        <item translatable="false">dSG.smoothstreams.tv</item>
+    </string-array>
+
+
+
+</resources>
