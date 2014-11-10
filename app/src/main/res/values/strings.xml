@@ -5,7 +5,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_settings">Settings</string>
-
+    <string name="media_controls_description">Media Controls</string>
     <string name="preferences_login_settings">Login Settings</string>
     <string name="preferences_service">Service</string>
     <string name="preferences_username">Username</string>
@@ -13,7 +13,6 @@
     <string name="preferences_stream_settings">Stream Settings</string>
     <string name="preferences_server_location">Server Location</string>
     <string name="preferences_high_quality">High Quality</string>
-
     <string name="preferences_europe">EUROPE</string>
     <string name="preferences_amsterdam"> - Amsterdam</string>
     <string name="preferences_london"> - London</string>
@@ -21,16 +20,13 @@
     <string name="preferences_east">East</string>
     <string name="preferences_west">West</string>
     <string name="preferences_asia">Asia</string>
-
     <string name="pref_service_username_key" translatable="false">pref_service_username_key</string>
     <string name="pref_service_password_key" translatable="false">pref_service_password_key</string>
     <string name="pref_service_key" translatable="false">pref_service_key</string>
     <string name="pref_server_key" translatable="false">pref_server_key</string>
     <string name="pref_quality_key" translatable="false">pref_quality_key</string>
-
     <string name="pref_ss_uid_key" translatable="false">pref_ss_uid_key</string>
     <string name="pref_ss_password_key" translatable="false">pref_ss_password_key</string>
-
     <string name="pref_service_default_value" translatable="false">live247</string>
     <string name="pref_server_default_value" translatable="false">dEU.smoothstreams.tv</string>
 
@@ -65,6 +61,6 @@
         <item translatable="false">dSG.smoothstreams.tv</item>
     </string-array>
 
-
+    <string name="title_activity_video">VideoActivity</string>
 
 </resources>

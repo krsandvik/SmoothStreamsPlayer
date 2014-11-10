@@ -60,9 +60,7 @@ public class SettingsActivity extends PreferenceActivity implements
                 FetchLoginInfoTask fetchLoginInfoTask = new FetchLoginInfoTask(getApplicationContext());
                 fetchLoginInfoTask.execute();
             }
-
         }
-
     }
 
     private void initSummary(Preference p) {

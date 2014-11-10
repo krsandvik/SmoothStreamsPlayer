@@ -1,4 +1,4 @@
-package com.iosharp.android.ssplayer;
+package com.iosharp.android.ssplayer.model;
 
 public class Channel {
     private int mId;

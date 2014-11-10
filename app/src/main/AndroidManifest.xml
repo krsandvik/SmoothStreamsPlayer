@@ -26,6 +26,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.iosharp.android.ssplayer.MainActivity" />
         </activity>
+        <activity
+            android:name=".videoplayer.VideoActivity"
+            android:label="@string/title_activity_video"
+            android:parentActivityName="com.iosharp.android.ssplayer.MainActivity"
+            android:screenOrientation="landscape">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.iosharp.android.ssplayer.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

@@ -11,9 +11,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.iosharp.android.ssplayer.db.DbContract;
+import com.iosharp.android.ssplayer.db.DbHelper;
+import com.iosharp.android.ssplayer.videoplayer.VideoActivity;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -67,8 +73,8 @@ public class MainActivity extends ActionBarActivity {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-//            FetchChannelTask fetchChannelTask = new FetchChannelTask(getActivity());
-//            fetchChannelTask.execute();
+            FetchChannelTask fetchChannelTask = new FetchChannelTask(getActivity());
+            fetchChannelTask.execute();
 
             mDatabase = new DbHelper(getActivity());
         }
@@ -79,13 +85,24 @@ public class MainActivity extends ActionBarActivity {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
 
-            Cursor cursor = mDatabase.getReadableDatabase().rawQuery("SELECT * FROM " + DbContract.ChannelEntry.TABLE_NAME, null);
+            final Cursor cursor = mDatabase.getReadableDatabase().rawQuery("SELECT * FROM " + DbContract.ChannelEntry.TABLE_NAME, null);
 
             ListView listView = (ListView) rootView.findViewById(R.id.listview);
             mAdapter = new ChannelAdapter(getActivity(), cursor);
             listView.setAdapter(mAdapter);
 
-            mDatabase.getAllEvents();
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                    Cursor c = (Cursor) mAdapter.getItem(position);
+                    c.moveToPosition(position);
+                    int channelId = c.getInt(c.getColumnIndex(DbContract.ChannelEntry._ID));
+
+//                    Toast.makeText(getActivity(), Utility.getStreamUrl(getActivity(), channelId), Toast.LENGTH_LONG).show();
+                    Intent i = new Intent(getActivity(), VideoActivity.class).putExtra(Intent.EXTRA_INTENT, channelId);
+                    startActivity(i);
+                }
+            });
 
             return rootView;
         }

@@ -4,6 +4,10 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.iosharp.android.ssplayer.db.DbHelper;
+import com.iosharp.android.ssplayer.model.Channel;
+import com.iosharp.android.ssplayer.model.Event;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -13,7 +17,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 public class FetchChannelTask extends AsyncTask<Void, Void, String> {

@@ -30,7 +30,6 @@ public class FetchLoginInfoTask extends AsyncTask<Void, Void, String> {
     private String mUsername;
     private String mPassword;
     private String mService;
-    private String mServer;
 
     public FetchLoginInfoTask(Context context) {
         mContext = context;
@@ -40,7 +39,6 @@ public class FetchLoginInfoTask extends AsyncTask<Void, Void, String> {
         mUsername = mSharedPreferences.getString(mContext.getString(R.string.pref_service_username_key), null);
         mPassword = mSharedPreferences.getString(mContext.getString(R.string.pref_service_password_key), null);
         mService = mSharedPreferences.getString(mContext.getString(R.string.pref_service_key), null);
-        mServer = mSharedPreferences.getString(mContext.getString(R.string.pref_server_key), null);
     }
 
 
@@ -61,7 +59,7 @@ public class FetchLoginInfoTask extends AsyncTask<Void, Void, String> {
         String loginJsonStr = null;
 
         try {
-            String SMOOTHSTREAMS_BASE_URL = getServiceBaseUrl(mService);
+            final String SMOOTHSTREAMS_BASE_URL = getServiceBaseUrl(mService);
 
             final String USERNAME_PARAM = "username";
             final String PASSWORD_PARAM = "password";
@@ -129,7 +127,7 @@ public class FetchLoginInfoTask extends AsyncTask<Void, Void, String> {
     public void setServiceCredentials(String username, String password) {
         mEditor = mSharedPreferences.edit();
         mEditor.putString(mContext.getString(R.string.pref_ss_uid_key), username);
-        mEditor.putString(mContext.getString(R.string.pref_ss_password_key), username);
+        mEditor.putString(mContext.getString(R.string.pref_ss_password_key), password);
         mEditor.commit();
 
         showToastMethod("Saved service id and password");
@@ -142,6 +140,7 @@ public class FetchLoginInfoTask extends AsyncTask<Void, Void, String> {
 
     private void showToastMethod(String text) {
         final String toastText = text;
+
         Handler handler = new Handler(mContext.getMainLooper());
         handler.post(new Runnable() {
             @Override

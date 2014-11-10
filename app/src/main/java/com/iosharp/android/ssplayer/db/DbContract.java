@@ -1,4 +1,4 @@
-package com.iosharp.android.ssplayer;
+package com.iosharp.android.ssplayer.db;
 
 import android.provider.BaseColumns;
 
