@@ -3,7 +3,6 @@ package com.iosharp.android.ssplayer;
 import android.app.Application;
 import android.content.Context;
 
-import com.google.android.gms.cast.CastMediaControlIntent;
 import com.google.sample.castcompanionlibrary.cast.VideoCastManager;
 
 public class CastApplication extends Application {

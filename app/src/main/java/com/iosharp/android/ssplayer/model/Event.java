@@ -1,7 +1,5 @@
 package com.iosharp.android.ssplayer.model;
 
-import java.util.Date;
-
 public class Event {
 
     private int mId;

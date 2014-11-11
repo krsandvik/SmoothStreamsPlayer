@@ -88,15 +88,17 @@ class ChannelAdapter extends CursorAdapter {
     public View newView(Context context, Cursor cursor, ViewGroup viewGroup) {
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
 
-        View retView = inflater.inflate(R.layout.channel_list_item, viewGroup, false);
+        View retView = inflater.inflate(R.layout.list_row, viewGroup, false);
 
         return retView;
     }
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        ((TextView) view.findViewById(R.id.channel_list_item_textview))
+        ((TextView) view.findViewById(R.id.textView1))
                 .setText(cursor.getString(cursor.getColumnIndex("name")));
+
+
     }
 
 

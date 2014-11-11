@@ -15,30 +15,29 @@
  */
 package com.iosharp.android.ssplayer.videoplayer;
 
-        import android.content.Context;
-        import android.os.Handler;
-        import android.os.Message;
-        import android.util.AttributeSet;
-        import android.util.Log;
-        import android.view.Gravity;
-        import android.view.KeyEvent;
-        import android.view.LayoutInflater;
-        import android.view.MotionEvent;
-        import android.view.View;
-        import android.view.ViewGroup;
-        import android.widget.FrameLayout;
-        import android.widget.ImageButton;
-        import android.widget.ProgressBar;
-        import android.widget.SeekBar;
-        import android.widget.SeekBar.OnSeekBarChangeListener;
-        import android.widget.TextView;
+import android.content.Context;
+import android.os.Handler;
+import android.os.Message;
+import android.util.AttributeSet;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
+import android.widget.ProgressBar;
+import android.widget.SeekBar;
+import android.widget.SeekBar.OnSeekBarChangeListener;
+import android.widget.TextView;
 
+import com.iosharp.android.ssplayer.R;
 
-        import com.iosharp.android.ssplayer.R;
-
-        import java.lang.ref.WeakReference;
-        import java.util.Formatter;
-        import java.util.Locale;
+import java.lang.ref.WeakReference;
+import java.util.Formatter;
+import java.util.Locale;
 
 
 /**

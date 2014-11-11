@@ -1,37 +1,15 @@
 package com.iosharp.android.ssplayer;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.os.Handler;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.support.v7.media.MediaRouter;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.CursorAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
 
-import com.google.android.gms.cast.MediaInfo;
 import com.google.sample.castcompanionlibrary.cast.VideoCastManager;
 import com.google.sample.castcompanionlibrary.cast.callbacks.IVideoCastConsumer;
-import com.google.sample.castcompanionlibrary.cast.callbacks.VideoCastConsumerImpl;
-import com.google.sample.castcompanionlibrary.utils.Utils;
 import com.google.sample.castcompanionlibrary.widgets.MiniController;
-import com.iosharp.android.ssplayer.db.ChannelContract;
-import com.iosharp.android.ssplayer.db.DbHelper;
-import com.iosharp.android.ssplayer.model.Channel;
-import com.iosharp.android.ssplayer.videoplayer.VideoActivity;
-
-import java.net.URL;
 
 
 public class MainActivity extends ActionBarActivity {
