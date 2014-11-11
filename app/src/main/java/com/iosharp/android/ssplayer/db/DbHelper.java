@@ -145,23 +145,6 @@ public class DbHelper extends SQLiteOpenHelper {
         return channels;
     }
 
-    public int updateChannel(Channel channel) {
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        ContentValues values = new ContentValues();
-        values.put(ChannelContract.ChannelEntry.COLUMN_NAME, channel.getName());
-        values.put(ChannelContract.ChannelEntry.COLUMN_ICON, channel.getIcon());
-
-        int i = db.update(ChannelContract.ChannelEntry.TABLE_NAME,
-                values,
-                ChannelContract.ChannelEntry._ID + " = ?",
-                new String[] {String.valueOf(channel.getId()) });
-
-        db.close();
-
-        return i;
-    }
-
     public void deleteChannel(Channel channel) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -307,31 +290,6 @@ public class DbHelper extends SQLiteOpenHelper {
         return events;
     }
 
-    public int updateEvent(Event event) {
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        ContentValues values = new ContentValues();
-        values.put(ChannelContract.EventEntry._ID, event.getId());
-        values.put(ChannelContract.EventEntry.COLUMN_KEY_CHANNEL, event.getChannel());
-        values.put(ChannelContract.EventEntry.COLUMN_NETWORK, event.getNetwork());
-        values.put(ChannelContract.EventEntry.COLUMN_NAME, event.getName());
-        values.put(ChannelContract.EventEntry.COLUMN_DESCRIPTION, event.getDescription());
-        values.put(ChannelContract.EventEntry.COLUMN_START_DATE, event.getStartDate());
-        values.put(ChannelContract.EventEntry.COLUMN_END_DATE, event.getEndDate());
-        values.put(ChannelContract.EventEntry.COLUMN_RUNTIME, event.getRuntime());
-        values.put(ChannelContract.EventEntry.COLUMN_LANGUAGE, event.getLanguage());
-        values.put(ChannelContract.EventEntry.COLUMN_NETWORK, event.getNetwork());
-        values.put(ChannelContract.EventEntry.COLUMN_QUALITY, event.getQuality());
-
-        int i = db.update(ChannelContract.EventEntry.TABLE_NAME,
-                values,
-                ChannelContract.EventEntry._ID + " = ?",
-                new String[] {String.valueOf(event.getId()) });
-
-        db.close();
-
-        return i;
-    }
 
     public void deleteEvent(Event event) {
         SQLiteDatabase db = this.getWritableDatabase();

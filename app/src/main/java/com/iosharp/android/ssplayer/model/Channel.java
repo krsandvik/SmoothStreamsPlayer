@@ -8,11 +8,6 @@ public class Channel {
     public Channel() {
     }
 
-    public Channel(int id, String name) {
-        mId = id;
-        mName = name;
-    }
-
     public int getId() {
         return mId;
     }

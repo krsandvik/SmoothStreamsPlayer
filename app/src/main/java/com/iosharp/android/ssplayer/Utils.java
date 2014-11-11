@@ -16,7 +16,7 @@ import java.util.Date;
 import java.util.SimpleTimeZone;
 import java.util.TimeZone;
 
-public class Utility {
+public class Utils {
 
     private boolean isDst() {
         return SimpleTimeZone.getDefault().inDaylightTime(new Date());

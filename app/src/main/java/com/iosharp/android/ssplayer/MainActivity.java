@@ -21,6 +21,7 @@ public class MainActivity extends ActionBarActivity {
     private MiniController mMini;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

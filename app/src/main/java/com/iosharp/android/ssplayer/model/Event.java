@@ -16,13 +16,6 @@ public class Event {
 
     public Event() {}
 
-    public Event(int id, String name, long startDate, int channel) {
-        mId = id;
-        mName = name;
-        mStartDate = startDate;
-        mChannel = channel;
-    }
-
     public int getId() {
         return mId;
     }

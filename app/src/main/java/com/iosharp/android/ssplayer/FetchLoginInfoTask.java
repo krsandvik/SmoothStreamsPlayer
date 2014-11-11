@@ -110,6 +110,7 @@ public class FetchLoginInfoTask extends AsyncTask<Void, Void, String> {
 
         try {
             JSONObject loginCredentials = new JSONObject(loginJsonStr);
+            // TODO: handle 'User not found', 'No subscription' etc.
 
             String username = loginCredentials.get("id").toString();
             String password = loginCredentials.get("password").toString();

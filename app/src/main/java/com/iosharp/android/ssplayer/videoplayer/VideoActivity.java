@@ -15,7 +15,6 @@ import android.widget.FrameLayout;
 import com.google.android.gms.cast.MediaInfo;
 import com.google.sample.castcompanionlibrary.cast.VideoCastManager;
 import com.google.sample.castcompanionlibrary.cast.callbacks.IVideoCastConsumer;
-import com.google.sample.castcompanionlibrary.cast.callbacks.VideoCastConsumerImpl;
 import com.google.sample.castcompanionlibrary.utils.Utils;
 import com.iosharp.android.ssplayer.CastApplication;
 import com.iosharp.android.ssplayer.R;
@@ -24,23 +23,15 @@ import java.io.IOException;
 
 
 public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Callback, MediaPlayer.OnPreparedListener,
-        VideoControllerView.MediaPlayerControl, MediaPlayer.OnBufferingUpdateListener, MediaPlayer.OnErrorListener {
+        VideoControllerView.MediaPlayerControl,MediaPlayer.OnErrorListener {
 
     private SurfaceView mSurfaceView;
     private MediaPlayer mPlayer;
     private VideoControllerView mController;
     private String mURL;
     private SurfaceHolder mSurfaceHolder;
-    private int mCurrBuffer;
     private VideoCastManager mCastManager;
-    private PlaybackLocation mLocation;
     private MediaInfo mSelectedMedia;
-    private IVideoCastConsumer mCastConsumer;
-
-    public static enum PlaybackLocation {
-        LOCAL,
-        REMOTE;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,15 +46,12 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
             mURL = mSelectedMedia.getContentId();
 
             if (mCastManager.isConnected()) {
-                updatePlaybackLocation(PlaybackLocation.REMOTE);
-                System.out.println("******IS CONNECTED******");
                 loadRemoteMedia();
             } else {
                 mSurfaceHolder = mSurfaceView.getHolder();
                 mSurfaceHolder.addCallback(this);
                 mPlayer = new MediaPlayer();
                 mController = new VideoControllerView(this, false);
-                updatePlaybackLocation(PlaybackLocation.LOCAL);
             }
         }
     }
@@ -75,12 +63,10 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        findViewById(R.id.progress).setVisibility(View.VISIBLE);
-
         if (!mCastManager.isConnected()) {
             setupLocalPlayback();
+            findViewById(R.id.progress).setVisibility(View.VISIBLE);
         }
-
 
         mCastManager.incrementUiCounter();
     }
@@ -138,11 +124,8 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
      */
     @Override
     public void onPrepared(MediaPlayer mediaPlayer) {
-        System.out.println("IS PREPARED");
         mController.setMediaPlayer(this);
         mController.setAnchorView((FrameLayout) findViewById(R.id.videoSurfaceContainer));
-        //TODO: figure out why this doesn't work
-//        handleAspectRatio();
         mPlayer.start();
         findViewById(R.id.progress).setVisibility(View.GONE);
     }
@@ -162,43 +145,8 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
         }
         mPlayer.setOnErrorListener(this);
         mPlayer.setOnPreparedListener(this);
-        mPlayer.setOnBufferingUpdateListener(this);
 
         return true;
-    }
-
-    /**
-     * Handle aspect ratio
-     */
-    private void handleAspectRatio() {
-        int videoWidth = mPlayer.getVideoWidth();
-        int videoHeight = mPlayer.getVideoHeight();
-        float videoProportion = (float) videoWidth / (float) videoHeight;
-        int screenWidth = getWindowManager().getDefaultDisplay().getWidth();
-        int screenHeight = getWindowManager().getDefaultDisplay().getHeight();
-        float screenProportion = (float) screenWidth / (float) screenHeight;
-        android.view.ViewGroup.LayoutParams lp = mSurfaceView.getLayoutParams();
-
-        if (videoProportion > screenProportion) {
-            lp.width = screenWidth;
-            lp.height = (int) ((float) screenWidth / videoProportion);
-        } else {
-            lp.width = (int) (videoProportion * (float) screenHeight);
-            lp.height = screenHeight;
-        }
-        mSurfaceView.setLayoutParams(lp);
-    }
-
-    /**
-     * Buffering updates listening
-     *
-     * @param mediaPlayer
-     * @param i
-     */
-    @Override
-    public void onBufferingUpdate(MediaPlayer mediaPlayer, int i) {
-        mCurrBuffer = i;
-        Log.i("Buffer:", mCurrBuffer + "%");
     }
 
     /**
@@ -268,23 +216,6 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
 
     // End VideoMediaController.MediaPlayerControl
 
-    private void setupCastListener() {
-        mCastConsumer = new VideoCastConsumerImpl() {
-            @Override
-            public void onFailed(int resourceId, int statusCode) {
-                super.onFailed(resourceId, statusCode);
-            }
-        };
-    }
-
-
-    private void updatePlaybackLocation(PlaybackLocation location) {
-        this.mLocation = location;
-        if (location == PlaybackLocation.LOCAL) {
-
-        }
-    }
-
     private void loadRemoteMedia() {
         mCastManager.startCastControllerActivity(this, mSelectedMedia, 0, true);
     }
@@ -294,7 +225,6 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
             mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
             mPlayer.setDataSource(mURL);
             mPlayer.setOnPreparedListener(this);
-            mPlayer.setOnBufferingUpdateListener(this);
             mPlayer.setOnErrorListener(this);
 
         } catch (IllegalArgumentException e) {

@@ -24,7 +24,7 @@ public class SettingsActivity extends PreferenceActivity implements
                 false);
 
         addPreferencesFromResource(R.xml.preferences);
-        // show the current value in the settings screen
+        // Show the current value in the settings screen
         for (int i = 0; i < getPreferenceScreen().getPreferenceCount(); i++) {
             initSummary(getPreferenceScreen().getPreference(i));
         }
@@ -81,13 +81,17 @@ public class SettingsActivity extends PreferenceActivity implements
         }
         if (p instanceof EditTextPreference) {
             EditTextPreference editTextPref = (EditTextPreference) p;
+            // To show the password as masked instead of it being visible
             if (p.getTitle().toString().contains("assword")) {
+                // Don't mask what isn't there
                 if (editTextPref.getText() == null) {
                     p.setSummary("");
                 } else {
                     p.setSummary(editTextPref.getText().replaceAll(".", "*"));
                 }
+
             } else {
+                // If it isn't a password field just show the text
                 p.setSummary(editTextPref.getText());
             }
         }

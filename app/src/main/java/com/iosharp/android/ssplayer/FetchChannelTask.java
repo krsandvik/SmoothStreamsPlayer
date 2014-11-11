@@ -79,8 +79,8 @@ public class FetchChannelTask extends AsyncTask<Void, Void, String> {
                     event.setNetwork(e.getString(TAG_PROGRAMME_NETWORK));
                     event.setName(e.getString(TAG_PROGRAMME_NAME));
                     event.setDescription(e.getString(TAG_PROGRAMME_DESCRIPTION));
-                    event.setStartDate(Utility.convertDateToLong(e.getString(TAG_PROGRAMME_START_DATE)));
-                    event.setEndDate(Utility.convertDateToLong(e.getString(TAG_PROGRAMME_END_DATE)));
+                    event.setStartDate(Utils.convertDateToLong(e.getString(TAG_PROGRAMME_START_DATE)));
+                    event.setEndDate(Utils.convertDateToLong(e.getString(TAG_PROGRAMME_END_DATE)));
                     event.setRuntime(Integer.parseInt(e.getString(TAG_PROGRAMME_RUNTIME)));
                     event.setChannel(Integer.parseInt(e.getString(TAG_PROGRAMME_CHANNEL)));
                     event.setLanguage(e.getString(TAG_PROGRAMME_LANGUAGE));
@@ -90,7 +90,6 @@ public class FetchChannelTask extends AsyncTask<Void, Void, String> {
                 }
             }
         }
-
     }
 
 
@@ -128,7 +127,6 @@ public class FetchChannelTask extends AsyncTask<Void, Void, String> {
             }
 
             channelsJsonStr = buffer.toString();
-
 
         } catch (IOException e) {
             Log.e(TAG, "Error", e);
