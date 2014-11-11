@@ -42,6 +42,7 @@ public class Channel {
         return "Channel{" +
                 "mId=" + mId +
                 ", mName='" + mName + '\'' +
+                ", mIcon='" + mIcon + '\'' +
                 '}';
     }
 }

@@ -5,6 +5,10 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 
+import com.google.android.gms.cast.MediaInfo;
+import com.google.android.gms.cast.MediaMetadata;
+import com.google.android.gms.common.images.WebImage;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -91,5 +95,25 @@ public class Utility {
                 .build();
 
         return uri.toString();
+    }
+
+    public static MediaInfo buildMediaInfo(String channel, String studio, String url, String iconUrl) {
+        final String SMOOTHSTREAMS_ICON_PREFIX = "http://smoothstreams.tv/schedule/includes/images/uploads/";
+        final String SMOOTHSTREAMS_LOGO =
+                "https://pbs.twimg.com/profile_images/378800000147953484/7af5bfc30ff182f852da32be5af79dfd.jpeg";
+        final String CONTENT_TYPE = "application/x-mpegurl";
+
+        MediaMetadata mediaMetadata = new MediaMetadata(MediaMetadata.MEDIA_TYPE_GENERIC);
+
+        mediaMetadata.putString(MediaMetadata.KEY_TITLE, channel);
+        mediaMetadata.putString(MediaMetadata.KEY_STUDIO, studio);
+        mediaMetadata.addImage(new WebImage(Uri.parse(SMOOTHSTREAMS_ICON_PREFIX + iconUrl)));
+        mediaMetadata.addImage(new WebImage(Uri.parse(SMOOTHSTREAMS_LOGO)));
+
+        return new MediaInfo.Builder(url)
+                .setStreamType(MediaInfo.STREAM_TYPE_LIVE)
+                .setContentType(CONTENT_TYPE)
+                .setMetadata(mediaMetadata)
+                .build();
     }
 }

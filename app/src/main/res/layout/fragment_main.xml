@@ -7,4 +7,13 @@
     tools:context=".MainActivity$PlaceholderFragment">
 
     <ListView android:id="@+id/listview" android:layout_width="match_parent" android:layout_height="match_parent" />
+
+    <com.google.sample.castcompanionlibrary.widgets.MiniController
+        android:id="@+id/miniController1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:visibility="gone" >
+    </com.google.sample.castcompanionlibrary.widgets.MiniController>
+
 </RelativeLayout>
