@@ -15,9 +15,8 @@ import android.widget.AdapterView;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.iosharp.android.ssplayer.db.DbContract;
+import com.iosharp.android.ssplayer.db.ChannelsContract;
 import com.iosharp.android.ssplayer.db.DbHelper;
 import com.iosharp.android.ssplayer.videoplayer.VideoActivity;
 
@@ -38,19 +37,14 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
             return true;
@@ -59,9 +53,6 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    /**
-     * A placeholder fragment containing a simple view.
-     */
     public static class ChannelListFragment extends Fragment {
 
         private DbHelper mDatabase;
@@ -85,7 +76,7 @@ public class MainActivity extends ActionBarActivity {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
 
-            final Cursor cursor = mDatabase.getReadableDatabase().rawQuery("SELECT * FROM " + DbContract.ChannelEntry.TABLE_NAME, null);
+            final Cursor cursor = mDatabase.getReadableDatabase().rawQuery("SELECT * FROM " + ChannelsContract.ChannelEntry.TABLE_NAME, null);
 
             ListView listView = (ListView) rootView.findViewById(R.id.listview);
             mAdapter = new ChannelAdapter(getActivity(), cursor);
@@ -96,9 +87,8 @@ public class MainActivity extends ActionBarActivity {
                 public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                     Cursor c = (Cursor) mAdapter.getItem(position);
                     c.moveToPosition(position);
-                    int channelId = c.getInt(c.getColumnIndex(DbContract.ChannelEntry._ID));
+                    int channelId = c.getInt(c.getColumnIndex(ChannelsContract.ChannelEntry._ID));
 
-//                    Toast.makeText(getActivity(), Utility.getStreamUrl(getActivity(), channelId), Toast.LENGTH_LONG).show();
                     Intent i = new Intent(getActivity(), VideoActivity.class).putExtra(Intent.EXTRA_INTENT, channelId);
                     startActivity(i);
                 }
@@ -126,9 +116,6 @@ public class MainActivity extends ActionBarActivity {
         public void bindView(View view, Context context, Cursor cursor) {
             ((TextView) view.findViewById(R.id.channel_list_item_textview))
                     .setText(cursor.getString(cursor.getColumnIndex("_id")));
-
-            System.out.println(cursor.getString(cursor.getColumnIndex("name")));;
-
         }
 
 

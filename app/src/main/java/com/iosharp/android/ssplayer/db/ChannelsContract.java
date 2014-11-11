@@ -2,7 +2,7 @@ package com.iosharp.android.ssplayer.db;
 
 import android.provider.BaseColumns;
 
-public class DbContract {
+public class ChannelsContract {
 
     public static final class EventEntry implements BaseColumns {
         public static final String TABLE_NAME = "event";
