@@ -36,7 +36,6 @@
             android:name=".videoplayer.VideoActivity"
             android:label="@string/title_activity_video"
             android:parentActivityName="com.iosharp.android.ssplayer.MainActivity"
-            android:theme="@style/AppThemePlayer"
             android:configChanges="orientation|screenSize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

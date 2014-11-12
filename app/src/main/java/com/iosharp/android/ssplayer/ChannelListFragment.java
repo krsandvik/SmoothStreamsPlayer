@@ -42,9 +42,21 @@ public class ChannelListFragment extends Fragment {
     }
 
     public void handleNavigation(Context c, MediaInfo info) {
+        if (mCastManager.isConnected()) {
+            mCastManager.startCastControllerActivity(c, info, 0, true );
+        } else {
             Intent intent = new Intent(c, VideoActivity.class);
             intent.putExtra("media", com.google.sample.castcompanionlibrary.utils.Utils.fromMediaInfo(info));
             c.startActivity(intent);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mCastManager != null) {
+            mCastManager.incrementUiCounter();
+        }
     }
 
     @Override

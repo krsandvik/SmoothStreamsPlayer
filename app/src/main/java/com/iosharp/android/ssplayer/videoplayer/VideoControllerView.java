@@ -18,6 +18,7 @@ package com.iosharp.android.ssplayer.videoplayer;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;

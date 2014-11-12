@@ -3,6 +3,7 @@ package com.iosharp.android.ssplayer;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,6 +28,8 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         VideoCastManager.checkGooglePlayServices(this);
         setContentView(R.layout.activity_main);
+
+        setupActionBar();
 
         // ImageLoader
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getApplicationContext()).build();
@@ -70,6 +73,12 @@ public class MainActivity extends ActionBarActivity {
             mCastManager.clearContext(this);
         }
         super.onDestroy();
+    }
+
+    public void setupActionBar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle(getString(R.string.app_name));
+        setSupportActionBar(toolbar);
     }
 
     @Override

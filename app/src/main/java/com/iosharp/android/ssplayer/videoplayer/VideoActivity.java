@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -36,47 +37,39 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
     private SurfaceHolder mSurfaceHolder;
     private VideoCastManager mCastManager;
     private MediaInfo mSelectedMedia;
+    private Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mCastManager = CastApplication.getCastManager(this);
         setContentView(R.layout.activity_video);
-        loadViews();
-        setupActionBar();
+
+        mSurfaceView = (SurfaceView) findViewById(R.id.videoSurface);
+
+//        setupActionBar();
+
 
         Bundle b = getIntent().getExtras();
         if (b != null) {
             mSelectedMedia = Utils.toMediaInfo(getIntent().getBundleExtra("media"));
             mURL = mSelectedMedia.getContentId();
 
-            if (mCastManager.isConnected()) {
-                loadRemoteMedia();
-            } else {
-                mSurfaceHolder = mSurfaceView.getHolder();
-                mSurfaceHolder.addCallback(this);
-                mPlayer = new MediaPlayer();
-                mController = new VideoControllerView(this, false);
+            mSurfaceHolder = mSurfaceView.getHolder();
+            mSurfaceHolder.addCallback(this);
+            mPlayer = new MediaPlayer();
+            mController = new VideoControllerView(this, false);
             }
         }
-    }
-
 
     @Override
     protected void onResume() {
         super.onResume();
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        setupLocalPlayback();
 
-        if (!mCastManager.isConnected()) {
-            setupLocalPlayback();
-            findViewById(R.id.progress).setVisibility(View.VISIBLE);
-
-        }
         if (mCastManager != null) {
             mCastManager.incrementUiCounter();
         }
-
     }
 
 
@@ -112,10 +105,8 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
 
     @Override
     public void surfaceCreated(SurfaceHolder surfaceHolder) {
-        if (!mCastManager.isConnected()) {
             mPlayer.setDisplay(mSurfaceHolder);
             mPlayer.prepareAsync();
-        }
     }
 
     @Override
@@ -135,7 +126,6 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
      */
     @Override
     public void onPrepared(MediaPlayer mediaPlayer) {
-        getSupportActionBar().hide();
         mController.setMediaPlayer(this);
         mController.setAnchorView((FrameLayout) findViewById(R.id.videoSurfaceContainer));
         mPlayer.start();
@@ -228,43 +218,37 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
 
     // End VideoMediaController.MediaPlayerControl
 
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            System.out.println("LANDSCAPE");
-            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
-            }
-        } else {
-            System.out.println("PORTRIAT");
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN,
-                    WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-            getWindow().clearFlags(
-                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
-            }
-        }
+    public void setupActionBar() {
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mToolbar.setTitle("TEST");
+        setSupportActionBar(mToolbar);
     }
 
-    private void setupActionBar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("toolbar lol");
-        setSupportActionBar(toolbar);
-    }
-
-    private void loadRemoteMedia() {
-        mCastManager.startCastControllerActivity(this, mSelectedMedia, 0, true);
-    }
+//    @Override
+//    public void onConfigurationChanged(Configuration newConfig) {
+//        super.onConfigurationChanged(newConfig);
+//        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+//            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+//            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+//                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+//                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
+//            }
+//        } else {
+//            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN,
+//                    WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+//            getWindow().clearFlags(
+//                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+//                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
+//            }
+//        }
+//    }
 
     private void setupLocalPlayback() {
+        findViewById(R.id.progress).setVisibility(View.VISIBLE);
         try {
             mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
             mPlayer.setDataSource(mURL);
@@ -281,9 +265,4 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
             e.printStackTrace();
         }
     }
-
-    private void loadViews() {
-        mSurfaceView = (SurfaceView) findViewById(R.id.videoSurface);
-    }
-
 }
