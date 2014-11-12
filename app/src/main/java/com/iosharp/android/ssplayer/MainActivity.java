@@ -10,6 +10,8 @@ import android.view.MenuItem;
 import com.google.sample.castcompanionlibrary.cast.VideoCastManager;
 import com.google.sample.castcompanionlibrary.cast.callbacks.IVideoCastConsumer;
 import com.google.sample.castcompanionlibrary.widgets.MiniController;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -25,6 +27,12 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         VideoCastManager.checkGooglePlayServices(this);
         setContentView(R.layout.activity_main);
+
+        // ImageLoader
+        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getApplicationContext()).build();
+        if (ImageLoader.getInstance().isInited() == false) {
+            ImageLoader.getInstance().init(config);
+        }
 
         mCastManager = CastApplication.getCastManager(this);
 
