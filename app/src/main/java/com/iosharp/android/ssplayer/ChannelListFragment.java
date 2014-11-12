@@ -12,15 +12,20 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.google.android.gms.cast.MediaInfo;
+import com.google.sample.castcompanionlibrary.cast.VideoCastManager;
+import com.google.sample.castcompanionlibrary.widgets.MiniController;
 import com.iosharp.android.ssplayer.db.ChannelContract;
 import com.iosharp.android.ssplayer.db.DbHelper;
 import com.iosharp.android.ssplayer.model.Channel;
+import com.iosharp.android.ssplayer.tasks.FetchChannelTask;
 import com.iosharp.android.ssplayer.videoplayer.VideoActivity;
 
 public class ChannelListFragment extends Fragment {
 
     private DbHelper mDatabase;
     private ChannelAdapter mAdapter;
+    private MiniController mMini;
+    private VideoCastManager mCastManager;
 
     public ChannelListFragment() {
     }
@@ -41,11 +46,25 @@ public class ChannelListFragment extends Fragment {
         c.startActivity(intent);
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        if (mCastManager != null) {
+            mCastManager.decrementUiCounter();
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+
+
+        // MiniController
+        mCastManager = CastApplication.getCastManager(getActivity());
+        mMini = (MiniController) rootView.findViewById(R.id.miniController1);
+        mCastManager.addMiniController(mMini);
 
         Cursor cursor = mDatabase.getReadableDatabase().rawQuery("SELECT * FROM " + ChannelContract.ChannelEntry.TABLE_NAME, null);
 

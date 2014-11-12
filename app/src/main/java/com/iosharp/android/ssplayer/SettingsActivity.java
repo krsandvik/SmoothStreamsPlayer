@@ -11,6 +11,8 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceManager;
 
+import com.iosharp.android.ssplayer.tasks.FetchLoginInfoTask;
+
 public class SettingsActivity extends PreferenceActivity implements
         OnSharedPreferenceChangeListener {
 

@@ -29,7 +29,7 @@ public class Utils {
         return cal.getTime();
     }
 
-    static Long convertDateToLong(String dateString) {
+    public static Long convertDateToLong(String dateString) {
         SimpleDateFormat dateFormat;
         // For the start/end datetime
         dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -102,6 +102,8 @@ public class Utils {
         final String SMOOTHSTREAMS_LOGO =
                 "https://pbs.twimg.com/profile_images/378800000147953484/7af5bfc30ff182f852da32be5af79dfd.jpeg";
         final String CONTENT_TYPE = "application/x-mpegurl";
+
+        url = "http://www.corsproxy.com/devimages.apple.com.edgekey.net/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8";
 
         MediaMetadata mediaMetadata = new MediaMetadata(MediaMetadata.MEDIA_TYPE_GENERIC);
 

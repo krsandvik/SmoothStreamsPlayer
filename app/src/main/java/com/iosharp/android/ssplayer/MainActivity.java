@@ -18,8 +18,6 @@ public class MainActivity extends ActionBarActivity {
     private VideoCastManager mCastManager;
     private IVideoCastConsumer mCastConsumer;
     private MenuItem mediaRouteMenuItem;
-    private MiniController mMini;
-
 
 
     @Override
@@ -30,43 +28,37 @@ public class MainActivity extends ActionBarActivity {
 
         mCastManager = CastApplication.getCastManager(this);
 
-        // -- Adding MiniController
-        mMini = (MiniController) findViewById(R.id.miniController1);
-        mCastManager.addMiniController(mMini);
-
-        mCastManager.reconnectSessionIfPossible(this, false);
-
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.container, new ChannelListFragment())
                     .commit();
         }
+        mCastManager.reconnectSessionIfPossible(this, false);
     }
 
     @Override
     protected void onResume() {
-        Log.d(TAG, "onResume() was called");
         mCastManager = CastApplication.getCastManager(this);
         if (mCastManager != null) {
             mCastManager.addVideoCastConsumer(mCastConsumer);
             mCastManager.incrementUiCounter();
         }
+
         super.onResume();
     }
 
     @Override
     protected void onPause() {
-        mCastManager.decrementUiCounter();
-        mCastManager.removeVideoCastConsumer(mCastConsumer);
+        if (mCastManager != null) {
+            mCastManager.decrementUiCounter();
+            mCastManager.removeVideoCastConsumer(mCastConsumer);
+        }
         super.onPause();
     }
 
     @Override
     protected void onDestroy() {
-        Log.d(TAG, "onDestroy is called");
         if (mCastManager != null) {
-//            mMini.removeOnMiniControllerChangedListener(mCastManager);
-            mCastManager.removeMiniController(mMini);
             mCastManager.clearContext(this);
         }
         super.onDestroy();
@@ -75,10 +67,10 @@ public class MainActivity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
-            mediaRouteMenuItem = mCastManager.
-                    addMediaRouterButton(menu, R.id.media_route_menu_item);
+        mediaRouteMenuItem = mCastManager.
+                addMediaRouterButton(menu, R.id.media_route_menu_item);
 
-            return true;
+        return true;
     }
 
     @Override

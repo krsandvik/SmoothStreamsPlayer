@@ -1,9 +1,12 @@
 package com.iosharp.android.ssplayer.videoplayer;
 
+import android.content.res.Configuration;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -16,6 +19,7 @@ import com.google.android.gms.cast.MediaInfo;
 import com.google.sample.castcompanionlibrary.cast.VideoCastManager;
 import com.google.sample.castcompanionlibrary.cast.callbacks.IVideoCastConsumer;
 import com.google.sample.castcompanionlibrary.utils.Utils;
+import com.google.sample.castcompanionlibrary.widgets.MiniController;
 import com.iosharp.android.ssplayer.CastApplication;
 import com.iosharp.android.ssplayer.R;
 
@@ -39,6 +43,7 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
         mCastManager = CastApplication.getCastManager(this);
         setContentView(R.layout.activity_video);
         loadViews();
+        setupActionBar();
 
         Bundle b = getIntent().getExtras();
         if (b != null) {
@@ -66,9 +71,12 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
         if (!mCastManager.isConnected()) {
             setupLocalPlayback();
             findViewById(R.id.progress).setVisibility(View.VISIBLE);
+
+        }
+        if (mCastManager != null) {
+            mCastManager.incrementUiCounter();
         }
 
-        mCastManager.incrementUiCounter();
     }
 
 
@@ -92,7 +100,10 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
         if (mPlayer != null) {
             mPlayer.release();
         }
-        mCastManager.decrementUiCounter();
+
+        if (mCastManager != null) {
+            mCastManager.decrementUiCounter();
+        }
     }
 
     /**
@@ -124,6 +135,7 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
      */
     @Override
     public void onPrepared(MediaPlayer mediaPlayer) {
+        getSupportActionBar().hide();
         mController.setMediaPlayer(this);
         mController.setAnchorView((FrameLayout) findViewById(R.id.videoSurfaceContainer));
         mPlayer.start();
@@ -215,6 +227,38 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
     }
 
     // End VideoMediaController.MediaPlayerControl
+
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            System.out.println("LANDSCAPE");
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
+            }
+        } else {
+            System.out.println("PORTRIAT");
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN,
+                    WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+            getWindow().clearFlags(
+                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
+            }
+        }
+    }
+
+    private void setupActionBar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("toolbar lol");
+        setSupportActionBar(toolbar);
+    }
 
     private void loadRemoteMedia() {
         mCastManager.startCastControllerActivity(this, mSelectedMedia, 0, true);

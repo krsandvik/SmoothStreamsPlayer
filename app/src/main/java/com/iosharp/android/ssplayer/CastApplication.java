@@ -6,7 +6,7 @@ import android.content.Context;
 import com.google.sample.castcompanionlibrary.cast.VideoCastManager;
 
 public class CastApplication extends Application {
-    private static String APPLICATION_ID = "87614ABB";
+    private static String APPLICATION_ID = "1586DC79";
     private static VideoCastManager mCastMgr = null;
 
     @Override
@@ -21,7 +21,6 @@ public class CastApplication extends Application {
                     VideoCastManager.FEATURE_NOTIFICATION |
                             VideoCastManager.FEATURE_LOCKSCREEN |
                             VideoCastManager.FEATURE_WIFI_RECONNECT |
-                            VideoCastManager.FEATURE_CAPTIONS_PREFERENCE |
                             VideoCastManager.FEATURE_DEBUGGING);
 
         }

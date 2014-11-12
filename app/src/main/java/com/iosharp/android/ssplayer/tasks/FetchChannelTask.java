@@ -1,9 +1,10 @@
-package com.iosharp.android.ssplayer;
+package com.iosharp.android.ssplayer.tasks;
 
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.iosharp.android.ssplayer.Utils;
 import com.iosharp.android.ssplayer.db.DbHelper;
 import com.iosharp.android.ssplayer.model.Channel;
 import com.iosharp.android.ssplayer.model.Event;
