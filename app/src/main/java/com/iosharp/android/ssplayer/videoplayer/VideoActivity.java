@@ -24,6 +24,7 @@ import android.widget.FrameLayout;
 
 import com.google.android.gms.cast.ApplicationMetadata;
 import com.google.android.gms.cast.MediaInfo;
+import com.google.android.gms.cast.MediaMetadata;
 import com.google.sample.castcompanionlibrary.cast.VideoCastManager;
 import com.google.sample.castcompanionlibrary.cast.callbacks.IVideoCastConsumer;
 import com.google.sample.castcompanionlibrary.cast.callbacks.VideoCastConsumerImpl;
@@ -37,7 +38,7 @@ import java.io.IOException;
 public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Callback, MediaPlayer.OnPreparedListener,
         VideoControllerView.MediaPlayerControl, MediaPlayer.OnErrorListener {
 
-    private static final int sDefaultTimeout = 4000;
+    private static final int sDefaultTimeout = 3000;
 
     private SurfaceView mSurfaceView;
     private MediaPlayer mPlayer;
@@ -47,6 +48,7 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
     private VideoCastManager mCastManager;
     private MediaInfo mSelectedMedia;
     private IVideoCastConsumer mVideoCastConsumer;
+    private String mTitle;
 
 
     @Override
@@ -59,6 +61,8 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
 
         setupActionBar();
         setupCastListeners();
+        goFullscreen();
+        getSupportActionBar().show();
 
         mSurfaceHolder = mSurfaceView.getHolder();
         mSurfaceHolder.addCallback(this);
@@ -69,8 +73,8 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
         if (b != null) {
             mSelectedMedia = Utils.toMediaInfo(getIntent().getBundleExtra("media"));
             mURL = mSelectedMedia.getContentId();
-
-
+            mTitle = mSelectedMedia.getMetadata().getString(MediaMetadata.KEY_TITLE);
+            getSupportActionBar().setTitle(mTitle);
         }
     }
 
@@ -141,6 +145,7 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
      */
     @Override
     public void onPrepared(MediaPlayer mediaPlayer) {
+        getSupportActionBar().hide();
         mController.setMediaPlayer(this);
         mController.setAnchorView((FrameLayout) findViewById(R.id.videoSurfaceContainer));
         mPlayer.start();
@@ -274,6 +279,16 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
         }, sDefaultTimeout);
     }
 
+
+    private void goFullscreen() {
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
+        }
+    }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
