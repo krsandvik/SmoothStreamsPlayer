@@ -1,5 +1,6 @@
 package com.iosharp.android.ssplayer.videoplayer;
 
+import android.app.Activity;
 import android.content.res.Configuration;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -9,6 +10,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -19,6 +21,7 @@ import android.widget.FrameLayout;
 import com.google.android.gms.cast.MediaInfo;
 import com.google.sample.castcompanionlibrary.cast.VideoCastManager;
 import com.google.sample.castcompanionlibrary.cast.callbacks.IVideoCastConsumer;
+import com.google.sample.castcompanionlibrary.cast.callbacks.VideoCastConsumerImpl;
 import com.google.sample.castcompanionlibrary.utils.Utils;
 import com.google.sample.castcompanionlibrary.widgets.MiniController;
 import com.iosharp.android.ssplayer.CastApplication;
@@ -37,7 +40,7 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
     private SurfaceHolder mSurfaceHolder;
     private VideoCastManager mCastManager;
     private MediaInfo mSelectedMedia;
-    private Toolbar mToolbar;
+    private VideoCastConsumerImpl mVideoCastConsumer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,8 +50,8 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
 
         mSurfaceView = (SurfaceView) findViewById(R.id.videoSurface);
 
-//        setupActionBar();
-
+//        System.out.println(mController.mMediaRouteButton);
+//        mCastManager.addMediaRouterButton(mController.mMediaRouteButton);
 
         Bundle b = getIntent().getExtras();
         if (b != null) {
@@ -61,6 +64,8 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
             mController = new VideoControllerView(this, false);
             }
         }
+
+
 
     @Override
     protected void onResume() {
@@ -76,23 +81,24 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         mController.show();
+//        getSupportActionBar().show();
         return false;
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        mController.hide();
         if (mPlayer != null) {
-            mPlayer.release();
+            mPlayer.reset();
         }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        if (mPlayer != null) {
-            mPlayer.release();
-        }
+        mController.hide();
+        mPlayer.release();
 
         if (mCastManager != null) {
             mCastManager.decrementUiCounter();
@@ -163,12 +169,12 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
 
     @Override
     public boolean canSeekBackward() {
-        return true;
+        return false;
     }
 
     @Override
     public boolean canSeekForward() {
-        return true;
+        return false;
     }
 
     @Override
@@ -178,7 +184,7 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
 
     @Override
     public int getCurrentPosition() {
-        return mPlayer.getCurrentPosition();
+            return mPlayer.getCurrentPosition();
     }
 
     @Override
@@ -218,34 +224,33 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
 
     // End VideoMediaController.MediaPlayerControl
 
-    public void setupActionBar() {
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        mToolbar.setTitle("TEST");
-        setSupportActionBar(mToolbar);
+    private void setupActionBar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
     }
 
-//    @Override
-//    public void onConfigurationChanged(Configuration newConfig) {
-//        super.onConfigurationChanged(newConfig);
-//        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-//            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-//            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-//                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
-//
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-//                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
-//            }
-//        } else {
-//            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN,
-//                    WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-//            getWindow().clearFlags(
-//                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
-//
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-//                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
-//            }
-//        }
-//    }
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
+            }
+        } else {
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN,
+                    WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+            getWindow().clearFlags(
+                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
+            }
+        }
+    }
 
     private void setupLocalPlayback() {
         findViewById(R.id.progress).setVisibility(View.VISIBLE);

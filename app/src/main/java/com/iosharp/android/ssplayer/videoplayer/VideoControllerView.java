@@ -18,7 +18,7 @@ package com.iosharp.android.ssplayer.videoplayer;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.widget.Toolbar;
+import android.support.v7.app.MediaRouteButton;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
@@ -34,6 +34,8 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
+import com.google.sample.castcompanionlibrary.cast.VideoCastManager;
+import com.iosharp.android.ssplayer.CastApplication;
 import com.iosharp.android.ssplayer.R;
 
 import java.lang.ref.WeakReference;
@@ -273,8 +275,8 @@ public class VideoControllerView extends FrameLayout {
 
             LayoutParams tlp = new LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT,
-                    Gravity.BOTTOM
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+                    ,Gravity.BOTTOM
             );
 
             mAnchor.addView(this, tlp);
@@ -644,6 +646,7 @@ public class VideoControllerView extends FrameLayout {
         boolean isFullScreen();
         void    toggleFullScreen();
     }
+
 
     private static class MessageHandler extends Handler {
         private final WeakReference<VideoControllerView> mView;

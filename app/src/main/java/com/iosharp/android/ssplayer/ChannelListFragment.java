@@ -79,6 +79,8 @@ public class ChannelListFragment extends Fragment {
         mMini = (MiniController) rootView.findViewById(R.id.miniController1);
         mCastManager.addMiniController(mMini);
 
+
+
         Cursor cursor = mDatabase.getReadableDatabase().rawQuery("SELECT * FROM " + ChannelContract.ChannelEntry.TABLE_NAME, null);
 
         ListView listView = (ListView) rootView.findViewById(R.id.listview);
