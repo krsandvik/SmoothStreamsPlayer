@@ -60,15 +60,17 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
         setupActionBar();
         setupCastListeners();
 
+        mSurfaceHolder = mSurfaceView.getHolder();
+        mSurfaceHolder.addCallback(this);
+        mPlayer = new MediaPlayer();
+        mController = new VideoControllerView(this, false);
+
         Bundle b = getIntent().getExtras();
         if (b != null) {
             mSelectedMedia = Utils.toMediaInfo(getIntent().getBundleExtra("media"));
             mURL = mSelectedMedia.getContentId();
 
-            mSurfaceHolder = mSurfaceView.getHolder();
-            mSurfaceHolder.addCallback(this);
-            mPlayer = new MediaPlayer();
-            mController = new VideoControllerView(this, false);
+
         }
     }
 
