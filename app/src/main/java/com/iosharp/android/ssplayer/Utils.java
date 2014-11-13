@@ -104,7 +104,7 @@ public class Utils {
         final String CONTENT_TYPE = "application/x-mpegurl";
 
 //        Debug only
-        url = "http://www.corsproxy.com/devimages.apple.com.edgekey.net/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8";
+//        url = "http://www.corsproxy.com/devimages.apple.com.edgekey.net/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8";
 
         MediaMetadata mediaMetadata = new MediaMetadata(MediaMetadata.MEDIA_TYPE_GENERIC);
 

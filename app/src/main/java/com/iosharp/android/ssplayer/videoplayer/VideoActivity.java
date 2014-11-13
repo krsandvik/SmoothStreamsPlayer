@@ -1,12 +1,16 @@
 package com.iosharp.android.ssplayer.videoplayer;
 
-import android.app.Activity;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -18,12 +22,12 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 
+import com.google.android.gms.cast.ApplicationMetadata;
 import com.google.android.gms.cast.MediaInfo;
 import com.google.sample.castcompanionlibrary.cast.VideoCastManager;
 import com.google.sample.castcompanionlibrary.cast.callbacks.IVideoCastConsumer;
 import com.google.sample.castcompanionlibrary.cast.callbacks.VideoCastConsumerImpl;
 import com.google.sample.castcompanionlibrary.utils.Utils;
-import com.google.sample.castcompanionlibrary.widgets.MiniController;
 import com.iosharp.android.ssplayer.CastApplication;
 import com.iosharp.android.ssplayer.R;
 
@@ -31,7 +35,9 @@ import java.io.IOException;
 
 
 public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Callback, MediaPlayer.OnPreparedListener,
-        VideoControllerView.MediaPlayerControl,MediaPlayer.OnErrorListener {
+        VideoControllerView.MediaPlayerControl, MediaPlayer.OnErrorListener {
+
+    private static final int sDefaultTimeout = 4000;
 
     private SurfaceView mSurfaceView;
     private MediaPlayer mPlayer;
@@ -40,7 +46,8 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
     private SurfaceHolder mSurfaceHolder;
     private VideoCastManager mCastManager;
     private MediaInfo mSelectedMedia;
-    private VideoCastConsumerImpl mVideoCastConsumer;
+    private IVideoCastConsumer mVideoCastConsumer;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +57,8 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
 
         mSurfaceView = (SurfaceView) findViewById(R.id.videoSurface);
 
-//        System.out.println(mController.mMediaRouteButton);
-//        mCastManager.addMediaRouterButton(mController.mMediaRouteButton);
+        setupActionBar();
+        setupCastListeners();
 
         Bundle b = getIntent().getExtras();
         if (b != null) {
@@ -62,9 +69,8 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
             mSurfaceHolder.addCallback(this);
             mPlayer = new MediaPlayer();
             mController = new VideoControllerView(this, false);
-            }
         }
-
+    }
 
 
     @Override
@@ -81,13 +87,14 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         mController.show();
-//        getSupportActionBar().show();
+        showActionBar();
         return false;
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        // Hide to prevent illegal state exception of getCurrentPosition
         mController.hide();
         if (mPlayer != null) {
             mPlayer.reset();
@@ -98,8 +105,7 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
     protected void onPause() {
         super.onPause();
         mController.hide();
-        mPlayer.release();
-
+        mPlayer.reset();
         if (mCastManager != null) {
             mCastManager.decrementUiCounter();
         }
@@ -108,6 +114,7 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
     /**
      * SurfaceHolder.Callback
      */
+
 
     @Override
     public void surfaceCreated(SurfaceHolder surfaceHolder) {
@@ -184,7 +191,7 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
 
     @Override
     public int getCurrentPosition() {
-            return mPlayer.getCurrentPosition();
+        return mPlayer.getCurrentPosition();
     }
 
     @Override
@@ -199,7 +206,9 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
 
     @Override
     public void pause() {
-        mPlayer.pause();
+        if (mPlayer.isPlaying()) {
+            mPlayer.pause();
+        }
     }
 
     @Override
@@ -224,10 +233,45 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
 
     // End VideoMediaController.MediaPlayerControl
 
-    private void setupActionBar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+    public void setupCastListeners() {
+        mVideoCastConsumer = new VideoCastConsumerImpl() {
+            @Override
+            public void onApplicationConnected(ApplicationMetadata appMetadata, String sessionId, boolean wasLaunched) {
+                super.onApplicationConnected(appMetadata, sessionId, wasLaunched);
+                // TODO: Very hackish and may not be desired behavior for some users
+                onBackPressed();
+                loadRemoteMedia(false);
+            }
+        };
+
+        mCastManager.addVideoCastConsumer(mVideoCastConsumer);
+    }
+
+    private void loadRemoteMedia(boolean autoPlay) {
+        mCastManager.startCastControllerActivity(this, mSelectedMedia, 0, autoPlay);
+    }
+
+
+    public void setupActionBar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.video_toolbar);
+        toolbar.setTitle("");
+        toolbar.inflateMenu(R.menu.menu_video);
+
         setSupportActionBar(toolbar);
     }
+
+    public void showActionBar() {
+        getSupportActionBar().show();
+
+        Handler h = new Handler();
+        h.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                getSupportActionBar().hide();
+            }
+        }, sDefaultTimeout);
+    }
+
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
@@ -252,6 +296,13 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
         }
     }
 
+    private Intent createStreamIntent() {
+        Intent shareIntent = new Intent(Intent.ACTION_VIEW);
+        shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+        shareIntent.setDataAndType(Uri.parse(mSelectedMedia.getContentId()), "application/x-mpegURL");
+        return shareIntent;
+    }
+
     private void setupLocalPlayback() {
         findViewById(R.id.progress).setVisibility(View.VISIBLE);
         try {
@@ -269,5 +320,21 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.menu_video, menu);
+
+        mCastManager.addMediaRouterButton(menu, R.id.media_route_menu_item);
+
+        MenuItem menuItem = menu.findItem(R.id.action_share);
+        ShareActionProvider mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
+        if (mShareActionProvider != null) {
+            mShareActionProvider.setShareIntent(createStreamIntent());
+        }
+
+        return true;
     }
 }

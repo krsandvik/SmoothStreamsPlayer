@@ -1,28 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:id="@+id/video_container"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="@android:color/black"
-              android:gravity="center_horizontal|center_vertical"
-              android:orientation="vertical">
-
+<LinearLayout
+    android:id="@+id/video_container"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/black"
+    android:gravity="center_horizontal|center_vertical"
+    android:orientation="vertical">
 
 
     <FrameLayout
         android:id="@+id/videoSurfaceContainer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent">
 
-        <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
-                                           xmlns:app="http://schemas.android.com/apk/res-auto"
-                                           android:layout_height="wrap_content"
-                                           android:layout_width="match_parent"
-                                           android:minHeight="?attr/actionBarSize"
-                                           android:background="@color/background_material_dark"
-                                           app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-                                           app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
         <SurfaceView
             android:id="@+id/videoSurface"
@@ -30,13 +22,27 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"/>
 
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/video_toolbar"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#CC000000"
+            android:minHeight="?attr/actionBarSize"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            android:visibility="gone"/>
+
         <ProgressBar
             android:id="@+id/progress"
-            android:indeterminateDrawable="@drawable/launch_progress_indeterminate"
-            android:layout_height="50dp"
             android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_gravity="center"
+            android:indeterminateDrawable="@drawable/launch_progress_indeterminate"
             android:indeterminateOnly="true"/>
+
+
     </FrameLayout>
 
 </LinearLayout>
