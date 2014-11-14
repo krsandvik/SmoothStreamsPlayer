@@ -110,21 +110,30 @@ public class FetchLoginInfoTask extends AsyncTask<Void, Void, String> {
             }
         }
 
-        try {
-            JSONObject loginCredentials = new JSONObject(loginJsonStr);
-            // TODO: handle 'User not found', 'No subscription' etc.
-
-            String username = loginCredentials.get("id").toString();
-            String password = loginCredentials.get("password").toString();
-
-            setServiceCredentials(username, password);
-
-        } catch (JSONException e) {
-            showToastMethod("Failure setting service id and password. Verify inputted login info is correct.");
-            e.printStackTrace();
-        }
+        parseLoginResponse(loginJsonStr);
 
         return null;
+    }
+
+    private void parseLoginResponse (String responseStr) {
+        try {
+
+            JSONObject response = new JSONObject(responseStr);
+
+            if (response.has("id")) {
+                String username = response.getString("id");
+                String password = response.getString("password");
+
+                setServiceCredentials(username, password);
+            } else if (response.has("error")) {
+                String message = response.getString("error");
+                showToastMethod("ERROR: " + message);
+            } else {
+                Log.e(TAG, "Unknown response!");
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     public void setServiceCredentials(String username, String password) {
