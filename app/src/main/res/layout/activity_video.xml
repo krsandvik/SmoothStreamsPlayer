@@ -30,9 +30,9 @@
             android:layout_height="wrap_content"
             android:background="#CC000000"
             android:minHeight="?attr/actionBarSize"
+            android:visibility="gone"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            android:visibility="gone"/>
+            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
         <ProgressBar
             android:id="@+id/progress"

@@ -47,8 +47,6 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
     private SurfaceHolder mSurfaceHolder;
     private VideoCastManager mCastManager;
     private MediaInfo mSelectedMedia;
-    private IVideoCastConsumer mVideoCastConsumer;
-    private String mTitle;
 
 
     @Override
@@ -73,8 +71,8 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
         if (b != null) {
             mSelectedMedia = Utils.toMediaInfo(getIntent().getBundleExtra("media"));
             mURL = mSelectedMedia.getContentId();
-            mTitle = mSelectedMedia.getMetadata().getString(MediaMetadata.KEY_TITLE);
-            getSupportActionBar().setTitle(mTitle);
+            String title = mSelectedMedia.getMetadata().getString(MediaMetadata.KEY_TITLE);
+            getSupportActionBar().setTitle(title);
         }
     }
 
@@ -124,8 +122,8 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
 
     @Override
     public void surfaceCreated(SurfaceHolder surfaceHolder) {
-            mPlayer.setDisplay(mSurfaceHolder);
-            mPlayer.prepareAsync();
+        mPlayer.setDisplay(mSurfaceHolder);
+        mPlayer.prepareAsync();
     }
 
     @Override
@@ -241,7 +239,7 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
     // End VideoMediaController.MediaPlayerControl
 
     public void setupCastListeners() {
-        mVideoCastConsumer = new VideoCastConsumerImpl() {
+        IVideoCastConsumer videoCastConsumer = new VideoCastConsumerImpl() {
             @Override
             public void onApplicationConnected(ApplicationMetadata appMetadata, String sessionId, boolean wasLaunched) {
                 super.onApplicationConnected(appMetadata, sessionId, wasLaunched);
@@ -251,7 +249,7 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
             }
         };
 
-        mCastManager.addVideoCastConsumer(mVideoCastConsumer);
+        mCastManager.addVideoCastConsumer(videoCastConsumer);
     }
 
     private void loadRemoteMedia(boolean autoPlay) {

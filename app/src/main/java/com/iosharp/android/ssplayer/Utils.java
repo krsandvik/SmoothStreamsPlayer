@@ -18,17 +18,6 @@ import java.util.TimeZone;
 
 public class Utils {
 
-    private boolean isDst() {
-        return SimpleTimeZone.getDefault().inDaylightTime(new Date());
-    }
-
-    private Date adjustForDst(Date date) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(date);
-        cal.add(Calendar.HOUR, -1);
-        return cal.getTime();
-    }
-
     public static Long convertDateToLong(String dateString) {
         SimpleDateFormat dateFormat;
         // For the start/end datetime
@@ -118,5 +107,16 @@ public class Utils {
                 .setContentType(CONTENT_TYPE)
                 .setMetadata(mediaMetadata)
                 .build();
+    }
+
+    private boolean isDst() {
+        return SimpleTimeZone.getDefault().inDaylightTime(new Date());
+    }
+
+    private Date adjustForDst(Date date) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.add(Calendar.HOUR, -1);
+        return cal.getTime();
     }
 }

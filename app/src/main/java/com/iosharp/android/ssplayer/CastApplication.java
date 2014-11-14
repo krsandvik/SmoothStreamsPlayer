@@ -9,11 +9,6 @@ public class CastApplication extends Application {
     private static String APPLICATION_ID = "1586DC79";
     private static VideoCastManager mCastMgr = null;
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-    }
-
     public static VideoCastManager getCastManager(Context context) {
         if (null == mCastMgr) {
             mCastMgr = VideoCastManager.initialize(context, APPLICATION_ID, null, null);
@@ -26,5 +21,10 @@ public class CastApplication extends Application {
         }
         mCastMgr.setContext(context);
         return mCastMgr;
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
     }
 }

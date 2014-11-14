@@ -17,13 +17,10 @@ public class DbHelper extends SQLiteOpenHelper {
     private static final String TAG = DbHelper.class.getSimpleName();
 
     private static final int DATABASE_VERSION = 4;
-    private static String DATABASE_NAME = "smoothstreams.db";
-
     private static final String[] CHANNEL_COLUMNS = {
             ChannelContract.ChannelEntry._ID,
             ChannelContract.ChannelEntry.COLUMN_NAME,
             ChannelContract.ChannelEntry.COLUMN_ICON};
-
     private static final String[] EVENT_COLUMNS = {
             ChannelContract.EventEntry._ID,
             ChannelContract.EventEntry.COLUMN_KEY_CHANNEL,
@@ -36,6 +33,7 @@ public class DbHelper extends SQLiteOpenHelper {
             ChannelContract.EventEntry.COLUMN_LANGUAGE,
             ChannelContract.EventEntry.COLUMN_CATEGORY,
             ChannelContract.EventEntry.COLUMN_QUALITY};
+    private static String DATABASE_NAME = "smoothstreams.db";
 
     public DbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -100,7 +98,7 @@ public class DbHelper extends SQLiteOpenHelper {
         Cursor cursor = db.query(ChannelContract.ChannelEntry.TABLE_NAME,
                 CHANNEL_COLUMNS,
                 ChannelContract.ChannelEntry._ID + " = ?",
-                new String[] { String.valueOf(id) },
+                new String[]{String.valueOf(id)},
                 null,
                 null,
                 null,
@@ -150,7 +148,7 @@ public class DbHelper extends SQLiteOpenHelper {
 
         db.delete(ChannelContract.ChannelEntry.TABLE_NAME,
                 ChannelContract.ChannelEntry._ID + " = ?",
-                new String[] { String.valueOf(channel.getId()) });
+                new String[]{String.valueOf(channel.getId())});
 
         db.close();
 
@@ -190,7 +188,7 @@ public class DbHelper extends SQLiteOpenHelper {
         Cursor cursor = db.query(ChannelContract.EventEntry.TABLE_NAME,
                 EVENT_COLUMNS,
                 ChannelContract.EventEntry._ID + " = ? ",
-                new String[] { String.valueOf(id) },
+                new String[]{String.valueOf(id)},
                 null,
                 null,
                 null,
@@ -251,7 +249,7 @@ public class DbHelper extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
 
-        Log.d(TAG, "getAllEvents(" + id+ "): " + events.toString());
+        Log.d(TAG, "getAllEvents(" + id + "): " + events.toString());
 
         return events;
     }
@@ -296,7 +294,7 @@ public class DbHelper extends SQLiteOpenHelper {
 
         db.delete(ChannelContract.EventEntry.TABLE_NAME,
                 ChannelContract.EventEntry._ID + " = ?",
-                new String[] { String.valueOf(event.getId()) });
+                new String[]{String.valueOf(event.getId())});
 
         db.close();
 

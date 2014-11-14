@@ -28,7 +28,7 @@ public class FetchChannelTask extends AsyncTask<Void, Void, String> {
 
     public FetchChannelTask(Context context) {
         mContext = context;
-        mDatabase =  new DbHelper(mContext);
+        mDatabase = new DbHelper(mContext);
     }
 
     private void getChannelDataFromJson(String channelJsonStr) throws JSONException {
@@ -151,6 +151,6 @@ public class FetchChannelTask extends AsyncTask<Void, Void, String> {
             Log.e(TAG, e.getMessage(), e);
             e.printStackTrace();
         }
-    return null;
+        return null;
     }
 }

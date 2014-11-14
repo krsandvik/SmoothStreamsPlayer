@@ -148,7 +148,7 @@ public class FetchLoginInfoTask extends AsyncTask<Void, Void, String> {
         handler.post(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(mContext, toastText , Toast.LENGTH_LONG).show();
+                Toast.makeText(mContext, toastText, Toast.LENGTH_LONG).show();
             }
         });
     }

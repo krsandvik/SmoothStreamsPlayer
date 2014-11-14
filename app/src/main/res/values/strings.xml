@@ -13,12 +13,12 @@
     <string name="preferences_stream_settings">Stream Settings</string>
     <string name="preferences_server_location">Server Location</string>
     <string name="preferences_high_quality">High Quality</string>
-    <string name="preferences_europe">EUROPE</string>
-    <string name="preferences_amsterdam"> - Amsterdam</string>
-    <string name="preferences_london"> - London</string>
-    <string name="preferences_united_states">UNITED STATES</string>
-    <string name="preferences_east">East</string>
-    <string name="preferences_west">West</string>
+    <string name="preferences_europe">Europe</string>
+    <string name="preferences_amsterdam">Europe (Amsterdam)</string>
+    <string name="preferences_london">Europe (London)</string>
+    <string name="preferences_united_states">United States</string>
+    <string name="preferences_east">United States (East)</string>
+    <string name="preferences_west">United States (West)</string>
     <string name="preferences_asia">Asia</string>
     <string name="pref_service_username_key" translatable="false">pref_service_username_key</string>
     <string name="pref_service_password_key" translatable="false">pref_service_password_key</string>
@@ -62,5 +62,10 @@
     </string-array>
 
     <string name="title_activity_video">VideoActivity</string>
+    <string name="title_activity_about">AboutActivity</string>
+    <string name="action_about">About</string>
+    <string name="about_version">Version</string>
+    <string name="about_developed_by">Developed by aaearon</string>
+    <string name="about_body" translatable="false">\nA video player for the SmoothStreams.tv Networks (Live247.tv / MyStreams.tv / StarStreams.tv / MMA-TV.net / TFR) with Chromecast support.\n\nSSP takes advantage of the following libraries:\n\n\<b>Cast Companion Library</b> - https://github.com/googlecast/CastCompanionLibrary-android\n<b>Universal Image Loader</b> - https://github.com/nostra13/Android-Universal-Image-Loader</string>
 
 </resources>

@@ -14,7 +14,8 @@ public class Event {
     private String mCategory;
     private String mQuality;
 
-    public Event() {}
+    public Event() {
+    }
 
     public int getId() {
         return mId;

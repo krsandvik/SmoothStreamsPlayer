@@ -5,7 +5,7 @@
                 android:paddingBottom="5dp"
                 android:paddingLeft="8dp"
                 android:paddingRight="16dp"
-                android:paddingTop="5dp" >
+                android:paddingTop="5dp">
 
     <ImageView
         android:id="@+id/imageView1"
@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:src="@drawable/default_video" />
+        android:src="@drawable/default_video"/>
 
     <LinearLayout
         android:id="@+id/text_container"
@@ -23,7 +23,7 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="10dp"
         android:layout_toRightOf="@+id/imageView1"
-        android:orientation="vertical" >
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/textView1"
@@ -32,7 +32,7 @@
             android:ellipsize="end"
             android:maxLines="2"
             android:textColor="#111111"
-            android:textSize="18sp" />
+            android:textSize="18sp"/>
 
         <TextView
             android:id="@+id/textView2"
@@ -43,7 +43,7 @@
             android:maxLines="2"
             android:textColor="#555555"
             android:textSize="14sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"/>
     </LinearLayout>
 
 </RelativeLayout>

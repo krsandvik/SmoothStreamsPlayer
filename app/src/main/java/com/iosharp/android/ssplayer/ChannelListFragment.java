@@ -19,7 +19,6 @@ import com.iosharp.android.ssplayer.db.DbHelper;
 import com.iosharp.android.ssplayer.model.Channel;
 import com.iosharp.android.ssplayer.tasks.FetchChannelTask;
 import com.iosharp.android.ssplayer.videoplayer.VideoActivity;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
 
 public class ChannelListFragment extends Fragment {
 
@@ -43,7 +42,7 @@ public class ChannelListFragment extends Fragment {
 
     public void handleNavigation(Context c, MediaInfo info) {
         if (mCastManager.isConnected()) {
-            mCastManager.startCastControllerActivity(c, info, 0, true );
+            mCastManager.startCastControllerActivity(c, info, 0, true);
         } else {
             Intent intent = new Intent(c, VideoActivity.class);
             intent.putExtra("media", com.google.sample.castcompanionlibrary.utils.Utils.fromMediaInfo(info));
@@ -78,7 +77,6 @@ public class ChannelListFragment extends Fragment {
         mCastManager = CastApplication.getCastManager(getActivity());
         mMini = (MiniController) rootView.findViewById(R.id.miniController1);
         mCastManager.addMiniController(mMini);
-
 
 
         Cursor cursor = mDatabase.getReadableDatabase().rawQuery("SELECT * FROM " + ChannelContract.ChannelEntry.TABLE_NAME, null);
