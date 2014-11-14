@@ -53,6 +53,9 @@ public class ChannelListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+
+        mAdapter.changeCursor(mDatabase.getReadableDatabase().rawQuery("SELECT * FROM " + ChannelContract.ChannelEntry.TABLE_NAME, null));
+
         if (mCastManager != null) {
             mCastManager.incrementUiCounter();
         }
