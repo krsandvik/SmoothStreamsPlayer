@@ -18,7 +18,6 @@ public class MainActivity extends ActionBarActivity {
 
     private VideoCastManager mCastManager;
     private IVideoCastConsumer mCastConsumer;
-    private MenuItem mediaRouteMenuItem;
 
 
     @Override
@@ -82,7 +81,7 @@ public class MainActivity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        mediaRouteMenuItem = mCastManager.
+        MenuItem mediaRouteMenuItem = mCastManager.
                 addMediaRouterButton(menu, R.id.media_route_menu_item);
 
         return true;
