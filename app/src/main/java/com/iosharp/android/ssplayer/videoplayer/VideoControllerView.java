@@ -367,6 +367,8 @@ public class VideoControllerView extends FrameLayout {
             }
             disableUnsupportedButtons();
 
+
+
             LayoutParams tlp = new LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT
