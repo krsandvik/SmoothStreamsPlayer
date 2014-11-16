@@ -1,14 +1,17 @@
 package com.iosharp.android.ssplayer;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.sample.castcompanionlibrary.cast.VideoCastManager;
 import com.google.sample.castcompanionlibrary.cast.callbacks.IVideoCastConsumer;
+import com.google.sample.castcompanionlibrary.cast.callbacks.VideoCastConsumerImpl;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
@@ -34,8 +37,8 @@ public class MainActivity extends ActionBarActivity {
             ImageLoader.getInstance().init(config);
         }
 
-        mCastManager = CastApplication.getCastManager(this);
-
+        mCastManager = PlayerApplication.getCastManager(this);
+        setupCastListeners(getApplicationContext());
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.container, new ChannelListFragment())
@@ -44,9 +47,21 @@ public class MainActivity extends ActionBarActivity {
         mCastManager.reconnectSessionIfPossible(this, false);
     }
 
+    private void setupCastListeners(final Context context) {
+        mCastConsumer = new VideoCastConsumerImpl() {
+            @Override
+            public void onCastAvailabilityChanged(boolean castPresent) {
+                super.onCastAvailabilityChanged(castPresent);
+                if (castPresent) {
+                Toast.makeText(context, "Cast found!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        };
+    }
+
     @Override
     protected void onResume() {
-        mCastManager = CastApplication.getCastManager(this);
+        mCastManager = PlayerApplication.getCastManager(this);
         if (mCastManager != null) {
             mCastManager.addVideoCastConsumer(mCastConsumer);
             mCastManager.incrementUiCounter();

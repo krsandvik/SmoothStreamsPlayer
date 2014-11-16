@@ -13,6 +13,8 @@ import com.iosharp.android.ssplayer.db.ChannelContract;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
+import static com.iosharp.android.ssplayer.db.ChannelContract.*;
+
 class ChannelAdapter extends CursorAdapter {
 
     ImageView mIcon;
@@ -36,12 +38,12 @@ class ChannelAdapter extends CursorAdapter {
         showIcon(view, cursor);
 
         ((TextView) view.findViewById(R.id.textView1))
-                .setText(cursor.getString(cursor.getColumnIndex(ChannelContract.ChannelEntry.COLUMN_NAME)));
+                .setText(cursor.getString(cursor.getColumnIndex(ChannelEntry.COLUMN_NAME)));
     }
 
     public void showIcon(View view, Cursor cursor) {
         String SMOOTHSTREAMS_ICON_BASE = "http://smoothstreams.tv/schedule/includes/images/uploads/";
-        String channelIcon = cursor.getString(cursor.getColumnIndex(ChannelContract.ChannelEntry.COLUMN_ICON));
+        String channelIcon = cursor.getString(cursor.getColumnIndex(ChannelEntry.COLUMN_ICON));
         String SMOOTHSTREAMS_ICON_URL = SMOOTHSTREAMS_ICON_BASE + channelIcon;
 
         mIcon = (ImageView) view.findViewById(R.id.imageView1);

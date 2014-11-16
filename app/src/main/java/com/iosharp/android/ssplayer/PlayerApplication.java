@@ -5,7 +5,7 @@ import android.content.Context;
 
 import com.google.sample.castcompanionlibrary.cast.VideoCastManager;
 
-public class CastApplication extends Application {
+public class PlayerApplication extends Application {
     private static String APPLICATION_ID = "1586DC79";
     private static VideoCastManager mCastMgr = null;
 

@@ -367,8 +367,6 @@ public class VideoControllerView extends FrameLayout {
             }
             disableUnsupportedButtons();
 
-
-
             LayoutParams tlp = new LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT
@@ -404,7 +402,6 @@ public class VideoControllerView extends FrameLayout {
         if (mAnchor == null) {
             return;
         }
-
         try {
             mAnchor.removeView(this);
             mHandler.removeMessages(SHOW_PROGRESS);

@@ -29,7 +29,7 @@ import com.google.sample.castcompanionlibrary.cast.VideoCastManager;
 import com.google.sample.castcompanionlibrary.cast.callbacks.IVideoCastConsumer;
 import com.google.sample.castcompanionlibrary.cast.callbacks.VideoCastConsumerImpl;
 import com.google.sample.castcompanionlibrary.utils.Utils;
-import com.iosharp.android.ssplayer.CastApplication;
+import com.iosharp.android.ssplayer.PlayerApplication;
 import com.iosharp.android.ssplayer.R;
 
 import java.io.IOException;
@@ -39,8 +39,7 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
         VideoControllerView.MediaPlayerControl, MediaPlayer.OnErrorListener {
 
     private static final int sDefaultTimeout = 3000;
-    private static final int UI_HIDE_FLAGS = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION;
+
 
     private SurfaceView mSurfaceView;
     private MediaPlayer mPlayer;
@@ -53,8 +52,9 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mCastManager = CastApplication.getCastManager(this);
+        mCastManager = PlayerApplication.getCastManager(this);
         setContentView(R.layout.activity_video);
+        hideSoftKeys();
 
         mSurfaceView = (SurfaceView) findViewById(R.id.videoSurface);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -85,6 +85,7 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
     @Override
     protected void onResume() {
         super.onResume();
+
 
         try {
             mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
@@ -255,30 +256,6 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
 
     // End VideoMediaController.MediaPlayerControl
 
-    public void hideSoftKeys(View v) {
-        final View view = v;
-        view.setSystemUiVisibility(UI_HIDE_FLAGS);
-        view.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
-
-            @Override
-            public void onSystemUiVisibilityChange(int visibility) {
-                if ((visibility) == 0) {
-                    new Handler().postDelayed(new Runnable() {
-
-                        @Override
-                        public void run() {
-                            if (view != null) {
-                                view.setSystemUiVisibility(UI_HIDE_FLAGS);
-                            }
-                        }
-                    }, sDefaultTimeout);
-
-                }
-            }
-        });
-
-
-    }
 
     public void setupCastListeners() {
         IVideoCastConsumer videoCastConsumer = new VideoCastConsumerImpl() {
@@ -360,9 +337,25 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
         return shareIntent;
     }
 
-    private void setupLocalPlayback() {
+   private void hideSoftKeys() {
+       final View v = getWindow().getDecorView();
+       final int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+               | View.SYSTEM_UI_FLAG_FULLSCREEN;
 
-    }
+       v.setSystemUiVisibility(uiOptions);
+       v.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
+           @Override
+           public void onSystemUiVisibilityChange(int i) {
+               Handler h = new Handler();
+               h.postDelayed(new Runnable() {
+                   @Override
+                   public void run() {
+                       v.setSystemUiVisibility(uiOptions);
+                   }
+               }, sDefaultTimeout);
+           }
+       });
+   }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

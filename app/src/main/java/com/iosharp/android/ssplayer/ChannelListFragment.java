@@ -20,6 +20,8 @@ import com.iosharp.android.ssplayer.model.Channel;
 import com.iosharp.android.ssplayer.tasks.FetchChannelTask;
 import com.iosharp.android.ssplayer.videoplayer.VideoActivity;
 
+import static com.iosharp.android.ssplayer.db.ChannelContract.*;
+
 public class ChannelListFragment extends Fragment {
 
     private DbHelper mDatabase;
@@ -54,7 +56,7 @@ public class ChannelListFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        mAdapter.changeCursor(mDatabase.getReadableDatabase().rawQuery("SELECT * FROM " + ChannelContract.ChannelEntry.TABLE_NAME, null));
+        mAdapter.changeCursor(mDatabase.getReadableDatabase().rawQuery("SELECT * FROM " + ChannelEntry.TABLE_NAME, null));
 
         if (mCastManager != null) {
             mCastManager.incrementUiCounter();
@@ -77,12 +79,12 @@ public class ChannelListFragment extends Fragment {
 
 
         // MiniController
-        mCastManager = CastApplication.getCastManager(getActivity());
+        mCastManager = PlayerApplication.getCastManager(getActivity());
         mMini = (MiniController) rootView.findViewById(R.id.miniController1);
         mCastManager.addMiniController(mMini);
 
 
-        Cursor cursor = mDatabase.getReadableDatabase().rawQuery("SELECT * FROM " + ChannelContract.ChannelEntry.TABLE_NAME, null);
+        Cursor cursor = mDatabase.getReadableDatabase().rawQuery("SELECT * FROM " + ChannelEntry.TABLE_NAME, null);
 
         ListView listView = (ListView) rootView.findViewById(R.id.listview);
         mAdapter = new ChannelAdapter(getActivity(), cursor);
@@ -94,7 +96,7 @@ public class ChannelListFragment extends Fragment {
                 // Get channel ID
                 Cursor c = (Cursor) mAdapter.getItem(position);
                 c.moveToPosition(position);
-                int channelId = c.getInt(c.getColumnIndex(ChannelContract.ChannelEntry._ID));
+                int channelId = c.getInt(c.getColumnIndex(ChannelEntry._ID));
                 // Retrieve channel object from database
                 Channel channel = mDatabase.getChannel(channelId);
                 // Create MediaInfo based off channel object
