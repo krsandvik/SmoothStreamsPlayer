@@ -38,6 +38,16 @@ public class Utils {
         return null;
     }
 
+    public static boolean checkForSetServiceCredentials(Context c) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(c);
+        String uid = sharedPreferences.getString(c.getString(R.string.pref_ss_uid_key), null);
+        String password = sharedPreferences.getString(c.getString(R.string.pref_ss_password_key), null);
+
+        if (uid != null && password != null) { return true; }
+
+        return false;
+    }
+
     public static String getStreamUrl(Context c, int i) {
         // String format because the URL needs 01, 02, 03, etc when we have single digit integers
         String channel = String.format("%02d", i);

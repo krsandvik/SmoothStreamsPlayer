@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.android.gms.cast.MediaInfo;
 import com.google.sample.castcompanionlibrary.cast.VideoCastManager;
@@ -101,7 +102,16 @@ public class ChannelListFragment extends Fragment {
                 MediaInfo mediaInfo = Utils.buildMediaInfo(channel.getName(), "SmoothStreams", url, channel.getIcon());
 
                 // Pass to handleNavigation
-                handleNavigation(getActivity(), mediaInfo);
+                if (Utils.checkForSetServiceCredentials(getActivity())) {
+                    handleNavigation(getActivity(), mediaInfo);
+                } else {
+                    // Launch settings
+                    Intent intent = new Intent(getActivity(), SettingsActivity.class);
+                    getActivity().startActivity(intent);
+                    Toast.makeText(getActivity(),
+                            "ERROR: No login credentials found! Set your login and password first.",
+                            Toast.LENGTH_LONG).show();
+                }
             }
         });
 
