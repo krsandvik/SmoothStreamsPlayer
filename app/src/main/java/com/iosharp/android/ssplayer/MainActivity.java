@@ -12,6 +12,8 @@ import android.widget.Toast;
 import com.google.sample.castcompanionlibrary.cast.VideoCastManager;
 import com.google.sample.castcompanionlibrary.cast.callbacks.IVideoCastConsumer;
 import com.google.sample.castcompanionlibrary.cast.callbacks.VideoCastConsumerImpl;
+import com.iosharp.android.ssplayer.db.DbHelper;
+import com.iosharp.android.ssplayer.tasks.FetchChannelTask;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
@@ -26,25 +28,25 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        VideoCastManager.checkGooglePlayServices(this);
         setContentView(R.layout.activity_main);
+        VideoCastManager.checkGooglePlayServices(this);
+
+        FetchChannelTask fetchChannelTask = new FetchChannelTask(this);
+        fetchChannelTask.execute();
+
 
         setupActionBar();
-
-        // ImageLoader
-        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getApplicationContext()).build();
-        if (ImageLoader.getInstance().isInited() == false) {
-            ImageLoader.getInstance().init(config);
-        }
+        imageLoaderInit();
 
         mCastManager = PlayerApplication.getCastManager(this);
-        setupCastListeners(getApplicationContext());
+        mCastManager.reconnectSessionIfPossible(this, false);
+        setupCastListeners(this);
+
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.container, new ChannelListFragment())
                     .commit();
         }
-        mCastManager.reconnectSessionIfPossible(this, false);
     }
 
     private void setupCastListeners(final Context context) {
@@ -91,6 +93,13 @@ public class MainActivity extends ActionBarActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(getString(R.string.app_name));
         setSupportActionBar(toolbar);
+    }
+
+    private void imageLoaderInit() {
+        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this).build();
+        if (ImageLoader.getInstance().isInited() == false) {
+            ImageLoader.getInstance().init(config);
+        }
     }
 
     @Override

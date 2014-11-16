@@ -48,6 +48,7 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
     private SurfaceHolder mSurfaceHolder;
     private VideoCastManager mCastManager;
     private MediaInfo mSelectedMedia;
+    private int mChannelId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +70,10 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
         Bundle b = getIntent().getExtras();
         if (b != null) {
             mSelectedMedia = Utils.toMediaInfo(getIntent().getBundleExtra("media"));
+            mChannelId = b.getInt("channelid");
+
+            System.out.println(mChannelId);
+
             mURL = mSelectedMedia.getContentId();
             String title = mSelectedMedia.getMetadata().getString(MediaMetadata.KEY_TITLE);
             getSupportActionBar().setTitle(title);
@@ -256,8 +261,13 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
 
     // End VideoMediaController.MediaPlayerControl
 
+    private void changeChannel(boolean increase) {
+        // change mSelectedMedia
 
-    public void setupCastListeners() {
+    }
+
+
+    private void setupCastListeners() {
         IVideoCastConsumer videoCastConsumer = new VideoCastConsumerImpl() {
             @Override
             public void onApplicationConnected(ApplicationMetadata appMetadata, String sessionId, boolean wasLaunched) {
@@ -276,7 +286,7 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
     }
 
 
-    public void setupActionBar() {
+    private void setupActionBar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.video_toolbar);
         toolbar.setTitle("");
         toolbar.inflateMenu(R.menu.menu_video);
@@ -284,7 +294,7 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
         setSupportActionBar(toolbar);
     }
 
-    public void showActionBar() {
+    private void showActionBar() {
         getSupportActionBar().show();
 
         Handler h = new Handler();
@@ -304,29 +314,6 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
-        }
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
-            }
-        } else {
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN,
-                    WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-            getWindow().clearFlags(
-                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
-            }
         }
     }
 

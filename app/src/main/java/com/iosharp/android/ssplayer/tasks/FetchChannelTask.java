@@ -51,6 +51,8 @@ public class FetchChannelTask extends AsyncTask<Void, Void, String> {
         final String TAG_PROGRAMME_LANGUAGE = "language";
         final String TAG_PROGRAMME_QUALITY = "quality";
 
+        // First purge database of all stale events
+
         JSONObject channelList = new JSONObject(channelJsonStr);
 
         for (int i = 1; i < channelList.length() + 1; i++) {

@@ -28,6 +28,8 @@ public class ChannelListFragment extends Fragment {
     private ChannelAdapter mAdapter;
     private MiniController mMini;
     private VideoCastManager mCastManager;
+    private int mChannelId;
+    private int mChannelsSize;
 
     public ChannelListFragment() {
     }
@@ -36,10 +38,10 @@ public class ChannelListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        FetchChannelTask fetchChannelTask = new FetchChannelTask(getActivity());
-        fetchChannelTask.execute();
+
 
         mDatabase = new DbHelper(getActivity());
+        mChannelsSize = mDatabase.getAllChannels().size();
     }
 
     public void handleNavigation(Context c, MediaInfo info) {
@@ -48,6 +50,7 @@ public class ChannelListFragment extends Fragment {
         } else {
             Intent intent = new Intent(c, VideoActivity.class);
             intent.putExtra("media", com.google.sample.castcompanionlibrary.utils.Utils.fromMediaInfo(info));
+            intent.putExtra("channel", mChannelId);
             c.startActivity(intent);
         }
     }
@@ -96,11 +99,11 @@ public class ChannelListFragment extends Fragment {
                 // Get channel ID
                 Cursor c = (Cursor) mAdapter.getItem(position);
                 c.moveToPosition(position);
-                int channelId = c.getInt(c.getColumnIndex(ChannelEntry._ID));
+                mChannelId = c.getInt(c.getColumnIndex(ChannelEntry._ID));
                 // Retrieve channel object from database
-                Channel channel = mDatabase.getChannel(channelId);
+                Channel channel = mDatabase.getChannel(mChannelId);
                 // Create MediaInfo based off channel object
-                String url = Utils.getStreamUrl(getActivity(), channelId);
+                String url = Utils.getStreamUrl(getActivity(), mChannelId);
                 MediaInfo mediaInfo = Utils.buildMediaInfo(channel.getName(), "SmoothStreams", url, channel.getIcon());
 
                 // Pass to handleNavigation

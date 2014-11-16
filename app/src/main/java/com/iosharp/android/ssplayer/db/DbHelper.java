@@ -16,7 +16,7 @@ import java.util.List;
 public class DbHelper extends SQLiteOpenHelper {
     private static final String TAG = DbHelper.class.getSimpleName();
 
-    private static final int DATABASE_VERSION = 12;
+    private static final int DATABASE_VERSION = 13;
     private static final String[] CHANNEL_COLUMNS = {
             ChannelContract.ChannelEntry._ID,
             ChannelContract.ChannelEntry.COLUMN_NAME,
