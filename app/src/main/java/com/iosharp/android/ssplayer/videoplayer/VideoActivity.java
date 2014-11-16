@@ -1,7 +1,6 @@
 package com.iosharp.android.ssplayer.videoplayer;
 
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -49,6 +48,7 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
     private VideoCastManager mCastManager;
     private MediaInfo mSelectedMedia;
     private int mChannelId;
+    private int mChannelsCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,8 +71,8 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
         if (b != null) {
             mSelectedMedia = Utils.toMediaInfo(getIntent().getBundleExtra("media"));
             mChannelId = b.getInt("channelid");
+            mChannelsCount = b.getInt("channelSize");
 
-            System.out.println(mChannelId);
 
             mURL = mSelectedMedia.getContentId();
             String title = mSelectedMedia.getMetadata().getString(MediaMetadata.KEY_TITLE);
@@ -260,12 +260,6 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
     }
 
     // End VideoMediaController.MediaPlayerControl
-
-    private void changeChannel(boolean increase) {
-        // change mSelectedMedia
-
-    }
-
 
     private void setupCastListeners() {
         IVideoCastConsumer videoCastConsumer = new VideoCastConsumerImpl() {

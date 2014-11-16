@@ -14,13 +14,11 @@ import android.widget.ListView;
 import com.google.android.gms.cast.MediaInfo;
 import com.google.sample.castcompanionlibrary.cast.VideoCastManager;
 import com.google.sample.castcompanionlibrary.widgets.MiniController;
-import com.iosharp.android.ssplayer.db.ChannelContract;
 import com.iosharp.android.ssplayer.db.DbHelper;
 import com.iosharp.android.ssplayer.model.Channel;
-import com.iosharp.android.ssplayer.tasks.FetchChannelTask;
 import com.iosharp.android.ssplayer.videoplayer.VideoActivity;
 
-import static com.iosharp.android.ssplayer.db.ChannelContract.*;
+import static com.iosharp.android.ssplayer.db.ChannelContract.ChannelEntry;
 
 public class ChannelListFragment extends Fragment {
 
@@ -29,7 +27,6 @@ public class ChannelListFragment extends Fragment {
     private MiniController mMini;
     private VideoCastManager mCastManager;
     private int mChannelId;
-    private int mChannelsSize;
 
     public ChannelListFragment() {
     }
@@ -38,10 +35,7 @@ public class ChannelListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
-
         mDatabase = new DbHelper(getActivity());
-        mChannelsSize = mDatabase.getAllChannels().size();
     }
 
     public void handleNavigation(Context c, MediaInfo info) {
