@@ -28,6 +28,7 @@ public class ChannelListFragment extends Fragment {
     private MiniController mMini;
     private VideoCastManager mCastManager;
     private int mChannelId;
+    private Cursor mCursor;
 
     public ChannelListFragment() {
     }
@@ -35,8 +36,9 @@ public class ChannelListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        mCastManager = PlayerApplication.getCastManager(getActivity());
         mDatabase = new DbHelper(getActivity());
+        mCursor = mDatabase.getReadableDatabase().rawQuery("SELECT * FROM " + ChannelEntry.TABLE_NAME, null);
     }
 
     public void handleNavigation(Context c, MediaInfo info) {
@@ -54,7 +56,7 @@ public class ChannelListFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        mAdapter.changeCursor(mDatabase.getReadableDatabase().rawQuery("SELECT * FROM " + ChannelEntry.TABLE_NAME, null));
+        mAdapter.changeCursor(mCursor);
 
         if (mCastManager != null) {
             mCastManager.incrementUiCounter();
@@ -77,15 +79,12 @@ public class ChannelListFragment extends Fragment {
 
 
         // MiniController
-        mCastManager = PlayerApplication.getCastManager(getActivity());
+
         mMini = (MiniController) rootView.findViewById(R.id.miniController1);
         mCastManager.addMiniController(mMini);
 
-
-        Cursor cursor = mDatabase.getReadableDatabase().rawQuery("SELECT * FROM " + ChannelEntry.TABLE_NAME, null);
-
         ListView listView = (ListView) rootView.findViewById(R.id.listview);
-        mAdapter = new ChannelAdapter(getActivity(), cursor);
+        mAdapter = new ChannelAdapter(getActivity(), mCursor);
         listView.setAdapter(mAdapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

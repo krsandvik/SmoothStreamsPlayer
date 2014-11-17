@@ -1,4 +1,4 @@
-###1.001###
+###0.02###
 
 features:
   * hide softkeys on tablets

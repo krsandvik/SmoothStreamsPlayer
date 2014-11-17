@@ -39,25 +39,12 @@ public class MainActivity extends ActionBarActivity {
 
         mCastManager = PlayerApplication.getCastManager(this);
         mCastManager.reconnectSessionIfPossible(this, false);
-        setupCastListeners(this);
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.container, new ChannelListFragment())
                     .commit();
         }
-    }
-
-    private void setupCastListeners(final Context context) {
-        mCastConsumer = new VideoCastConsumerImpl() {
-            @Override
-            public void onCastAvailabilityChanged(boolean castPresent) {
-                super.onCastAvailabilityChanged(castPresent);
-                if (castPresent) {
-                Toast.makeText(context, "Cast found!", Toast.LENGTH_SHORT).show();
-                }
-            }
-        };
     }
 
     @Override

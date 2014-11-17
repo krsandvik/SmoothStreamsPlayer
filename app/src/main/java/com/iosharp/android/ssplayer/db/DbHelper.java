@@ -13,26 +13,28 @@ import com.iosharp.android.ssplayer.model.Event;
 import java.util.LinkedList;
 import java.util.List;
 
+import static com.iosharp.android.ssplayer.db.ChannelContract.*;
+
 public class DbHelper extends SQLiteOpenHelper {
     private static final String TAG = DbHelper.class.getSimpleName();
 
-    private static final int DATABASE_VERSION = 13;
+    private static final int DATABASE_VERSION = 20;
     private static final String[] CHANNEL_COLUMNS = {
-            ChannelContract.ChannelEntry._ID,
-            ChannelContract.ChannelEntry.COLUMN_NAME,
-            ChannelContract.ChannelEntry.COLUMN_ICON};
+            ChannelEntry._ID,
+            ChannelEntry.COLUMN_NAME,
+            ChannelEntry.COLUMN_ICON};
     private static final String[] EVENT_COLUMNS = {
-            ChannelContract.EventEntry._ID,
-            ChannelContract.EventEntry.COLUMN_KEY_CHANNEL,
-            ChannelContract.EventEntry.COLUMN_NETWORK,
-            ChannelContract.EventEntry.COLUMN_NAME,
-            ChannelContract.EventEntry.COLUMN_DESCRIPTION,
-            ChannelContract.EventEntry.COLUMN_START_DATE,
-            ChannelContract.EventEntry.COLUMN_END_DATE,
-            ChannelContract.EventEntry.COLUMN_RUNTIME,
-            ChannelContract.EventEntry.COLUMN_LANGUAGE,
-            ChannelContract.EventEntry.COLUMN_CATEGORY,
-            ChannelContract.EventEntry.COLUMN_QUALITY};
+            EventEntry._ID,
+            EventEntry.COLUMN_KEY_CHANNEL,
+            EventEntry.COLUMN_NETWORK,
+            EventEntry.COLUMN_NAME,
+            EventEntry.COLUMN_DESCRIPTION,
+            EventEntry.COLUMN_START_DATE,
+            EventEntry.COLUMN_END_DATE,
+            EventEntry.COLUMN_RUNTIME,
+            EventEntry.COLUMN_LANGUAGE,
+            EventEntry.COLUMN_CATEGORY,
+            EventEntry.COLUMN_QUALITY};
     private static String DATABASE_NAME = "smoothstreams.db";
 
     public DbHelper(Context context) {
@@ -41,26 +43,26 @@ public class DbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        final String SQL_CREATE_CHANNEL_TABLE = "CREATE TABLE " + ChannelContract.ChannelEntry.TABLE_NAME + " ( " +
-                ChannelContract.ChannelEntry._ID + " INTEGER PRIMARY KEY, " +
-                ChannelContract.ChannelEntry.COLUMN_NAME + " TEXT, " +
-                ChannelContract.ChannelEntry.COLUMN_ICON + " TEXT);";
+        final String SQL_CREATE_CHANNEL_TABLE = "CREATE TABLE " + ChannelEntry.TABLE_NAME + " ( " +
+                ChannelEntry._ID + " INTEGER PRIMARY KEY, " +
+                ChannelEntry.COLUMN_NAME + " TEXT, " +
+                ChannelEntry.COLUMN_ICON + " TEXT);";
 
-        final String SQL_CREATE_EVENT_TABLE = "CREATE TABLE " + ChannelContract.EventEntry.TABLE_NAME + " ( " +
-                ChannelContract.EventEntry._ID + " INTEGER PRIMARY KEY, " +
-                ChannelContract.EventEntry.COLUMN_KEY_CHANNEL + " INTEGER NOT NULL, " +
-                ChannelContract.EventEntry.COLUMN_NETWORK + " TEXT, " +
-                ChannelContract.EventEntry.COLUMN_NAME + " TEXT, " +
-                ChannelContract.EventEntry.COLUMN_DESCRIPTION + " TEXT, " +
-                ChannelContract.EventEntry.COLUMN_START_DATE + " REAL, " +
-                ChannelContract.EventEntry.COLUMN_END_DATE + " REAL, " +
-                ChannelContract.EventEntry.COLUMN_RUNTIME + " REAL, " +
-                ChannelContract.EventEntry.COLUMN_LANGUAGE + " TEXT, " +
-                ChannelContract.EventEntry.COLUMN_CATEGORY + " TEXT, " +
-                ChannelContract.EventEntry.COLUMN_QUALITY + " TEXT, " +
+        final String SQL_CREATE_EVENT_TABLE = "CREATE TABLE " + EventEntry.TABLE_NAME + " ( " +
+                EventEntry._ID + " INTEGER PRIMARY KEY, " +
+                EventEntry.COLUMN_KEY_CHANNEL + " INTEGER NOT NULL, " +
+                EventEntry.COLUMN_NETWORK + " TEXT, " +
+                EventEntry.COLUMN_NAME + " TEXT, " +
+                EventEntry.COLUMN_DESCRIPTION + " TEXT, " +
+                EventEntry.COLUMN_START_DATE + " REAL, " +
+                EventEntry.COLUMN_END_DATE + " REAL, " +
+                EventEntry.COLUMN_RUNTIME + " REAL, " +
+                EventEntry.COLUMN_LANGUAGE + " TEXT, " +
+                EventEntry.COLUMN_CATEGORY + " TEXT, " +
+                EventEntry.COLUMN_QUALITY + " TEXT, " +
 
-                "FOREIGN KEY (" + ChannelContract.EventEntry.COLUMN_KEY_CHANNEL + ") REFERENCES " +
-                ChannelContract.ChannelEntry.TABLE_NAME + " (" + ChannelContract.ChannelEntry._ID + "));";
+                "FOREIGN KEY (" + EventEntry.COLUMN_KEY_CHANNEL + ") REFERENCES " +
+                ChannelEntry.TABLE_NAME + " (" + ChannelEntry._ID + "));";
 
         sqLiteDatabase.execSQL(SQL_CREATE_CHANNEL_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_EVENT_TABLE);
@@ -68,8 +70,8 @@ public class DbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + ChannelContract.ChannelEntry.TABLE_NAME);
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + ChannelContract.EventEntry.TABLE_NAME);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + ChannelEntry.TABLE_NAME);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + EventEntry.TABLE_NAME);
         onCreate(sqLiteDatabase);
     }
 
@@ -80,11 +82,11 @@ public class DbHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(ChannelContract.ChannelEntry._ID, channel.getId());
-        values.put(ChannelContract.ChannelEntry.COLUMN_NAME, channel.getName());
-        values.put(ChannelContract.ChannelEntry.COLUMN_ICON, channel.getIcon());
+        values.put(ChannelEntry._ID, channel.getId());
+        values.put(ChannelEntry.COLUMN_NAME, channel.getName());
+        values.put(ChannelEntry.COLUMN_ICON, channel.getIcon());
 
-        db.insertWithOnConflict(ChannelContract.ChannelEntry.TABLE_NAME,
+        db.insertWithOnConflict(ChannelEntry.TABLE_NAME,
                 null,
                 values,
                 SQLiteDatabase.CONFLICT_IGNORE);
@@ -95,9 +97,9 @@ public class DbHelper extends SQLiteOpenHelper {
     public Channel getChannel(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor cursor = db.query(ChannelContract.ChannelEntry.TABLE_NAME,
+        Cursor cursor = db.query(ChannelEntry.TABLE_NAME,
                 CHANNEL_COLUMNS,
-                ChannelContract.ChannelEntry._ID + " = ?",
+                ChannelEntry._ID + " = ?",
                 new String[]{String.valueOf(id)},
                 null,
                 null,
@@ -121,7 +123,7 @@ public class DbHelper extends SQLiteOpenHelper {
     public List<Channel> getAllChannels() {
         List<Channel> channels = new LinkedList<Channel>();
 
-        String query = "SELECT * FROM " + ChannelContract.ChannelEntry.TABLE_NAME;
+        String query = "SELECT * FROM " + ChannelEntry.TABLE_NAME;
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
@@ -146,8 +148,8 @@ public class DbHelper extends SQLiteOpenHelper {
     public void deleteChannel(Channel channel) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        db.delete(ChannelContract.ChannelEntry.TABLE_NAME,
-                ChannelContract.ChannelEntry._ID + " = ?",
+        db.delete(ChannelEntry.TABLE_NAME,
+                ChannelEntry._ID + " = ?",
                 new String[]{String.valueOf(channel.getId())});
 
         db.close();
@@ -162,19 +164,19 @@ public class DbHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(ChannelContract.EventEntry._ID, event.getId());
-        values.put(ChannelContract.EventEntry.COLUMN_KEY_CHANNEL, event.getChannel());
-        values.put(ChannelContract.EventEntry.COLUMN_NETWORK, event.getNetwork());
-        values.put(ChannelContract.EventEntry.COLUMN_NAME, event.getName());
-        values.put(ChannelContract.EventEntry.COLUMN_DESCRIPTION, event.getDescription());
-        values.put(ChannelContract.EventEntry.COLUMN_START_DATE, event.getStartDate());
-        values.put(ChannelContract.EventEntry.COLUMN_END_DATE, event.getEndDate());
-        values.put(ChannelContract.EventEntry.COLUMN_RUNTIME, event.getRuntime());
-        values.put(ChannelContract.EventEntry.COLUMN_LANGUAGE, event.getLanguage());
-        values.put(ChannelContract.EventEntry.COLUMN_NETWORK, event.getNetwork());
-        values.put(ChannelContract.EventEntry.COLUMN_QUALITY, event.getQuality());
+        values.put(EventEntry._ID, event.getId());
+        values.put(EventEntry.COLUMN_KEY_CHANNEL, event.getChannel());
+        values.put(EventEntry.COLUMN_NETWORK, event.getNetwork());
+        values.put(EventEntry.COLUMN_NAME, event.getName());
+        values.put(EventEntry.COLUMN_DESCRIPTION, event.getDescription());
+        values.put(EventEntry.COLUMN_START_DATE, event.getStartDate());
+        values.put(EventEntry.COLUMN_END_DATE, event.getEndDate());
+        values.put(EventEntry.COLUMN_RUNTIME, event.getRuntime());
+        values.put(EventEntry.COLUMN_LANGUAGE, event.getLanguage());
+        values.put(EventEntry.COLUMN_NETWORK, event.getNetwork());
+        values.put(EventEntry.COLUMN_QUALITY, event.getQuality());
 
-        db.insertWithOnConflict(ChannelContract.EventEntry.TABLE_NAME,
+        db.insertWithOnConflict(EventEntry.TABLE_NAME,
                 null,
                 values,
                 SQLiteDatabase.CONFLICT_REPLACE);
@@ -185,9 +187,9 @@ public class DbHelper extends SQLiteOpenHelper {
     public Event getEvent(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor cursor = db.query(ChannelContract.EventEntry.TABLE_NAME,
+        Cursor cursor = db.query(EventEntry.TABLE_NAME,
                 EVENT_COLUMNS,
-                ChannelContract.EventEntry._ID + " = ? ",
+                EventEntry._ID + " = ? ",
                 new String[]{String.valueOf(id)},
                 null,
                 null,
@@ -222,8 +224,8 @@ public class DbHelper extends SQLiteOpenHelper {
 
         String channelId = String.valueOf(id);
 
-        String query = "SELECT * FROM " + ChannelContract.EventEntry.TABLE_NAME + " WHERE " +
-                ChannelContract.EventEntry.COLUMN_KEY_CHANNEL + " = " + channelId + ";";
+        String query = "SELECT * FROM " + EventEntry.TABLE_NAME + " WHERE " +
+                EventEntry.COLUMN_KEY_CHANNEL + " = " + channelId + ";";
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
@@ -257,7 +259,7 @@ public class DbHelper extends SQLiteOpenHelper {
     public List<Event> getAllEvents() {
         List<Event> events = new LinkedList<Event>();
 
-        String query = "SELECT * FROM " + ChannelContract.EventEntry.TABLE_NAME;
+        String query = "SELECT * FROM " + EventEntry.TABLE_NAME;
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
@@ -292,8 +294,8 @@ public class DbHelper extends SQLiteOpenHelper {
     public void deleteEvent(Event event) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        db.delete(ChannelContract.EventEntry.TABLE_NAME,
-                ChannelContract.EventEntry._ID + " = ?",
+        db.delete(EventEntry.TABLE_NAME,
+                EventEntry._ID + " = ?",
                 new String[]{String.valueOf(event.getId())});
 
         db.close();
