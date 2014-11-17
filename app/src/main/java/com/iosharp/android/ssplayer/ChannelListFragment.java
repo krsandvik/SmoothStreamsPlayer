@@ -77,9 +77,7 @@ public class ChannelListFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-
         // MiniController
-
         mMini = (MiniController) rootView.findViewById(R.id.miniController1);
         mCastManager.addMiniController(mMini);
 

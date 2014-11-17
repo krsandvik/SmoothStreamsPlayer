@@ -1,28 +1,21 @@
 package com.iosharp.android.ssplayer;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.google.sample.castcompanionlibrary.cast.VideoCastManager;
-import com.google.sample.castcompanionlibrary.cast.callbacks.IVideoCastConsumer;
-import com.google.sample.castcompanionlibrary.cast.callbacks.VideoCastConsumerImpl;
 import com.iosharp.android.ssplayer.tasks.FetchChannelTask;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 
 public class MainActivity extends ActionBarActivity {
-    private static final String TAG = MainActivity.class.getSimpleName();
 
     private VideoCastManager mCastManager;
-    private IVideoCastConsumer mCastConsumer;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +44,6 @@ public class MainActivity extends ActionBarActivity {
     protected void onResume() {
         mCastManager = PlayerApplication.getCastManager(this);
         if (mCastManager != null) {
-            mCastManager.addVideoCastConsumer(mCastConsumer);
             mCastManager.incrementUiCounter();
         }
 
@@ -62,7 +54,6 @@ public class MainActivity extends ActionBarActivity {
     protected void onPause() {
         if (mCastManager != null) {
             mCastManager.decrementUiCounter();
-            mCastManager.removeVideoCastConsumer(mCastConsumer);
         }
         super.onPause();
     }
@@ -91,8 +82,7 @@ public class MainActivity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        MenuItem mediaRouteMenuItem = mCastManager.
-                addMediaRouterButton(menu, R.id.media_route_menu_item);
+         mCastManager.addMediaRouterButton(menu, R.id.media_route_menu_item);
 
         return true;
     }

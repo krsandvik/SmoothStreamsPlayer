@@ -33,7 +33,6 @@ class ChannelAdapter extends CursorAdapter {
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-//        int channelId = cursor.getInt(cursor.getColumnIndex(ChannelContract.ChannelEntry._ID));
         showIcon(view, cursor);
 
         ((TextView) view.findViewById(R.id.textView1))

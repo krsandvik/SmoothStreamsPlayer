@@ -13,7 +13,8 @@ import com.iosharp.android.ssplayer.model.Event;
 import java.util.LinkedList;
 import java.util.List;
 
-import static com.iosharp.android.ssplayer.db.ChannelContract.*;
+import static com.iosharp.android.ssplayer.db.ChannelContract.ChannelEntry;
+import static com.iosharp.android.ssplayer.db.ChannelContract.EventEntry;
 
 public class DbHelper extends SQLiteOpenHelper {
     private static final String TAG = DbHelper.class.getSimpleName();
@@ -115,8 +116,6 @@ public class DbHelper extends SQLiteOpenHelper {
         channel.setName(cursor.getString(1));
         channel.setIcon(cursor.getString(2));
 
-//        Log.d(TAG, "getChannel(" + id +"): " + channel.toString());
-
         return channel;
     }
 
@@ -160,7 +159,6 @@ public class DbHelper extends SQLiteOpenHelper {
 //    Event CRUD
 
     public void addEvent(Event event) {
-//        Log.d(TAG, "addEvent: " + event.toString());
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
