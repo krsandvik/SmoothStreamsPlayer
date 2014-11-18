@@ -129,6 +129,7 @@ public class FetchLoginInfoTask extends AsyncTask<Void, Void, String> {
                 String message = response.getString("error");
                 showToastMethod("ERROR: " + message);
             } else {
+                showToastMethod("ERROR: Unknown response!");
                 Log.e(TAG, "Unknown response!");
             }
         } catch (JSONException e) {
