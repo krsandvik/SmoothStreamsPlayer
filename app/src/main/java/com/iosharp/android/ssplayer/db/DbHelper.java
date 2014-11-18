@@ -19,7 +19,7 @@ import static com.iosharp.android.ssplayer.db.ChannelContract.EventEntry;
 public class DbHelper extends SQLiteOpenHelper {
     private static final String TAG = DbHelper.class.getSimpleName();
 
-    private static final int DATABASE_VERSION = 20;
+    private static final int DATABASE_VERSION = 21;
     private static final String[] CHANNEL_COLUMNS = {
             ChannelEntry._ID,
             ChannelEntry.COLUMN_NAME,
