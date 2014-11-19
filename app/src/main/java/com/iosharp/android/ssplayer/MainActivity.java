@@ -46,7 +46,6 @@ public class MainActivity extends ActionBarActivity {
         if (mCastManager != null) {
             mCastManager.incrementUiCounter();
         }
-
         super.onResume();
     }
 

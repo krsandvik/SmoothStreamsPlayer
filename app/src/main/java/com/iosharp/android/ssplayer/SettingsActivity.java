@@ -16,8 +16,6 @@ import com.iosharp.android.ssplayer.tasks.FetchLoginInfoTask;
 public class SettingsActivity extends PreferenceActivity implements
         OnSharedPreferenceChangeListener {
 
-    private static final String TAG = SettingsActivity.class.getSimpleName();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
