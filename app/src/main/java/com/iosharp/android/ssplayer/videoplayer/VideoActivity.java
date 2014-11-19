@@ -66,7 +66,6 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
         getSupportActionBar().show();
 
 
-
         Bundle b = getIntent().getExtras();
         if (b != null) {
             mSelectedMedia = Utils.toMediaInfo(getIntent().getBundleExtra("media"));
@@ -144,8 +143,8 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
 
     @Override
     public void surfaceCreated(SurfaceHolder surfaceHolder) {
-                mPlayer.setDisplay(mSurfaceHolder);
-                mPlayer.prepareAsync();
+        mPlayer.setDisplay(mSurfaceHolder);
+        mPlayer.prepareAsync();
     }
 
     @Override
@@ -318,25 +317,25 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
         return shareIntent;
     }
 
-   private void hideSoftKeys() {
-       final View v = getWindow().getDecorView();
-       final int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-               | View.SYSTEM_UI_FLAG_FULLSCREEN;
+    private void hideSoftKeys() {
+        final View v = getWindow().getDecorView();
+        final int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_FULLSCREEN;
 
-       v.setSystemUiVisibility(uiOptions);
-       v.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
-           @Override
-           public void onSystemUiVisibilityChange(int i) {
-               Handler h = new Handler();
-               h.postDelayed(new Runnable() {
-                   @Override
-                   public void run() {
-                       v.setSystemUiVisibility(uiOptions);
-                   }
-               }, sDefaultTimeout);
-           }
-       });
-   }
+        v.setSystemUiVisibility(uiOptions);
+        v.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
+            @Override
+            public void onSystemUiVisibilityChange(int i) {
+                Handler h = new Handler();
+                h.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        v.setSystemUiVisibility(uiOptions);
+                    }
+                }, sDefaultTimeout);
+            }
+        });
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

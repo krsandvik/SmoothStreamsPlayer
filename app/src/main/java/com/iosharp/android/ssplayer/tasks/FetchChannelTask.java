@@ -2,15 +2,10 @@ package com.iosharp.android.ssplayer.tasks;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 
 import com.iosharp.android.ssplayer.Utils;
-import com.iosharp.android.ssplayer.db.ChannelContract;
-import com.iosharp.android.ssplayer.db.DbHelper;
-import com.iosharp.android.ssplayer.model.Channel;
-import com.iosharp.android.ssplayer.model.Event;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,7 +18,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import static com.iosharp.android.ssplayer.db.ChannelContract.*;
+import static com.iosharp.android.ssplayer.db.ChannelContract.ChannelEntry;
+import static com.iosharp.android.ssplayer.db.ChannelContract.EventEntry;
 
 public class FetchChannelTask extends AsyncTask<Void, Void, String> {
     private final static String TAG = FetchChannelTask.class.getSimpleName();

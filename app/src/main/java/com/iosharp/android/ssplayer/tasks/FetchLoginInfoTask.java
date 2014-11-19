@@ -115,7 +115,7 @@ public class FetchLoginInfoTask extends AsyncTask<Void, Void, String> {
         return null;
     }
 
-    private void parseLoginResponse (String responseStr) {
+    private void parseLoginResponse(String responseStr) {
         try {
 
             JSONObject response = new JSONObject(responseStr);

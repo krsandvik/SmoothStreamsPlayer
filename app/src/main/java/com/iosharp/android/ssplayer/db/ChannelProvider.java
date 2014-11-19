@@ -8,22 +8,17 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
-import android.util.Log;
 
 public class ChannelProvider extends ContentProvider {
     private static final String TAG = ChannelProvider.class.getSimpleName();
 
     private static final UriMatcher sUriMatcher = buildUriMatcher();
-    private DbHelper mDbHelper;
-
     private static final int EVENT = 100;
     private static final int EVENT_WITH_CHANNEL = 101;
     private static final int EVENT_WITH_CHANNEL_AND_DATE = 102;
     private static final int CHANNEL = 300;
     private static final int CHANNEL_ID = 301;
-
     private static final SQLiteQueryBuilder sEventByChannelIdQueryBuilder;
-
     static {
         sEventByChannelIdQueryBuilder = new SQLiteQueryBuilder();
         sEventByChannelIdQueryBuilder.setTables(
@@ -35,7 +30,6 @@ public class ChannelProvider extends ContentProvider {
                         "." + ChannelContract.ChannelEntry._ID);
 
     }
-
     private static final String sChannelIdSelection =
             ChannelContract.ChannelEntry.TABLE_NAME +
                     "." + ChannelContract.ChannelEntry._ID + " = ? ";
@@ -47,7 +41,21 @@ public class ChannelProvider extends ContentProvider {
             ChannelContract.ChannelEntry.TABLE_NAME +
                     "." + ChannelContract.ChannelEntry._ID + " = ? AND " +
                     ChannelContract.EventEntry.COLUMN_START_DATE + " = ?";
+    private DbHelper mDbHelper;
 
+    private static UriMatcher buildUriMatcher() {
+        final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
+        final String authority = ChannelContract.CONTENT_AUTHORITY;
+
+        matcher.addURI(authority, ChannelContract.PATH_EVENT, EVENT);
+        matcher.addURI(authority, ChannelContract.PATH_EVENT + "/*", EVENT_WITH_CHANNEL);
+        matcher.addURI(authority, ChannelContract.PATH_EVENT + "/*/*", EVENT_WITH_CHANNEL_AND_DATE);
+
+        matcher.addURI(authority, ChannelContract.PATH_CHANNEL, CHANNEL);
+        matcher.addURI(authority, ChannelContract.PATH_CHANNEL + "/#", CHANNEL_ID);
+
+        return matcher;
+    }
 
     private Cursor getEventByChannelId(Uri uri, String[] projection, String sortOrder) {
         String channel = ChannelContract.EventEntry.getChannelFromUri(uri);
@@ -89,7 +97,6 @@ public class ChannelProvider extends ContentProvider {
         );
     }
 
-
     @Override
     public boolean onCreate() {
         mDbHelper = new DbHelper(getContext());
@@ -98,26 +105,23 @@ public class ChannelProvider extends ContentProvider {
 
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs,
-                       String sortOrder) {
+                        String sortOrder) {
         // Here's the switch statement that, given a URI, will determine what kind of request it is,
         // and query the database accordingly.
         Cursor retCursor;
         switch (sUriMatcher.match(uri)) {
             // "event/*/*"
-            case EVENT_WITH_CHANNEL_AND_DATE:
-            {
+            case EVENT_WITH_CHANNEL_AND_DATE: {
                 retCursor = getEventByChannelIdAndDate(uri, projection, sortOrder);
                 break;
             }
             // "event/*"
-            case EVENT_WITH_CHANNEL:
-            {
+            case EVENT_WITH_CHANNEL: {
                 retCursor = getEventByChannelId(uri, projection, sortOrder);
                 break;
             }
             // "event"
-            case EVENT:
-            {
+            case EVENT: {
                 retCursor = mDbHelper.getReadableDatabase().query(
                         ChannelContract.EventEntry.TABLE_NAME,
                         projection,
@@ -130,8 +134,7 @@ public class ChannelProvider extends ContentProvider {
                 break;
             }
             // "channel/*"
-            case CHANNEL_ID:
-            {
+            case CHANNEL_ID: {
                 retCursor = mDbHelper.getReadableDatabase().query(
                         ChannelContract.ChannelEntry.TABLE_NAME,
                         projection,
@@ -204,7 +207,7 @@ public class ChannelProvider extends ContentProvider {
             }
             case CHANNEL: {
                 long _id = db.insertWithOnConflict(ChannelContract.ChannelEntry.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_REPLACE);
-                if ( _id > 0 )
+                if (_id > 0)
                     returnUri = ChannelContract.ChannelEntry.buildChannelUri(_id);
                 else
                     throw new android.database.SQLException("Failed to insert row into " + uri);
@@ -263,19 +266,5 @@ public class ChannelProvider extends ContentProvider {
             getContext().getContentResolver().notifyChange(uri, null);
         }
         return rowsUpdated;
-    }
-
-    private static UriMatcher buildUriMatcher() {
-        final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
-        final String authority = ChannelContract.CONTENT_AUTHORITY;
-
-        matcher.addURI(authority, ChannelContract.PATH_EVENT, EVENT);
-        matcher.addURI(authority, ChannelContract.PATH_EVENT + "/*", EVENT_WITH_CHANNEL);
-        matcher.addURI(authority, ChannelContract.PATH_EVENT + "/*/*", EVENT_WITH_CHANNEL_AND_DATE);
-
-        matcher.addURI(authority, ChannelContract.PATH_CHANNEL, CHANNEL);
-        matcher.addURI(authority, ChannelContract.PATH_CHANNEL + "/#", CHANNEL_ID);
-
-        return matcher;
     }
 }

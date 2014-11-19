@@ -1,17 +1,8 @@
 package com.iosharp.android.ssplayer.db;
 
-import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
-
-import com.iosharp.android.ssplayer.model.Channel;
-import com.iosharp.android.ssplayer.model.Event;
-
-import java.util.LinkedList;
-import java.util.List;
 
 import static com.iosharp.android.ssplayer.db.ChannelContract.ChannelEntry;
 import static com.iosharp.android.ssplayer.db.ChannelContract.EventEntry;
