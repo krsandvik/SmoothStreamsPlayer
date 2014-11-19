@@ -17,25 +17,7 @@ import static com.iosharp.android.ssplayer.db.ChannelContract.ChannelEntry;
 import static com.iosharp.android.ssplayer.db.ChannelContract.EventEntry;
 
 public class DbHelper extends SQLiteOpenHelper {
-    private static final String TAG = DbHelper.class.getSimpleName();
-
     private static final int DATABASE_VERSION = 21;
-    private static final String[] CHANNEL_COLUMNS = {
-            ChannelEntry._ID,
-            ChannelEntry.COLUMN_NAME,
-            ChannelEntry.COLUMN_ICON};
-    private static final String[] EVENT_COLUMNS = {
-            EventEntry._ID,
-            EventEntry.COLUMN_KEY_CHANNEL,
-            EventEntry.COLUMN_NETWORK,
-            EventEntry.COLUMN_NAME,
-            EventEntry.COLUMN_DESCRIPTION,
-            EventEntry.COLUMN_START_DATE,
-            EventEntry.COLUMN_END_DATE,
-            EventEntry.COLUMN_RUNTIME,
-            EventEntry.COLUMN_LANGUAGE,
-            EventEntry.COLUMN_CATEGORY,
-            EventEntry.COLUMN_QUALITY};
 
     public static String DATABASE_NAME = "smoothstreams.db";
 
