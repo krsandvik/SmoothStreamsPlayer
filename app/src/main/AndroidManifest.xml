@@ -85,6 +85,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.iosharp.android.ssplayer.MainActivity" />
         </activity>
+        
+        <provider
+            android:authorities="com.iosharp.android.ssplayer"
+            android:name=".db.ChannelProvider"
+            android:exported="false" />
     </application>
-
 </manifest>

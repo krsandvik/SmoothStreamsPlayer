@@ -1,10 +1,13 @@
 package com.iosharp.android.ssplayer.tasks;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 
 import com.iosharp.android.ssplayer.Utils;
+import com.iosharp.android.ssplayer.db.ChannelContract;
 import com.iosharp.android.ssplayer.db.DbHelper;
 import com.iosharp.android.ssplayer.model.Channel;
 import com.iosharp.android.ssplayer.model.Event;
@@ -20,15 +23,15 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import static com.iosharp.android.ssplayer.db.ChannelContract.*;
+
 public class FetchChannelTask extends AsyncTask<Void, Void, String> {
     private final static String TAG = FetchChannelTask.class.getSimpleName();
 
     private Context mContext;
-    private DbHelper mDatabase;
 
     public FetchChannelTask(Context context) {
         mContext = context;
-        mDatabase = new DbHelper(mContext);
     }
 
     private void getChannelDataFromJson(String channelJsonStr) throws JSONException {
@@ -40,18 +43,16 @@ public class FetchChannelTask extends AsyncTask<Void, Void, String> {
         // Event information. Each event is an element of the 'items' array
         final String TAG_CHANNEL_ITEMS = "items";
 
-        final String TAG_PROGRAMME_ID = "id";
-        final String TAG_PROGRAMME_NETWORK = "network";
-        final String TAG_PROGRAMME_NAME = "name";
-        final String TAG_PROGRAMME_DESCRIPTION = "description";
-        final String TAG_PROGRAMME_START_DATE = "time";
-        final String TAG_PROGRAMME_END_DATE = "end_time";
-        final String TAG_PROGRAMME_RUNTIME = "runtime";
-        final String TAG_PROGRAMME_CHANNEL = "channel";
-        final String TAG_PROGRAMME_LANGUAGE = "language";
-        final String TAG_PROGRAMME_QUALITY = "quality";
-
-        // First purge database of all stale events
+        final String TAG_EVENT_ID = "id";
+        final String TAG_EVENT_NETWORK = "network";
+        final String TAG_EVENT_NAME = "name";
+        final String TAG_EVENT_DESCRIPTION = "description";
+        final String TAG_EVENT_START_DATE = "time";
+        final String TAG_EVENT_END_DATE = "end_time";
+        final String TAG_EVENT_RUNTIME = "runtime";
+        final String TAG_EVENT_CHANNEL = "channel";
+        final String TAG_EVENT_LANGUAGE = "language";
+        final String TAG_EVENT_QUALITY = "quality";
 
         JSONObject channelList = new JSONObject(channelJsonStr);
 
@@ -61,15 +62,16 @@ public class FetchChannelTask extends AsyncTask<Void, Void, String> {
             // For every channel..
             JSONObject c = channelList.getJSONObject(Integer.toString(i));
 
-            // Create a new channel
-            Channel channel = new Channel();
+            int channelId = i;
+            String channelName = c.getString(TAG_CHANNEL_NAME);
+            String channelIcon = c.getString(TAG_CHANNEL_ICON);
 
-            // Set ID, name and Icon..
-            channel.setId(i);
-            channel.setName(c.getString(TAG_CHANNEL_NAME));
-            channel.setIcon(c.getString(TAG_CHANNEL_ICON));
+            ContentValues channelValues = new ContentValues();
+            channelValues.put(ChannelEntry._ID, channelId);
+            channelValues.put(ChannelEntry.COLUMN_NAME, channelName);
+            channelValues.put(ChannelEntry.COLUMN_ICON, channelIcon);
 
-            mDatabase.addChannel(channel);
+            mContext.getContentResolver().insert(ChannelEntry.CONTENT_URI, channelValues);
 
             // Get the channels' events, if any are there.
             if (c.has(TAG_CHANNEL_ITEMS)) {
@@ -77,19 +79,31 @@ public class FetchChannelTask extends AsyncTask<Void, Void, String> {
 
                 for (int j = 0; j < items.length(); j++) {
                     JSONObject e = (JSONObject) items.get(j);
-                    Event event = new Event();
-                    event.setId(Integer.parseInt(e.getString(TAG_PROGRAMME_ID)));
-                    event.setNetwork(e.getString(TAG_PROGRAMME_NETWORK));
-                    event.setName(e.getString(TAG_PROGRAMME_NAME));
-                    event.setDescription(e.getString(TAG_PROGRAMME_DESCRIPTION));
-                    event.setStartDate(Utils.convertDateToLong(e.getString(TAG_PROGRAMME_START_DATE)));
-                    event.setEndDate(Utils.convertDateToLong(e.getString(TAG_PROGRAMME_END_DATE)));
-                    event.setRuntime(Integer.parseInt(e.getString(TAG_PROGRAMME_RUNTIME)));
-                    event.setChannel(Integer.parseInt(e.getString(TAG_PROGRAMME_CHANNEL)));
-                    event.setLanguage(e.getString(TAG_PROGRAMME_LANGUAGE));
-                    event.setQuality(e.getString(TAG_PROGRAMME_QUALITY));
 
-                    mDatabase.addEvent(event);
+                    int eventId = Integer.parseInt(e.getString(TAG_EVENT_ID));
+                    String eventNetwork = e.getString(TAG_EVENT_NETWORK);
+                    String eventName = e.getString(TAG_EVENT_NAME);
+                    String eventDescription = e.getString(TAG_EVENT_DESCRIPTION);
+                    long eventStartDate = Utils.convertDateToLong(e.getString(TAG_EVENT_START_DATE));
+                    long eventEndDate = Utils.convertDateToLong(e.getString(TAG_EVENT_END_DATE));
+                    int eventRuntime = Integer.parseInt(e.getString(TAG_EVENT_RUNTIME));
+                    int eventChannel = Integer.parseInt(e.getString(TAG_EVENT_CHANNEL));
+                    String eventLanguage = e.getString(TAG_EVENT_LANGUAGE);
+                    String eventQuality = e.getString(TAG_EVENT_QUALITY);
+
+                    ContentValues eventValues = new ContentValues();
+                    eventValues.put(EventEntry._ID, eventId);
+                    eventValues.put(EventEntry.COLUMN_KEY_CHANNEL, eventChannel);
+                    eventValues.put(EventEntry.COLUMN_NETWORK, eventNetwork);
+                    eventValues.put(EventEntry.COLUMN_NAME, eventName);
+                    eventValues.put(EventEntry.COLUMN_DESCRIPTION, eventDescription);
+                    eventValues.put(EventEntry.COLUMN_START_DATE, eventStartDate);
+                    eventValues.put(EventEntry.COLUMN_END_DATE, eventEndDate);
+                    eventValues.put(EventEntry.COLUMN_RUNTIME, eventRuntime);
+                    eventValues.put(EventEntry.COLUMN_LANGUAGE, eventLanguage);
+                    eventValues.put(EventEntry.COLUMN_QUALITY, eventQuality);
+
+                    mContext.getContentResolver().insert(EventEntry.CONTENT_URI, eventValues);
                 }
             }
         }
