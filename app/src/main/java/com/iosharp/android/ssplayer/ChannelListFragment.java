@@ -31,18 +31,19 @@ public class ChannelListFragment extends Fragment implements LoaderManager.Loade
     public static final int COL_CHANNEL_ID = 0;
     public static final int COL_CHANNEL_NAME = 1;
     public static final int COL_CHANNEL_ICON = 2;
+
     private static final int CURSOR_LOADER_ID = 0;
+
     private static final String[] CHANNEL_COLUMNS = {
             ChannelEntry.TABLE_NAME + "." + ChannelEntry._ID,
             ChannelEntry.TABLE_NAME + "." + ChannelEntry.COLUMN_NAME,
             ChannelEntry.TABLE_NAME + "." + ChannelEntry.COLUMN_ICON
     };
-    private DbHelper mDatabase;
+
     private ChannelAdapter mAdapter;
     private MiniController mMini;
     private VideoCastManager mCastManager;
     private int mChannelId;
-    private Cursor mCursor;
 
     public ChannelListFragment() {
     }
@@ -51,8 +52,6 @@ public class ChannelListFragment extends Fragment implements LoaderManager.Loade
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mCastManager = PlayerApplication.getCastManager(getActivity());
-        mDatabase = new DbHelper(getActivity());
-        mCursor = mDatabase.getReadableDatabase().rawQuery("SELECT * FROM " + ChannelEntry.TABLE_NAME, null);
     }
 
     @Override
@@ -104,7 +103,7 @@ public class ChannelListFragment extends Fragment implements LoaderManager.Loade
         }
 
         ListView listView = (ListView) rootView.findViewById(R.id.listview);
-        mAdapter = new ChannelAdapter(getActivity(), mCursor);
+        mAdapter = new ChannelAdapter(getActivity(), null);
         listView.setAdapter(mAdapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
