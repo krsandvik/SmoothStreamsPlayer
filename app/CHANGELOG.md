@@ -4,6 +4,7 @@ changes:
 fixes:
 
  - channels are added to channel list as soon as they are parsed (backend change: now using content provider)
+ - better handling of the app on devices that do not have google services (e.g. Fire TV)
 
 #####0.02#####
 changes:

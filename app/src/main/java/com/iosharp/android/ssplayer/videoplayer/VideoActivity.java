@@ -261,17 +261,18 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
     // End VideoMediaController.MediaPlayerControl
 
     private void setupCastListeners() {
-        IVideoCastConsumer videoCastConsumer = new VideoCastConsumerImpl() {
-            @Override
-            public void onApplicationConnected(ApplicationMetadata appMetadata, String sessionId, boolean wasLaunched) {
-                super.onApplicationConnected(appMetadata, sessionId, wasLaunched);
-                // TODO: Very hackish and may not be desired behavior for some users
-                onBackPressed();
-                loadRemoteMedia(false);
-            }
-        };
+        if (mCastManager != null) {
+            IVideoCastConsumer videoCastConsumer = new VideoCastConsumerImpl() {
+                @Override
+                public void onApplicationConnected(ApplicationMetadata appMetadata, String sessionId, boolean wasLaunched) {
+                    super.onApplicationConnected(appMetadata, sessionId, wasLaunched);
+                    onBackPressed();
+                    loadRemoteMedia(false);
+                }
+            };
 
-        mCastManager.addVideoCastConsumer(videoCastConsumer);
+            mCastManager.addVideoCastConsumer(videoCastConsumer);
+        }
     }
 
     private void loadRemoteMedia(boolean autoPlay) {
@@ -342,7 +343,9 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.menu_video, menu);
 
-        mCastManager.addMediaRouterButton(menu, R.id.media_route_menu_item);
+        if (mCastManager != null) {
+            mCastManager.addMediaRouterButton(menu, R.id.media_route_menu_item);
+        }
 
         MenuItem menuItem = menu.findItem(R.id.action_share);
         ShareActionProvider mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);

@@ -77,9 +77,6 @@ public class ChannelContract {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
 
-
-
-
     }
 
 

@@ -1,6 +1,7 @@
 package com.iosharp.android.ssplayer;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
@@ -21,7 +22,10 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        VideoCastManager.checkGooglePlayServices(this);
+
+        if (!(Build.MODEL.contains("AFT") || Build.MANUFACTURER.equals("Amazon"))) {
+            VideoCastManager.checkGooglePlayServices(this);
+        }
 
         FetchChannelTask fetchChannelTask = new FetchChannelTask(this);
         fetchChannelTask.execute();
@@ -31,7 +35,9 @@ public class MainActivity extends ActionBarActivity {
         imageLoaderInit();
 
         mCastManager = PlayerApplication.getCastManager(this);
-        mCastManager.reconnectSessionIfPossible(this, false);
+        if (mCastManager != null){
+            mCastManager.reconnectSessionIfPossible(this, false);
+        }
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
@@ -42,7 +48,6 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     protected void onResume() {
-        mCastManager = PlayerApplication.getCastManager(this);
         if (mCastManager != null) {
             mCastManager.incrementUiCounter();
         }
@@ -81,7 +86,9 @@ public class MainActivity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        mCastManager.addMediaRouterButton(menu, R.id.media_route_menu_item);
+        if (mCastManager != null) {
+            mCastManager.addMediaRouterButton(menu, R.id.media_route_menu_item);
+        }
 
         return true;
     }

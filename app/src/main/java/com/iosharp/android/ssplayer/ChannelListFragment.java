@@ -62,8 +62,10 @@ public class ChannelListFragment extends Fragment implements LoaderManager.Loade
     }
 
     public void handleNavigation(Context c, MediaInfo info) {
-        if (mCastManager.isConnected()) {
-            mCastManager.startCastControllerActivity(c, info, 0, true);
+        if (mCastManager != null) {
+            if (mCastManager.isConnected()) {
+                mCastManager.startCastControllerActivity(c, info, 0, true);
+            }
         } else {
             Intent intent = new Intent(c, VideoActivity.class);
             intent.putExtra("media", com.google.sample.castcompanionlibrary.utils.Utils.fromMediaInfo(info));
@@ -96,8 +98,10 @@ public class ChannelListFragment extends Fragment implements LoaderManager.Loade
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
         // MiniController
-        mMini = (MiniController) rootView.findViewById(R.id.miniController1);
-        mCastManager.addMiniController(mMini);
+        if (mCastManager != null) {
+            mMini = (MiniController) rootView.findViewById(R.id.miniController1);
+            mCastManager.addMiniController(mMini);
+        }
 
         ListView listView = (ListView) rootView.findViewById(R.id.listview);
         mAdapter = new ChannelAdapter(getActivity(), mCursor);
