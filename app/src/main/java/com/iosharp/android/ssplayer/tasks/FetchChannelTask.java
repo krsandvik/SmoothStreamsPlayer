@@ -17,6 +17,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Date;
 
 import static com.iosharp.android.ssplayer.db.ChannelContract.ChannelEntry;
 import static com.iosharp.android.ssplayer.db.ChannelContract.EventEntry;
@@ -103,6 +104,9 @@ public class FetchChannelTask extends AsyncTask<Void, Void, String> {
                 }
             }
         }
+        // Delete events that have already passed
+        String now = Long.toString(new Date().getTime());
+        mContext.getContentResolver().delete(EventEntry.CONTENT_URI, EventEntry.COLUMN_END_DATE + "< ?", new String[] {now});
     }
 
 

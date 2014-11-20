@@ -42,8 +42,7 @@
             android:ellipsize="end"
             android:maxLines="2"
             android:textColor="#555555"
-            android:textSize="14sp"
-            android:textStyle="bold"/>
+            android:textSize="14sp"/>
     </LinearLayout>
 
 </RelativeLayout>

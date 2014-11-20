@@ -19,7 +19,7 @@ public class ChannelContract {
         public static final String COLUMN_KEY_CHANNEL = "channel_id";        public static final String CONTENT_ITEM_TYPE =
                 "vnd.android.cursor.item/" + CONTENT_AUTHORITY + "/" + PATH_EVENT;
         public static final String COLUMN_NETWORK = "network";
-        public static final String COLUMN_NAME = "name";
+        public static final String COLUMN_NAME = "title";
         public static final String COLUMN_DESCRIPTION = "description";
         // time since Unix epoch stored as a long
         public static final String COLUMN_START_DATE = "start_date";

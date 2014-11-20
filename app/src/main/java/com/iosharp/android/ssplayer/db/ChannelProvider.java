@@ -9,6 +9,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 
+import java.util.Date;
+
 public class ChannelProvider extends ContentProvider {
     private static final String TAG = ChannelProvider.class.getSimpleName();
 
@@ -18,6 +20,7 @@ public class ChannelProvider extends ContentProvider {
     private static final int EVENT_WITH_CHANNEL_AND_DATE = 102;
     private static final int CHANNEL = 300;
     private static final int CHANNEL_ID = 301;
+
     private static final SQLiteQueryBuilder sEventByChannelIdQueryBuilder;
     static {
         sEventByChannelIdQueryBuilder = new SQLiteQueryBuilder();
@@ -30,6 +33,7 @@ public class ChannelProvider extends ContentProvider {
                         "." + ChannelContract.ChannelEntry._ID);
 
     }
+
     private static final String sChannelIdSelection =
             ChannelContract.ChannelEntry.TABLE_NAME +
                     "." + ChannelContract.ChannelEntry._ID + " = ? ";
@@ -41,6 +45,7 @@ public class ChannelProvider extends ContentProvider {
             ChannelContract.ChannelEntry.TABLE_NAME +
                     "." + ChannelContract.ChannelEntry._ID + " = ? AND " +
                     ChannelContract.EventEntry.COLUMN_START_DATE + " = ?";
+
     private DbHelper mDbHelper;
 
     private static UriMatcher buildUriMatcher() {
@@ -148,15 +153,46 @@ public class ChannelProvider extends ContentProvider {
             }
             // "channel"
             case CHANNEL: {
-                retCursor = mDbHelper.getReadableDatabase().query(
-                        ChannelContract.ChannelEntry.TABLE_NAME,
-                        projection,
-                        selection,
-                        selectionArgs,
+//                retCursor = mDbHelper.getWritableDatabase().rawQuery(
+//                        "SELECT * FROM (SELECT * FROM " + ChannelContract.ChannelEntry.TABLE_NAME +
+//                        " LEFT OUTER JOIN " + ChannelContract.EventEntry.TABLE_NAME +
+//                        " ON " + ChannelContract.EventEntry.TABLE_NAME +
+//                        "." + ChannelContract.EventEntry.COLUMN_KEY_CHANNEL +
+//                        " = " + ChannelContract.ChannelEntry.TABLE_NAME +
+//                        "." + ChannelContract.ChannelEntry._ID +
+//                        " ORDER BY " + ChannelContract.ChannelEntry.TABLE_NAME +
+//                        "." + ChannelContract.ChannelEntry._ID +
+//                        ", " + ChannelContract.EventEntry.COLUMN_START_DATE +
+//                        ") AS t GROUP BY t."+ ChannelContract.ChannelEntry._ID
+//                        ,null);
+
+                String table = ChannelContract.ChannelEntry.TABLE_NAME + " LEFT OUTER JOIN " +
+                        ChannelContract.EventEntry.TABLE_NAME +
+                        " ON " + ChannelContract.EventEntry.TABLE_NAME +
+                        "." + ChannelContract.EventEntry.COLUMN_KEY_CHANNEL +
+                        " = " + ChannelContract.ChannelEntry.TABLE_NAME +
+                        "." + ChannelContract.ChannelEntry._ID;
+
+                String[] columns = new String[] {
+                        ChannelContract.ChannelEntry.TABLE_NAME + "." + ChannelContract.ChannelEntry._ID,
+                        ChannelContract.ChannelEntry.TABLE_NAME + "." + ChannelContract.ChannelEntry.COLUMN_NAME,
+                        ChannelContract.ChannelEntry.TABLE_NAME + "." + ChannelContract.ChannelEntry.COLUMN_ICON,
+//                        ChannelContract.ChannelEntry.TABLE_NAME + "." + ChannelContract.ChannelEntry.COLUMN_ICON,
+                        ChannelContract.EventEntry.TABLE_NAME + "." + ChannelContract.EventEntry.COLUMN_NAME,
+                        "MIN(" + ChannelContract.EventEntry.TABLE_NAME + "." + ChannelContract.EventEntry.COLUMN_START_DATE +")",
+                        ChannelContract.EventEntry.TABLE_NAME + "." + ChannelContract.EventEntry.COLUMN_END_DATE,
+                        ChannelContract.EventEntry.TABLE_NAME + "." + ChannelContract.EventEntry.COLUMN_QUALITY
+                };
+
+                retCursor = mDbHelper.getReadableDatabase().query(table,
+                        columns,
                         null,
                         null,
-                        sortOrder
-                );
+                        ChannelContract.ChannelEntry.TABLE_NAME + "." + ChannelContract.ChannelEntry._ID,
+                        null,
+                        ChannelContract.ChannelEntry.TABLE_NAME + "." + ChannelContract.ChannelEntry._ID
+                                + ", " + ChannelContract.EventEntry.TABLE_NAME + "." + ChannelContract.EventEntry.COLUMN_START_DATE
+                        );
                 break;
             }
 
