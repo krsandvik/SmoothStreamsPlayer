@@ -8,7 +8,7 @@ import static com.iosharp.android.ssplayer.db.ChannelContract.ChannelEntry;
 import static com.iosharp.android.ssplayer.db.ChannelContract.EventEntry;
 
 public class DbHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 22;
+    private static final int DATABASE_VERSION = 24;
 
     public static String DATABASE_NAME = "smoothstreams.db";
 
