@@ -4,13 +4,18 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import static com.iosharp.android.ssplayer.db.ChannelContract.ChannelEntry;
 import static com.iosharp.android.ssplayer.db.ChannelContract.EventEntry;
 
 public class DbHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 31;
+    private static final int DATABASE_VERSION = 37;
 
     public static String DATABASE_NAME = "smoothstreams.db";
+
 
     public DbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -35,6 +40,7 @@ public class DbHelper extends SQLiteOpenHelper {
                 EventEntry.COLUMN_LANGUAGE + " TEXT, " +
                 EventEntry.COLUMN_CATEGORY + " TEXT, " +
                 EventEntry.COLUMN_QUALITY + " TEXT, " +
+                EventEntry.COLUMN_DAY + " TEXT, " +
 
                 "FOREIGN KEY (" + EventEntry.COLUMN_KEY_CHANNEL + ") REFERENCES " +
                 ChannelEntry.TABLE_NAME + " (" + ChannelEntry._ID + "));";

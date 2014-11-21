@@ -5,7 +5,7 @@
 
                 tools:context="com.iosharp.android.ssplayer.ChannelListFragment">
 
-    <ListView
+    <com.applidium.headerlistview.HeaderListView
         android:id="@+id/listview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.iosharp.android.ssplayer.Utils;
+import com.iosharp.android.ssplayer.model.Event;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -21,6 +22,7 @@ import java.util.Date;
 
 import static com.iosharp.android.ssplayer.db.ChannelContract.ChannelEntry;
 import static com.iosharp.android.ssplayer.db.ChannelContract.EventEntry;
+import static com.iosharp.android.ssplayer.db.ChannelContract.getDbDateString;
 
 public class FetchChannelTask extends AsyncTask<Void, Void, String> {
     private final static String TAG = FetchChannelTask.class.getSimpleName();
@@ -88,6 +90,9 @@ public class FetchChannelTask extends AsyncTask<Void, Void, String> {
                     String eventLanguage = e.getString(TAG_EVENT_LANGUAGE);
                     String eventQuality = e.getString(TAG_EVENT_QUALITY);
 
+                    // TODO: this should be reworked. It is going from date string -> long -> datestring
+                    String eventDay = getDateFormatFromLong(Utils.convertDateToLong(e.getString(TAG_EVENT_START_DATE)));
+
                     ContentValues eventValues = new ContentValues();
                     eventValues.put(EventEntry._ID, eventId);
                     eventValues.put(EventEntry.COLUMN_KEY_CHANNEL, eventChannel);
@@ -99,6 +104,7 @@ public class FetchChannelTask extends AsyncTask<Void, Void, String> {
                     eventValues.put(EventEntry.COLUMN_RUNTIME, eventRuntime);
                     eventValues.put(EventEntry.COLUMN_LANGUAGE, eventLanguage);
                     eventValues.put(EventEntry.COLUMN_QUALITY, eventQuality);
+                    eventValues.put(EventEntry.COLUMN_DAY, eventDay);
 
                     mContext.getContentResolver().insert(EventEntry.CONTENT_URI, eventValues);
                 }
@@ -107,6 +113,16 @@ public class FetchChannelTask extends AsyncTask<Void, Void, String> {
         // Delete events that have already passed
         String now = Long.toString(new Date().getTime());
         mContext.getContentResolver().delete(EventEntry.CONTENT_URI, EventEntry.COLUMN_END_DATE + "< ?", new String[] {now});
+    }
+
+    private String getDateFormatFromLong(long date) {
+        Date day = new Date(date);
+        day.setHours(0);
+        day.setMinutes(0);
+        day.setSeconds(0);
+        day.getTime();
+
+        return getDbDateString(day);
     }
 
 

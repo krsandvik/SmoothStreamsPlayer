@@ -4,6 +4,10 @@ import android.content.ContentUris;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class ChannelContract {
 
     public static final String CONTENT_AUTHORITY = "com.iosharp.android.ssplayer";
@@ -12,12 +16,32 @@ public class ChannelContract {
     public static final String PATH_EVENT = "event";
     public static final String PATH_CHANNEL = "channel";
 
+    public static final String DATE_FORMAT = "yyyyMMdd";
+
+    public static String getDbDateString(Date date){
+        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
+        return sdf.format(date);
+    }
+
+    public static Date getDateFromDb(String dateText) {
+        SimpleDateFormat dbDateFormat = new SimpleDateFormat(DATE_FORMAT);
+        try {
+            return dbDateFormat.parse(dateText);
+        } catch ( ParseException e ) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public static final class EventEntry implements BaseColumns {
         public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_EVENT).build();
-        public static final String TABLE_NAME = "event";        public static final String CONTENT_TYPE =
+        public static final String CONTENT_TYPE =
                 "vnd.android.cursor.dir/" + CONTENT_AUTHORITY + "/" + PATH_EVENT;
-        public static final String COLUMN_KEY_CHANNEL = "channel_id";        public static final String CONTENT_ITEM_TYPE =
+        public static final String CONTENT_ITEM_TYPE =
                 "vnd.android.cursor.item/" + CONTENT_AUTHORITY + "/" + PATH_EVENT;
+
+        public static final String TABLE_NAME = "event";
+        public static final String COLUMN_KEY_CHANNEL = "channel_id";
         public static final String COLUMN_NETWORK = "network";
         public static final String COLUMN_NAME = "title";
         public static final String COLUMN_DESCRIPTION = "description";
@@ -30,6 +54,7 @@ public class ChannelContract {
         public static final String COLUMN_LANGUAGE = "language";
         public static final String COLUMN_CATEGORY = "category";
         public static final String COLUMN_QUALITY = "quality";
+        public static final String COLUMN_DAY = "day";
 
         public static Uri buildEventUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
@@ -67,11 +92,17 @@ public class ChannelContract {
 
     public static final class ChannelEntry implements BaseColumns {
         public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_CHANNEL).build();
-        public static final String TABLE_NAME = "channel";        public static final String CONTENT_TYPE =
+        public static final String CONTENT_TYPE =
                 "vnd.android.cursor.dir/" + CONTENT_AUTHORITY + "/" + PATH_CHANNEL;
-        public static final String COLUMN_NAME = "name";        public static final String CONTENT_ITEM_TYPE =
+        public static final String CONTENT_ITEM_TYPE =
                 "vnd.android.cursor.item/" + CONTENT_AUTHORITY + "/" + PATH_CHANNEL;
+
+        public static final String TABLE_NAME = "channel";
+        public static final String COLUMN_NAME = "name";
         public static final String COLUMN_ICON = "icon";
+
+
+
 
         public static Uri buildChannelUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
