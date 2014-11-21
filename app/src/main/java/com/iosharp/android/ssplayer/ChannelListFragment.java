@@ -23,22 +23,33 @@ import com.iosharp.android.ssplayer.db.ChannelContract;
 import com.iosharp.android.ssplayer.db.DbHelper;
 import com.iosharp.android.ssplayer.videoplayer.VideoActivity;
 
+import static com.iosharp.android.ssplayer.db.ChannelContract.*;
 import static com.iosharp.android.ssplayer.db.ChannelContract.ChannelEntry;
 
 public class ChannelListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+    private static final int CURSOR_LOADER_ID = 0;
+
+    private static final String[] CHANNEL_EVENT_COLUMNS = {
+            ChannelEntry.TABLE_NAME + "." + ChannelEntry._ID,
+            ChannelEntry.TABLE_NAME + "." + ChannelEntry.COLUMN_NAME,
+            ChannelEntry.TABLE_NAME + "." + ChannelEntry.COLUMN_ICON,
+            EventEntry.TABLE_NAME + "." + EventEntry._ID,
+            EventEntry.TABLE_NAME + "." + EventEntry.COLUMN_NAME,
+            "MIN(" + EventEntry.TABLE_NAME + "." + EventEntry.COLUMN_START_DATE +") AS " +
+                    EventEntry.COLUMN_START_DATE,
+            EventEntry.TABLE_NAME + "." + EventEntry.COLUMN_END_DATE,
+            EventEntry.TABLE_NAME + "." + EventEntry.COLUMN_QUALITY,
+    };
 
     // Indices tied to CHANNEL_COLUMNS
     public static final int COL_CHANNEL_ID = 0;
     public static final int COL_CHANNEL_NAME = 1;
     public static final int COL_CHANNEL_ICON = 2;
-
-    private static final int CURSOR_LOADER_ID = 0;
-
-    private static final String[] CHANNEL_COLUMNS = {
-            ChannelEntry.TABLE_NAME + "." + ChannelEntry._ID,
-            ChannelEntry.TABLE_NAME + "." + ChannelEntry.COLUMN_NAME,
-            ChannelEntry.TABLE_NAME + "." + ChannelEntry.COLUMN_ICON
-    };
+    public static final int COL_EVENT_ID = 3;
+    public static final int COL_EVENT_NAME = 4;
+    public static final int COL_EVENT_START_DATE = 5;
+    public static final int COL_EVENT_END_DATE = 6;
+    public static final int COL_EVENT_QUALITY = 7;
 
     private ChannelAdapter mAdapter;
     private MiniController mMini;
@@ -134,13 +145,15 @@ public class ChannelListFragment extends Fragment implements LoaderManager.Loade
                 }
             }
         });
-
         return rootView;
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        return new CursorLoader(getActivity(), ChannelContract.ChannelEntry.CONTENT_URI, null, null, null, null);
+        String sortOrder =  ChannelEntry.TABLE_NAME + "." + ChannelEntry._ID +
+                ", " + EventEntry.TABLE_NAME + "." + EventEntry.COLUMN_START_DATE;
+
+        return new CursorLoader(getActivity(), ChannelEntry.CONTENT_URI, CHANNEL_EVENT_COLUMNS, null, null, sortOrder);
     }
 
     @Override

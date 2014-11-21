@@ -11,6 +11,8 @@ import android.net.Uri;
 
 import java.util.Date;
 
+import static com.iosharp.android.ssplayer.db.ChannelContract.*;
+
 public class ChannelProvider extends ContentProvider {
     private static final String TAG = ChannelProvider.class.getSimpleName();
 
@@ -25,46 +27,46 @@ public class ChannelProvider extends ContentProvider {
     static {
         sEventByChannelIdQueryBuilder = new SQLiteQueryBuilder();
         sEventByChannelIdQueryBuilder.setTables(
-                ChannelContract.EventEntry.TABLE_NAME + " INNER JOIN " +
-                        ChannelContract.ChannelEntry.TABLE_NAME +
-                        " ON " + ChannelContract.EventEntry.TABLE_NAME +
-                        "." + ChannelContract.EventEntry.COLUMN_KEY_CHANNEL +
-                        " = " + ChannelContract.ChannelEntry.TABLE_NAME +
-                        "." + ChannelContract.ChannelEntry._ID);
+                EventEntry.TABLE_NAME + " INNER JOIN " +
+                        ChannelEntry.TABLE_NAME +
+                        " ON " + EventEntry.TABLE_NAME +
+                        "." + EventEntry.COLUMN_KEY_CHANNEL +
+                        " = " + ChannelEntry.TABLE_NAME +
+                        "." + ChannelEntry._ID);
 
     }
 
     private static final String sChannelIdSelection =
-            ChannelContract.ChannelEntry.TABLE_NAME +
-                    "." + ChannelContract.ChannelEntry._ID + " = ? ";
+            ChannelEntry.TABLE_NAME +
+                    "." + ChannelEntry._ID + " = ? ";
     private static final String sChannelIdWithStartDateSelection =
-            ChannelContract.ChannelEntry.TABLE_NAME +
-                    "." + ChannelContract.ChannelEntry._ID + " = ? AND " +
-                    ChannelContract.EventEntry.COLUMN_START_DATE + " >= ?";
+            ChannelEntry.TABLE_NAME +
+                    "." + ChannelEntry._ID + " = ? AND " +
+                    EventEntry.COLUMN_START_DATE + " >= ?";
     private static final String sChannelIdAndDaySelection =
-            ChannelContract.ChannelEntry.TABLE_NAME +
-                    "." + ChannelContract.ChannelEntry._ID + " = ? AND " +
-                    ChannelContract.EventEntry.COLUMN_START_DATE + " = ?";
+            ChannelEntry.TABLE_NAME +
+                    "." + ChannelEntry._ID + " = ? AND " +
+                    EventEntry.COLUMN_START_DATE + " = ?";
 
     private DbHelper mDbHelper;
 
     private static UriMatcher buildUriMatcher() {
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
-        final String authority = ChannelContract.CONTENT_AUTHORITY;
+        final String authority = CONTENT_AUTHORITY;
 
-        matcher.addURI(authority, ChannelContract.PATH_EVENT, EVENT);
-        matcher.addURI(authority, ChannelContract.PATH_EVENT + "/*", EVENT_WITH_CHANNEL);
-        matcher.addURI(authority, ChannelContract.PATH_EVENT + "/*/*", EVENT_WITH_CHANNEL_AND_DATE);
+        matcher.addURI(authority, PATH_EVENT, EVENT);
+        matcher.addURI(authority, PATH_EVENT + "/*", EVENT_WITH_CHANNEL);
+        matcher.addURI(authority, PATH_EVENT + "/*/*", EVENT_WITH_CHANNEL_AND_DATE);
 
-        matcher.addURI(authority, ChannelContract.PATH_CHANNEL, CHANNEL);
-        matcher.addURI(authority, ChannelContract.PATH_CHANNEL + "/#", CHANNEL_ID);
+        matcher.addURI(authority, PATH_CHANNEL, CHANNEL);
+        matcher.addURI(authority, PATH_CHANNEL + "/#", CHANNEL_ID);
 
         return matcher;
     }
 
     private Cursor getEventByChannelId(Uri uri, String[] projection, String sortOrder) {
-        String channel = ChannelContract.EventEntry.getChannelFromUri(uri);
-        String startDate = ChannelContract.EventEntry.getStartDateFromUri(uri);
+        String channel = EventEntry.getChannelFromUri(uri);
+        String startDate = EventEntry.getStartDateFromUri(uri);
 
         String[] selectionArgs;
         String selection;
@@ -89,8 +91,8 @@ public class ChannelProvider extends ContentProvider {
 
     private Cursor getEventByChannelIdAndDate(
             Uri uri, String[] projection, String sortOrder) {
-        String channel = ChannelContract.EventEntry.getChannelFromUri(uri);
-        String date = ChannelContract.EventEntry.getDateFromUri(uri);
+        String channel = EventEntry.getChannelFromUri(uri);
+        String date = EventEntry.getDateFromUri(uri);
 
         return sEventByChannelIdQueryBuilder.query(mDbHelper.getReadableDatabase(),
                 projection,
@@ -128,7 +130,7 @@ public class ChannelProvider extends ContentProvider {
             // "event"
             case EVENT: {
                 retCursor = mDbHelper.getReadableDatabase().query(
-                        ChannelContract.EventEntry.TABLE_NAME,
+                        EventEntry.TABLE_NAME,
                         projection,
                         selection,
                         selectionArgs,
@@ -141,9 +143,9 @@ public class ChannelProvider extends ContentProvider {
             // "channel/*"
             case CHANNEL_ID: {
                 retCursor = mDbHelper.getReadableDatabase().query(
-                        ChannelContract.ChannelEntry.TABLE_NAME,
+                        ChannelEntry.TABLE_NAME,
                         projection,
-                        ChannelContract.ChannelEntry._ID + " = '" + ContentUris.parseId(uri) + "'",
+                        ChannelEntry._ID + " = '" + ContentUris.parseId(uri) + "'",
                         selectionArgs,
                         null,
                         null,
@@ -152,47 +154,25 @@ public class ChannelProvider extends ContentProvider {
                 break;
             }
             // "channel"
+            // TODO: Rewrite this to look like the above EVENT_WITH_CHANNEL and EVENT_WITH_CHANNEL_AND_DATE cases
             case CHANNEL: {
-//                retCursor = mDbHelper.getWritableDatabase().rawQuery(
-//                        "SELECT * FROM (SELECT * FROM " + ChannelContract.ChannelEntry.TABLE_NAME +
-//                        " LEFT OUTER JOIN " + ChannelContract.EventEntry.TABLE_NAME +
-//                        " ON " + ChannelContract.EventEntry.TABLE_NAME +
-//                        "." + ChannelContract.EventEntry.COLUMN_KEY_CHANNEL +
-//                        " = " + ChannelContract.ChannelEntry.TABLE_NAME +
-//                        "." + ChannelContract.ChannelEntry._ID +
-//                        " ORDER BY " + ChannelContract.ChannelEntry.TABLE_NAME +
-//                        "." + ChannelContract.ChannelEntry._ID +
-//                        ", " + ChannelContract.EventEntry.COLUMN_START_DATE +
-//                        ") AS t GROUP BY t."+ ChannelContract.ChannelEntry._ID
-//                        ,null);
+                String table = ChannelEntry.TABLE_NAME + " LEFT OUTER JOIN " +
+                        EventEntry.TABLE_NAME +
+                        " ON " + EventEntry.TABLE_NAME +
+                        "." + EventEntry.COLUMN_KEY_CHANNEL +
+                        " = " + ChannelEntry.TABLE_NAME +
+                        "." + ChannelEntry._ID;
 
-                String table = ChannelContract.ChannelEntry.TABLE_NAME + " LEFT OUTER JOIN " +
-                        ChannelContract.EventEntry.TABLE_NAME +
-                        " ON " + ChannelContract.EventEntry.TABLE_NAME +
-                        "." + ChannelContract.EventEntry.COLUMN_KEY_CHANNEL +
-                        " = " + ChannelContract.ChannelEntry.TABLE_NAME +
-                        "." + ChannelContract.ChannelEntry._ID;
-
-                String[] columns = new String[] {
-                        ChannelContract.ChannelEntry.TABLE_NAME + "." + ChannelContract.ChannelEntry._ID,
-                        ChannelContract.ChannelEntry.TABLE_NAME + "." + ChannelContract.ChannelEntry.COLUMN_NAME,
-                        ChannelContract.ChannelEntry.TABLE_NAME + "." + ChannelContract.ChannelEntry.COLUMN_ICON,
-//                        ChannelContract.ChannelEntry.TABLE_NAME + "." + ChannelContract.ChannelEntry.COLUMN_ICON,
-                        ChannelContract.EventEntry.TABLE_NAME + "." + ChannelContract.EventEntry.COLUMN_NAME,
-                        "MIN(" + ChannelContract.EventEntry.TABLE_NAME + "." + ChannelContract.EventEntry.COLUMN_START_DATE +")",
-                        ChannelContract.EventEntry.TABLE_NAME + "." + ChannelContract.EventEntry.COLUMN_END_DATE,
-                        ChannelContract.EventEntry.TABLE_NAME + "." + ChannelContract.EventEntry.COLUMN_QUALITY
-                };
+                String groupBy =  ChannelEntry.TABLE_NAME + "." + ChannelEntry._ID;
 
                 retCursor = mDbHelper.getReadableDatabase().query(table,
-                        columns,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        groupBy,
                         null,
-                        null,
-                        ChannelContract.ChannelEntry.TABLE_NAME + "." + ChannelContract.ChannelEntry._ID,
-                        null,
-                        ChannelContract.ChannelEntry.TABLE_NAME + "." + ChannelContract.ChannelEntry._ID
-                                + ", " + ChannelContract.EventEntry.TABLE_NAME + "." + ChannelContract.EventEntry.COLUMN_START_DATE
-                        );
+                        sortOrder
+                );
                 break;
             }
 
@@ -209,15 +189,15 @@ public class ChannelProvider extends ContentProvider {
 
         switch (match) {
             case EVENT_WITH_CHANNEL_AND_DATE:
-                return ChannelContract.EventEntry.CONTENT_ITEM_TYPE;
+                return EventEntry.CONTENT_ITEM_TYPE;
             case EVENT_WITH_CHANNEL:
-                return ChannelContract.EventEntry.CONTENT_TYPE;
+                return EventEntry.CONTENT_TYPE;
             case EVENT:
-                return ChannelContract.EventEntry.CONTENT_TYPE;
+                return EventEntry.CONTENT_TYPE;
             case CHANNEL:
-                return ChannelContract.ChannelEntry.CONTENT_TYPE;
+                return ChannelEntry.CONTENT_TYPE;
             case CHANNEL_ID:
-                return ChannelContract.ChannelEntry.CONTENT_ITEM_TYPE;
+                return ChannelEntry.CONTENT_ITEM_TYPE;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -231,20 +211,20 @@ public class ChannelProvider extends ContentProvider {
 
         switch (match) {
             case EVENT: {
-                long _id = db.insertWithOnConflict(ChannelContract.EventEntry.TABLE_NAME,
+                long _id = db.insertWithOnConflict(EventEntry.TABLE_NAME,
                         null,
                         values,
                         SQLiteDatabase.CONFLICT_REPLACE);
                 if (_id > 0)
-                    returnUri = ChannelContract.EventEntry.buildEventUri(_id);
+                    returnUri = EventEntry.buildEventUri(_id);
                 else
                     throw new android.database.SQLException("Failed to insert row into " + uri);
                 break;
             }
             case CHANNEL: {
-                long _id = db.insertWithOnConflict(ChannelContract.ChannelEntry.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+                long _id = db.insertWithOnConflict(ChannelEntry.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_REPLACE);
                 if (_id > 0)
-                    returnUri = ChannelContract.ChannelEntry.buildChannelUri(_id);
+                    returnUri = ChannelEntry.buildChannelUri(_id);
                 else
                     throw new android.database.SQLException("Failed to insert row into " + uri);
                 break;
@@ -264,11 +244,11 @@ public class ChannelProvider extends ContentProvider {
         switch (match) {
             case EVENT:
                 rowsDeleted = db.delete(
-                        ChannelContract.EventEntry.TABLE_NAME, selection, selectionArgs);
+                        EventEntry.TABLE_NAME, selection, selectionArgs);
                 break;
             case CHANNEL:
                 rowsDeleted = db.delete(
-                        ChannelContract.EventEntry.TABLE_NAME, selection, selectionArgs);
+                        EventEntry.TABLE_NAME, selection, selectionArgs);
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
@@ -288,11 +268,11 @@ public class ChannelProvider extends ContentProvider {
 
         switch (match) {
             case EVENT:
-                rowsUpdated = db.update(ChannelContract.EventEntry.TABLE_NAME, values, selection,
+                rowsUpdated = db.update(EventEntry.TABLE_NAME, values, selection,
                         selectionArgs);
                 break;
             case CHANNEL:
-                rowsUpdated = db.update(ChannelContract.ChannelEntry.TABLE_NAME, values, selection,
+                rowsUpdated = db.update(ChannelEntry.TABLE_NAME, values, selection,
                         selectionArgs);
                 break;
             default:
