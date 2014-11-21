@@ -120,10 +120,7 @@ public class MainActivity extends ActionBarActivity {
 
     class ViewPagerAdapter extends FragmentPagerAdapter {
 
-        final int PAGE_COUNT = 2;
-        final String[] TAB_TITLES = {"Channels",
-                                        "Events",
-                                        "Search"};
+        final String[] TAB_TITLES = {"Channels"};
 
         public ViewPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -135,11 +132,10 @@ public class MainActivity extends ActionBarActivity {
             switch (position) {
                 case 0:
                     return new ChannelListFragment();
-
                 case 1:
-                    return new EventListFragment();
+                    return new ChannelListFragment();
                 case 2:
-                    return new EventListFragment();
+                    return new ChannelListFragment();
             }
             return null;
         }
