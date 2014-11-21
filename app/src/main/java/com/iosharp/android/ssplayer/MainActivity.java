@@ -1,9 +1,15 @@
 package com.iosharp.android.ssplayer;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
-import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.PagerTabStrip;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
+import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,18 +38,23 @@ public class MainActivity extends ActionBarActivity {
 
 
         setupActionBar();
+        setupTabs();
         imageLoaderInit();
 
+
+
         mCastManager = PlayerApplication.getCastManager(this);
-        if (mCastManager != null){
+        if (mCastManager != null) {
             mCastManager.reconnectSessionIfPossible(this, false);
         }
+    }
 
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new ChannelListFragment())
-                    .commit();
-        }
+    private void setupTabs() {
+        ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
+        viewPager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager()));
+
+        PagerTabStrip pagerTabStrip = (PagerTabStrip) findViewById(R.id.pagertabstrip);
+        pagerTabStrip.setTabIndicatorColor(Color.GRAY);
     }
 
     @Override
@@ -107,5 +118,39 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    class ViewPagerAdapter extends FragmentPagerAdapter {
+
+        final int PAGE_COUNT = 2;
+        final String[] TAB_TITLES = {"Channels",
+                                        "Events"};
+
+        public ViewPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+
+        @Override
+        public Fragment getItem(int position) {
+            switch (position) {
+                case 0:
+                    ChannelListFragment fragmentTab1 = new ChannelListFragment();
+                    return fragmentTab1;
+                case 1:
+                    ChannelListFragment fragmentTab2 = new ChannelListFragment();
+                    return fragmentTab2;
+            }
+            return null;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return TAB_TITLES[position].toUpperCase();
+        }
+
+        @Override
+        public int getCount() {
+            return PAGE_COUNT;
+        }
+    }
 
 }

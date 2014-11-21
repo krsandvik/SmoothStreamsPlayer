@@ -19,8 +19,6 @@ import android.widget.Toast;
 import com.google.android.gms.cast.MediaInfo;
 import com.google.sample.castcompanionlibrary.cast.VideoCastManager;
 import com.google.sample.castcompanionlibrary.widgets.MiniController;
-import com.iosharp.android.ssplayer.db.ChannelContract;
-import com.iosharp.android.ssplayer.db.DbHelper;
 import com.iosharp.android.ssplayer.videoplayer.VideoActivity;
 
 import static com.iosharp.android.ssplayer.db.ChannelContract.*;
@@ -105,7 +103,7 @@ public class ChannelListFragment extends Fragment implements LoaderManager.Loade
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_channel_list, container, false);
 
         // MiniController
         if (mCastManager != null) {
