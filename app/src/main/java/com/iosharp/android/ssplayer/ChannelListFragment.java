@@ -124,9 +124,9 @@ public class ChannelListFragment extends Fragment implements LoaderManager.Loade
                 c.moveToPosition(position);
 
                 // Get channel details
-                mChannelId = c.getInt(c.getColumnIndex(ChannelEntry._ID));
-                String channelName = c.getString(c.getColumnIndex(ChannelEntry.COLUMN_NAME));
-                String channelIcon = c.getString(c.getColumnIndex(ChannelEntry.COLUMN_ICON));
+                mChannelId = c.getInt(COL_CHANNEL_ID);
+                String channelName = c.getString(COL_CHANNEL_NAME);
+                String channelIcon = c.getString(COL_CHANNEL_ICON);
 
                 if (Utils.checkForSetServiceCredentials(getActivity())) {
                     // Create MediaInfo based off channel
