@@ -19,12 +19,10 @@ import android.widget.Toast;
 import com.google.android.gms.cast.MediaInfo;
 import com.google.sample.castcompanionlibrary.cast.VideoCastManager;
 import com.google.sample.castcompanionlibrary.widgets.MiniController;
-import com.iosharp.android.ssplayer.db.ChannelContract;
-import com.iosharp.android.ssplayer.db.DbHelper;
 import com.iosharp.android.ssplayer.videoplayer.VideoActivity;
 
-import static com.iosharp.android.ssplayer.db.ChannelContract.*;
 import static com.iosharp.android.ssplayer.db.ChannelContract.ChannelEntry;
+import static com.iosharp.android.ssplayer.db.ChannelContract.EventEntry;
 
 public class ChannelListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final int CURSOR_LOADER_ID = 0;
@@ -71,11 +69,9 @@ public class ChannelListFragment extends Fragment implements LoaderManager.Loade
         getLoaderManager().initLoader(CURSOR_LOADER_ID, null, this);
     }
 
-    public void handleNavigation(Context c, MediaInfo info) {
-        if (mCastManager != null) {
-            if (mCastManager.isConnected()) {
-                mCastManager.startCastControllerActivity(c, info, 0, true);
-            }
+    private void handleNavigation(Context c, MediaInfo info) {
+        if (mCastManager != null && mCastManager.isConnected()) {
+               mCastManager.startCastControllerActivity(c, info, 0, true);
         } else {
             Intent intent = new Intent(c, VideoActivity.class);
             intent.putExtra("media", com.google.sample.castcompanionlibrary.utils.Utils.fromMediaInfo(info));
@@ -96,7 +92,6 @@ public class ChannelListFragment extends Fragment implements LoaderManager.Loade
     @Override
     public void onDestroy() {
         super.onDestroy();
-
         if (mCastManager != null) {
             mCastManager.decrementUiCounter();
         }
