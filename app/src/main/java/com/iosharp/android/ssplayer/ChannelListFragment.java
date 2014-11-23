@@ -69,7 +69,7 @@ public class ChannelListFragment extends Fragment implements LoaderManager.Loade
         getLoaderManager().initLoader(CURSOR_LOADER_ID, null, this);
     }
 
-    private void handleNavigation(Context c, MediaInfo info) {
+    public void handleNavigation(Context c, MediaInfo info) {
         if (mCastManager != null && mCastManager.isConnected()) {
                mCastManager.startCastControllerActivity(c, info, 0, true);
         } else {
@@ -108,7 +108,7 @@ public class ChannelListFragment extends Fragment implements LoaderManager.Loade
             mCastManager.addMiniController(mMini);
         }
 
-        ListView listView = (ListView) rootView.findViewById(R.id.listview);
+        ListView listView = (ListView) rootView.findViewById(R.id.channel_list_view);
         mAdapter = new ChannelAdapter(getActivity(), null);
         listView.setAdapter(mAdapter);
 

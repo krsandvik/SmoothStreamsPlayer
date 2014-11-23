@@ -42,7 +42,8 @@
             android:ellipsize="end"
             android:maxLines="2"
             android:textColor="#555555"
-            android:textSize="14sp"/>
+            android:textSize="14sp"
+            android:visibility="visible"/>
     </LinearLayout>
 
 </RelativeLayout>

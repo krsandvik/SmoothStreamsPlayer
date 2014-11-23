@@ -2,27 +2,23 @@ package com.iosharp.android.ssplayer;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.graphics.drawable.Drawable;
+import android.graphics.Typeface;
 import android.support.v4.widget.CursorAdapter;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ImageSpan;
+import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.iosharp.android.ssplayer.db.ChannelContract;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
-import java.lang.reflect.Array;
-import java.util.Arrays;
 import java.util.Date;
-
-import static com.iosharp.android.ssplayer.db.ChannelContract.ChannelEntry;
 
 class ChannelAdapter extends CursorAdapter {
 
@@ -34,9 +30,9 @@ class ChannelAdapter extends CursorAdapter {
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup viewGroup) {
-        LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
 
-        View retView = inflater.inflate(R.layout.list_row, viewGroup, false);
+        LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
+        View retView = inflater.inflate(R.layout.channel_list_row, viewGroup, false);
 
         return retView;
     }
@@ -77,24 +73,31 @@ class ChannelAdapter extends CursorAdapter {
             if (now.after(startDate) && now.before(endDate)) {
                 String quality = cursor.getString(ChannelListFragment.COL_EVENT_QUALITY);
 
-                if (quality.equalsIgnoreCase("720p")) {
-                    int marker = R.drawable.rate_star_med_off_holo_dark;
+                eventTitle.setText(title);
+                eventTitle.setVisibility(View.VISIBLE);
 
-                    SpannableString ssTitle = new SpannableString(title + " ");
-                    ImageSpan imageSpan = new ImageSpan(context, marker, ImageSpan.ALIGN_BASELINE);
-                    ssTitle.setSpan(imageSpan, ssTitle.length() - 1, ssTitle.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-                    eventTitle.setText(ssTitle);
+                if (quality.equalsIgnoreCase("720p")) {
+                    eventTitle.setText(Utils.getHighDefBadge(title));
+                    eventTitle.setVisibility(View.VISIBLE);
 
                 } else {
-                    eventTitle.setText(title);
+                    // Set textview to nothing due to views being recycled
+//                eventTitle.setText("");
                 }
             } else {
-                // Set textview to nothing due to views being recycled
-                eventTitle.setText("");
+//            Set textview to nothing due to views being recycled
+//            eventTitle.setText("");
             }
-        } else {
-            // Set textview to nothing due to views being recycled
-            eventTitle.setText("");
         }
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
+    @Override
+    public int getViewTypeCount() {
+        return 50;
     }
 }

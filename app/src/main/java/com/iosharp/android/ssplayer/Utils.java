@@ -2,8 +2,12 @@ package com.iosharp.android.ssplayer;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.preference.PreferenceManager;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.StyleSpan;
 
 import com.google.android.gms.cast.MediaInfo;
 import com.google.android.gms.cast.MediaMetadata;
@@ -130,5 +134,12 @@ public class Utils {
         cal.setTime(date);
         cal.add(Calendar.HOUR, -1);
         return cal.getTime();
+    }
+
+    public static SpannableString getHighDefBadge(String title) {
+        SpannableString ssTitle = new SpannableString(title + "\tHD");
+        final StyleSpan bss = new StyleSpan(Typeface.BOLD);
+        ssTitle.setSpan(bss, ssTitle.length() - 2, ssTitle.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        return ssTitle;
     }
 }

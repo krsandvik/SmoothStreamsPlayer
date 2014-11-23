@@ -50,8 +50,8 @@ public class MainActivity extends ActionBarActivity {
             mCastManager.reconnectSessionIfPossible(this, false);
         }
 
-        Uri uri = ChannelContract.EventEntry.buildEventWithDate("20141123");
-        System.out.println(getContentResolver().query(uri, null, null, null, null).getCount());
+//        Uri uri = ChannelContract.EventEntry.buildEventWithDate("20141123");
+//        System.out.println(getContentResolver().query(uri, null, null, null, null).getCount());
     }
 
 
@@ -126,7 +126,8 @@ public class MainActivity extends ActionBarActivity {
 
     class ViewPagerAdapter extends FragmentPagerAdapter {
 
-        final String[] TAB_TITLES = {"Channels"};
+        final String[] TAB_TITLES = {"Channels",
+                                    "Events"};
 
         public ViewPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -139,7 +140,7 @@ public class MainActivity extends ActionBarActivity {
                 case 0:
                     return new ChannelListFragment();
                 case 1:
-                    return new ChannelListFragment();
+                    return new EventListFragment();
                 case 2:
                     return new ChannelListFragment();
             }
