@@ -36,6 +36,17 @@ public class ChannelProvider extends ContentProvider {
 
     }
 
+    private static final SQLiteQueryBuilder sChannelWithAllEventsQueryBuilder;
+    static {
+        sChannelWithAllEventsQueryBuilder = new SQLiteQueryBuilder();
+        sChannelWithAllEventsQueryBuilder.setTables(ChannelEntry.TABLE_NAME + " LEFT OUTER JOIN " +
+                EventEntry.TABLE_NAME +
+                " ON " + EventEntry.TABLE_NAME +
+                "." + EventEntry.COLUMN_KEY_CHANNEL +
+                " = " + ChannelEntry.TABLE_NAME +
+                "." + ChannelEntry._ID);
+    }
+
     private static final String sChannelIdSelection =
             ChannelEntry.TABLE_NAME +
                     "." + ChannelEntry._ID + " = ? ";
@@ -156,23 +167,15 @@ public class ChannelProvider extends ContentProvider {
             // "channel"
             // TODO: Rewrite this to look like the above EVENT_WITH_CHANNEL and EVENT_WITH_CHANNEL_AND_DATE cases
             case CHANNEL: {
-                String table = ChannelEntry.TABLE_NAME + " LEFT OUTER JOIN " +
-                        EventEntry.TABLE_NAME +
-                        " ON " + EventEntry.TABLE_NAME +
-                        "." + EventEntry.COLUMN_KEY_CHANNEL +
-                        " = " + ChannelEntry.TABLE_NAME +
-                        "." + ChannelEntry._ID;
-
                 String groupBy =  ChannelEntry.TABLE_NAME + "." + ChannelEntry._ID;
 
-                retCursor = mDbHelper.getReadableDatabase().query(table,
+                retCursor = sChannelWithAllEventsQueryBuilder.query(mDbHelper.getReadableDatabase(),
                         projection,
                         selection,
                         selectionArgs,
                         groupBy,
                         null,
-                        sortOrder
-                );
+                        sortOrder);
                 break;
             }
 

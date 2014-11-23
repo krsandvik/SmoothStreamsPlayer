@@ -9,8 +9,8 @@ public class ChannelContract {
     public static final String CONTENT_AUTHORITY = "com.iosharp.android.ssplayer";
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 
-    public static final String PATH_EVENT = "events";
-    public static final String PATH_CHANNEL = "channels";
+    public static final String PATH_EVENT = "event";
+    public static final String PATH_CHANNEL = "channel";
 
     public static final class EventEntry implements BaseColumns {
         public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_EVENT).build();
@@ -20,7 +20,7 @@ public class ChannelContract {
                 "vnd.android.cursor.item/" + CONTENT_AUTHORITY + "/" + PATH_EVENT;
 
 
-        public static final String TABLE_NAME = "event";
+        public static final String TABLE_NAME = "events";
         public static final String COLUMN_KEY_CHANNEL = "channel_id";
         public static final String COLUMN_NETWORK = "network";
         public static final String COLUMN_NAME = "title";
@@ -75,7 +75,7 @@ public class ChannelContract {
         public static final String CONTENT_ITEM_TYPE =
                 "vnd.android.cursor.item/" + CONTENT_AUTHORITY + "/" + PATH_CHANNEL;
 
-        public static final String TABLE_NAME = "channel";
+        public static final String TABLE_NAME = "channels";
         public static final String COLUMN_NAME = "name";
         public static final String COLUMN_ICON = "icon";
 
