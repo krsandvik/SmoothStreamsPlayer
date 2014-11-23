@@ -4,6 +4,9 @@ import android.content.ContentUris;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class ChannelContract {
 
     public static final String CONTENT_AUTHORITY = "com.iosharp.android.ssplayer";
@@ -11,6 +14,17 @@ public class ChannelContract {
 
     public static final String PATH_EVENT = "event";
     public static final String PATH_CHANNEL = "channel";
+    public static final String DATE_FORMAT = "yyyyMMdd";
+
+    public static String getDbDateString(long unixTimestamp) {
+        Date date = new Date(unixTimestamp);
+        date.setHours(0);
+        date.setMinutes(0);
+        date.setSeconds(0);
+
+        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
+        return sdf.format(date);
+    }
 
     public static final class EventEntry implements BaseColumns {
         public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_EVENT).build();
@@ -18,6 +32,8 @@ public class ChannelContract {
                 "vnd.android.cursor.dir/" + CONTENT_AUTHORITY + "/" + PATH_EVENT;
         public static final String CONTENT_ITEM_TYPE =
                 "vnd.android.cursor.item/" + CONTENT_AUTHORITY + "/" + PATH_EVENT;
+
+        public static final String NAMESPACE_DATE = "date";
 
 
         public static final String TABLE_NAME = "events";
@@ -38,6 +54,14 @@ public class ChannelContract {
 
         public static Uri buildEventUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
+
+        public static Uri buildEventDate() {
+            return CONTENT_URI.buildUpon().appendPath(NAMESPACE_DATE).build();
+        }
+
+        public static Uri buildEventWithDate(String date){
+            return CONTENT_URI.buildUpon().appendPath(NAMESPACE_DATE).appendPath(date).build();
         }
 
         public static Uri buildEventChannel(long channel) {

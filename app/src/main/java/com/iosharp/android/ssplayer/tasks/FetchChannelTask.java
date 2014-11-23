@@ -21,6 +21,7 @@ import java.util.Date;
 
 import static com.iosharp.android.ssplayer.db.ChannelContract.ChannelEntry;
 import static com.iosharp.android.ssplayer.db.ChannelContract.EventEntry;
+import static com.iosharp.android.ssplayer.db.ChannelContract.getDbDateString;
 
 public class FetchChannelTask extends AsyncTask<Void, Void, String> {
     private final static String TAG = FetchChannelTask.class.getSimpleName();
@@ -87,6 +88,7 @@ public class FetchChannelTask extends AsyncTask<Void, Void, String> {
                     int eventChannel = Integer.parseInt(e.getString(TAG_EVENT_CHANNEL));
                     String eventLanguage = e.getString(TAG_EVENT_LANGUAGE);
                     String eventQuality = e.getString(TAG_EVENT_QUALITY);
+                    String eventDate = getDbDateString(Utils.convertDateToLong(e.getString(TAG_EVENT_START_DATE)));
 
                     ContentValues eventValues = new ContentValues();
                     eventValues.put(EventEntry._ID, eventId);
@@ -99,6 +101,7 @@ public class FetchChannelTask extends AsyncTask<Void, Void, String> {
                     eventValues.put(EventEntry.COLUMN_RUNTIME, eventRuntime);
                     eventValues.put(EventEntry.COLUMN_LANGUAGE, eventLanguage);
                     eventValues.put(EventEntry.COLUMN_QUALITY, eventQuality);
+                    eventValues.put(EventEntry.COLUMN_DATE, eventDate);
 
                     mContext.getContentResolver().insert(EventEntry.CONTENT_URI, eventValues);
                 }

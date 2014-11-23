@@ -9,8 +9,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 
-import java.util.Date;
-
 import static com.iosharp.android.ssplayer.db.ChannelContract.*;
 
 public class ChannelProvider extends ContentProvider {
@@ -20,6 +18,8 @@ public class ChannelProvider extends ContentProvider {
     private static final int EVENT = 100;
     private static final int EVENT_WITH_CHANNEL = 101;
     private static final int EVENT_WITH_CHANNEL_AND_DATE = 102;
+    private static final int EVENT_DATE = 103;
+    private static final int EVENT_WITH_DATE = 104;
     private static final int CHANNEL = 300;
     private static final int CHANNEL_ID = 301;
 
@@ -58,6 +58,9 @@ public class ChannelProvider extends ContentProvider {
             ChannelEntry.TABLE_NAME +
                     "." + ChannelEntry._ID + " = ? AND " +
                     EventEntry.COLUMN_START_DATE + " = ?";
+    private static final String sDateSelection =
+            EventEntry.TABLE_NAME + "." + EventEntry.COLUMN_DATE +
+                    " = ?";
 
     private DbHelper mDbHelper;
 
@@ -66,8 +69,10 @@ public class ChannelProvider extends ContentProvider {
         final String authority = CONTENT_AUTHORITY;
 
         matcher.addURI(authority, PATH_EVENT, EVENT);
-        matcher.addURI(authority, PATH_EVENT + "/*", EVENT_WITH_CHANNEL);
-        matcher.addURI(authority, PATH_EVENT + "/*/*", EVENT_WITH_CHANNEL_AND_DATE);
+        matcher.addURI(authority, PATH_EVENT + "/#", EVENT_WITH_CHANNEL);
+        matcher.addURI(authority, PATH_EVENT + "/#/*", EVENT_WITH_CHANNEL_AND_DATE);
+        matcher.addURI(authority, PATH_EVENT + "/" + EventEntry.NAMESPACE_DATE, EVENT_DATE);
+        matcher.addURI(authority, PATH_EVENT + "/" + EventEntry.NAMESPACE_DATE + "/*", EVENT_WITH_DATE);
 
         matcher.addURI(authority, PATH_CHANNEL, CHANNEL);
         matcher.addURI(authority, PATH_CHANNEL + "/#", CHANNEL_ID);
@@ -136,6 +141,36 @@ public class ChannelProvider extends ContentProvider {
             // "event/*"
             case EVENT_WITH_CHANNEL: {
                 retCursor = getEventByChannelId(uri, projection, sortOrder);
+                break;
+            }
+            // "event/date/yyyyMMDD"
+            case EVENT_WITH_DATE: {
+                String date = EventEntry.getDateFromUri(uri);
+
+                retCursor = mDbHelper.getReadableDatabase().query(
+                        EventEntry.TABLE_NAME,
+                        projection,
+                        sDateSelection,
+                        new String[] {date},
+                        null,
+                        null,
+                        sortOrder);
+                break;
+            }
+            // "event/date"
+            case EVENT_DATE: {
+                String groupBy = EventEntry.TABLE_NAME + "." + EventEntry.COLUMN_DATE;
+                if (projection == null) {
+                    projection = new String[]{EventEntry.TABLE_NAME + "." + EventEntry.COLUMN_DATE};
+                }
+                retCursor = mDbHelper.getReadableDatabase().query(
+                        EventEntry.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        groupBy,
+                        null,
+                        sortOrder);
                 break;
             }
             // "event"

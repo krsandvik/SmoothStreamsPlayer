@@ -8,7 +8,7 @@ import static com.iosharp.android.ssplayer.db.ChannelContract.ChannelEntry;
 import static com.iosharp.android.ssplayer.db.ChannelContract.EventEntry;
 
 public class DbHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 38;
+    private static final int DATABASE_VERSION = 39;
 
     public static String DATABASE_NAME = "smoothstreams.db";
 
@@ -48,6 +48,11 @@ public class DbHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + ChannelEntry.TABLE_NAME);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + EventEntry.TABLE_NAME);
+
+        // Remove following two lines after release
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS channel");
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS event");
+
         onCreate(sqLiteDatabase);
     }
 }

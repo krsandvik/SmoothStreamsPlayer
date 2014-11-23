@@ -1,14 +1,17 @@
 package com.iosharp.android.ssplayer;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.sample.castcompanionlibrary.cast.VideoCastManager;
+import com.iosharp.android.ssplayer.db.ChannelContract;
 import com.iosharp.android.ssplayer.tasks.FetchChannelTask;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -44,6 +47,10 @@ public class MainActivity extends ActionBarActivity {
                     .add(R.id.container, new ChannelListFragment())
                     .commit();
         }
+
+        Uri uri = ChannelContract.EventEntry.buildEventWithDate("20141123");
+        System.out.println(getContentResolver().query(uri, null, null, null, null).getCount());
+
     }
 
     @Override
