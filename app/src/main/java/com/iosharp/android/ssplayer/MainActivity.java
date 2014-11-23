@@ -2,6 +2,7 @@ package com.iosharp.android.ssplayer;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -44,16 +45,14 @@ public class MainActivity extends ActionBarActivity {
         imageLoaderInit();
 
 
-
         mCastManager = PlayerApplication.getCastManager(this);
         if (mCastManager != null) {
             mCastManager.reconnectSessionIfPossible(this, false);
         }
-    }
-
 
         Uri uri = ChannelContract.EventEntry.buildEventWithDate("20141123");
         System.out.println(getContentResolver().query(uri, null, null, null, null).getCount());
+    }
 
 
     private void setupTabs() {

@@ -26,21 +26,9 @@ public class ChannelContract {
         return sdf.format(date);
     }
 
-    public static final String DATE_FORMAT = "yyyyMMdd";
-
     public static String getDbDateString(Date date){
         SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
         return sdf.format(date);
-    }
-
-    public static Date getDateFromDb(String dateText) {
-        SimpleDateFormat dbDateFormat = new SimpleDateFormat(DATE_FORMAT);
-        try {
-            return dbDateFormat.parse(dateText);
-        } catch ( ParseException e ) {
-            e.printStackTrace();
-            return null;
-        }
     }
 
     public static final class EventEntry implements BaseColumns {
@@ -105,8 +93,6 @@ public class ChannelContract {
         public static String getStartDateFromUri(Uri uri) {
             return uri.getQueryParameter(COLUMN_START_DATE);
         }
-
-
     }
 
     public static final class ChannelEntry implements BaseColumns {
@@ -119,9 +105,6 @@ public class ChannelContract {
         public static final String TABLE_NAME = "channels";
         public static final String COLUMN_NAME = "name";
         public static final String COLUMN_ICON = "icon";
-
-
-
 
         public static Uri buildChannelUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
