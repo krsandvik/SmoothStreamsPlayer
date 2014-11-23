@@ -12,16 +12,25 @@
         android:minHeight="?attr/actionBarSize"
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
-    <FrameLayout
-        android:id="@+id/container"
+
+
+    <android.support.v4.view.ViewPager
+        android:layout_below="@id/toolbar"
+        android:id="@+id/pager"
         xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/miniController1"
-        android:layout_below="@+id/toolbar"
-        tools:context=".MainActivity"
-        tools:ignore="MergeRootFrame"/>
+        android:layout_height="wrap_content">
+
+        <android.support.v4.view.PagerTabStrip
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:textColor="#000000"
+            android:id="@+id/pagertabstrip"/>
+
+    </android.support.v4.view.ViewPager>
 
     <com.google.sample.castcompanionlibrary.widgets.MiniController
         android:id="@+id/miniController1"

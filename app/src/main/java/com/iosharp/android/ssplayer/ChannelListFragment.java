@@ -100,7 +100,7 @@ public class ChannelListFragment extends Fragment implements LoaderManager.Loade
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_channel_list, container, false);
 
         // MiniController
         if (mCastManager != null) {

@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.iosharp.android.ssplayer.Utils;
+import com.iosharp.android.ssplayer.model.Event;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -89,7 +90,7 @@ public class FetchChannelTask extends AsyncTask<Void, Void, String> {
                     String eventLanguage = e.getString(TAG_EVENT_LANGUAGE);
                     String eventQuality = e.getString(TAG_EVENT_QUALITY);
                     String eventDate = getDbDateString(Utils.convertDateToLong(e.getString(TAG_EVENT_START_DATE)));
-
+                
                     ContentValues eventValues = new ContentValues();
                     eventValues.put(EventEntry._ID, eventId);
                     eventValues.put(EventEntry.COLUMN_KEY_CHANNEL, eventChannel);
@@ -110,6 +111,16 @@ public class FetchChannelTask extends AsyncTask<Void, Void, String> {
         // Delete events that have already passed
         String now = Long.toString(new Date().getTime());
         mContext.getContentResolver().delete(EventEntry.CONTENT_URI, EventEntry.COLUMN_END_DATE + "< ?", new String[] {now});
+    }
+
+    private String getDateFormatFromLong(long date) {
+        Date day = new Date(date);
+        day.setHours(0);
+        day.setMinutes(0);
+        day.setSeconds(0);
+        day.getTime();
+
+        return getDbDateString(day);
     }
 
 
