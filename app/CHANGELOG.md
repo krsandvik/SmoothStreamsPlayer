@@ -1,5 +1,11 @@
+#####0.05#####
+changes:
+
+ - hd badged changed to text instead of image
+ - added tabs with list of events
+
 #####0.04#####
-changes
+changes:
 
  - channels display an event title when there is an event currently airing
  - events broadcasted in 720p are marked
