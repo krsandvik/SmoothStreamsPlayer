@@ -105,7 +105,6 @@ public class EventListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        Log.v(TAG, "onResume() called");
         mAdapter.notifyDataSetChanged();
     }
 
