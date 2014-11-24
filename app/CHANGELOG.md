@@ -2,6 +2,7 @@
 changes:
 
  - fixes crashes regarding mini controller when switching fragments
+ - small layout changes
 
 #####0.05#####
 changes:
