@@ -33,7 +33,7 @@ public class EventListFragment extends Fragment {
 
     private ArrayList<ArrayList<Event>> mDateEvents;
     private ArrayList<String> mDate;
-    private EventAdapter mAdapter;
+    private static EventAdapter mAdapter;
     private VideoCastManager mCastManager;
     private MiniController mMini;
 
@@ -52,29 +52,18 @@ public class EventListFragment extends Fragment {
                 ArrayList<Event> events = new ArrayList<Event>();
                 date = dateCursor.getString(dateCursor.getColumnIndex(EventEntry.COLUMN_DATE));
 
-                try {
-                    SimpleDateFormat sdf = new SimpleDateFormat(ChannelContract.DATE_FORMAT);
-                    Date newDate = sdf.parse(date);
-
-                    SimpleDateFormat sdf2 = new SimpleDateFormat("dd-MM-yyyy");
-                    String newDateString = sdf2.format(newDate);
-
-                    mDate.add(newDateString);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
+                mDate.add(date);
 
                 Uri u = EventEntry.buildEventWithDate(date);
-
                 String selection = EventEntry.TABLE_NAME + "." + EventEntry.COLUMN_END_DATE +
                         " <= ?";
                 String now = Long.toString(new Date().getTime());
                 String[] selectionArgs = new String[]{now};
-
                 String sortOrder = EventEntry.TABLE_NAME + "." + EventEntry.COLUMN_START_DATE +
                         ", " + EventEntry.TABLE_NAME + "." + EventEntry.COLUMN_KEY_CHANNEL;
 
                 Cursor eventCursor = getActivity().getContentResolver().query(u, null, selection, selectionArgs, sortOrder);
+
                 if (eventCursor != null) {
                     while (eventCursor.moveToNext()) {
                         String name = eventCursor.getString(eventCursor.getColumnIndex(EventEntry.COLUMN_NAME));
@@ -99,6 +88,10 @@ public class EventListFragment extends Fragment {
         return dates;
     }
 
+    public static void updateEvents() {
+        mAdapter.notifyDataSetChanged();
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,7 +104,7 @@ public class EventListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        mAdapter.notifyDataSetChanged();
+        updateEvents();
         if (mCastManager != null) {
             mCastManager.incrementUiCounter();
         }
@@ -137,6 +130,7 @@ public class EventListFragment extends Fragment {
         }
 
         HeaderListView list = (HeaderListView) rootView.findViewById(R.id.channel_list_view);
+        // This can be removed when HeaderListView fixes a bug
         list.setId(2);
         mAdapter = new EventAdapter();
         list.setAdapter(mAdapter);
@@ -209,10 +203,32 @@ public class EventListFragment extends Fragment {
         }
 
         @Override
+        public void notifyDataSetChanged() {
+            super.notifyDataSetChanged();
+        }
+
+        @Override
         public String getSectionHeaderItem(int section) {
-            return mDate.get(section);
+            return getFormattedDate(mDate.get(section));
         }
     }
+
+    private String getFormattedDate(String date) {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat(ChannelContract.DATE_FORMAT);
+            Date newDate = sdf.parse(date);
+
+            SimpleDateFormat desiredDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+            String newDateString = desiredDateFormat.format(newDate);
+
+            return newDateString;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
 }
 
 

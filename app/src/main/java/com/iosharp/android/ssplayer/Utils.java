@@ -142,4 +142,9 @@ public class Utils {
         ssTitle.setSpan(bss, ssTitle.length() - 2, ssTitle.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         return ssTitle;
     }
+
+    public static String getCleanTitle(String title) {
+        String cleanTitle = title.replace("&amp;", "&");
+        return cleanTitle;
+    }
 }

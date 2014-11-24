@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.iosharp.android.ssplayer.EventListFragment;
 import com.iosharp.android.ssplayer.Utils;
 import com.iosharp.android.ssplayer.model.Event;
 
@@ -81,7 +82,7 @@ public class FetchChannelTask extends AsyncTask<Void, Void, String> {
 
                     int eventId = Integer.parseInt(e.getString(TAG_EVENT_ID));
                     String eventNetwork = e.getString(TAG_EVENT_NETWORK);
-                    String eventName = e.getString(TAG_EVENT_NAME);
+                    String eventName = Utils.getCleanTitle(e.getString(TAG_EVENT_NAME));
                     String eventDescription = e.getString(TAG_EVENT_DESCRIPTION);
                     long eventStartDate = Utils.convertDateToLong(e.getString(TAG_EVENT_START_DATE));
                     long eventEndDate = Utils.convertDateToLong(e.getString(TAG_EVENT_END_DATE));
@@ -112,6 +113,8 @@ public class FetchChannelTask extends AsyncTask<Void, Void, String> {
         String now = Long.toString(new Date().getTime());
         mContext.getContentResolver().delete(EventEntry.CONTENT_URI, EventEntry.COLUMN_END_DATE + "< ?", new String[] {now});
     }
+
+
 
     private String getDateFormatFromLong(long date) {
         Date day = new Date(date);
@@ -182,5 +185,11 @@ public class FetchChannelTask extends AsyncTask<Void, Void, String> {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    protected void onPostExecute(String s) {
+        super.onPostExecute(s);
+        EventListFragment.updateEvents();
     }
 }
