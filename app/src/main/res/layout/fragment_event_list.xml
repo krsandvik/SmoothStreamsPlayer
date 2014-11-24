@@ -12,7 +12,7 @@
 />
 
     <com.google.sample.castcompanionlibrary.widgets.MiniController
-        android:id="@+id/miniController1"
+        android:id="@+id/miniController_event"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

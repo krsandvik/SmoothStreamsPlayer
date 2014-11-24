@@ -16,6 +16,8 @@ import android.widget.TextView;
 
 import com.applidium.headerlistview.HeaderListView;
 import com.applidium.headerlistview.SectionAdapter;
+import com.google.sample.castcompanionlibrary.cast.VideoCastManager;
+import com.google.sample.castcompanionlibrary.widgets.MiniController;
 import com.iosharp.android.ssplayer.db.ChannelContract;
 import com.iosharp.android.ssplayer.model.Event;
 
@@ -32,6 +34,8 @@ public class EventListFragment extends Fragment {
     private ArrayList<ArrayList<Event>> mDateEvents;
     private ArrayList<String> mDate;
     private EventAdapter mAdapter;
+    private VideoCastManager mCastManager;
+    private MiniController mMini;
 
     public EventListFragment() {
 
@@ -98,6 +102,8 @@ public class EventListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mCastManager = PlayerApplication.getCastManager(getActivity());
+
         mDate = new ArrayList<String>();
         mDateEvents = getDateEvents();
    }
@@ -106,19 +112,36 @@ public class EventListFragment extends Fragment {
     public void onResume() {
         super.onResume();
         mAdapter.notifyDataSetChanged();
+        if (mCastManager != null) {
+            mCastManager.incrementUiCounter();
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (mCastManager != null) {
+            mCastManager.decrementUiCounter();
+        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_event_list, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_event_list, container, false);
 
-        HeaderListView list = (HeaderListView) v.findViewById(R.id.channel_list_view);
+        //MiniController
+        if (mCastManager != null) {
+            mMini = (MiniController) rootView.findViewById(R.id.miniController_event);
+            mCastManager.addMiniController(mMini);
+        }
+
+        HeaderListView list = (HeaderListView) rootView.findViewById(R.id.channel_list_view);
         list.setId(2);
         mAdapter = new EventAdapter();
         list.setAdapter(mAdapter);
 
-        return v;
+        return rootView;
     }
 
     class EventAdapter extends SectionAdapter {

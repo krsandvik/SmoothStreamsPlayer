@@ -104,7 +104,7 @@ public class ChannelListFragment extends Fragment implements LoaderManager.Loade
 
         // MiniController
         if (mCastManager != null) {
-            mMini = (MiniController) rootView.findViewById(R.id.miniController1);
+            mMini = (MiniController) rootView.findViewById(R.id.miniController_channel);
             mCastManager.addMiniController(mMini);
         }
 
