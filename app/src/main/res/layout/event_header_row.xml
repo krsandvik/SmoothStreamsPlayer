@@ -5,6 +5,7 @@
           android:layout_height="match_parent"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:background="?attr/colorPrimaryDark"
-    android:textColor="@color/white">
+    android:textColor="@color/white"
+    android:paddingLeft="8dp">
 
 </TextView>

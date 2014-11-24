@@ -8,6 +8,7 @@ import android.os.Bundle;
 
 import android.support.v4.app.Fragment;
 import android.text.SpannableString;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,9 +27,11 @@ import java.util.Date;
 import static com.iosharp.android.ssplayer.db.ChannelContract.*;
 
 public class EventListFragment extends Fragment {
+    private static final String TAG = EventListFragment.class.getSimpleName();
 
     private ArrayList<ArrayList<Event>> mDateEvents;
     private ArrayList<String> mDate;
+    private EventAdapter mAdapter;
 
     public EventListFragment() {
 
@@ -100,83 +103,93 @@ public class EventListFragment extends Fragment {
    }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        Log.v(TAG, "onResume() called");
+        mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_event_list, container, false);
 
         HeaderListView list = (HeaderListView) v.findViewById(R.id.channel_list_view);
         list.setId(2);
-        list.setAdapter(new SectionAdapter() {
-            @Override
-            public int numberOfSections() {
-                return mDateEvents.size();
-            }
-
-            @Override
-            public int numberOfRows(int section) {
-                if (section > -1) {
-                    return mDateEvents.get(section).size();
-                }
-                return 1;
-            }
-
-            @Override
-            public View getRowView(int section, int row, View convertView, ViewGroup parent) {
-                Event e = getRowItem(section, row);
-                if (convertView == null) {
-                    LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                    convertView = inflater.inflate(R.layout.event_item_row, null);
-                }
-                String channel = String.format("%02d", e.getChannel());
-                String quality = e.getQuality();
-
-                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-                String time = sdf.format(new Date(e.getStartDate()));
-
-                String title = channel + "\t\t" +time + "\t\t" + e.getName();
-                ((TextView) convertView.findViewById(R.id.event_item_row_title)).setText(title);
-
-                if (quality.equalsIgnoreCase("720p")) {
-                    SpannableString ss = Utils.getHighDefBadge(title);
-                    ((TextView) convertView.findViewById(R.id.event_item_row_title)).setText(ss);
-
-                }
-
-                return convertView;
-            }
-
-            @Override
-            public Event getRowItem(int section, int row) {
-                return mDateEvents.get(section).get(row);
-            }
-
-            @Override
-            public boolean hasSectionHeaderView(int section) {
-                return true;
-            }
-
-            @Override
-            public View getSectionHeaderView(int section, View convertView, ViewGroup parent) {
-                if (convertView == null) {
-                    LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                    convertView = inflater.inflate(R.layout.event_header_row, null);
-                }
-
-                String date = getSectionHeaderItem(section);
-
-                ((TextView) convertView.findViewById(R.id.event_header_row_title))
-                        .setText(date);
-
-                return convertView;
-            }
-
-            @Override
-            public String getSectionHeaderItem(int section) {
-                return mDate.get(section);
-            }
-        });
+        mAdapter = new EventAdapter();
+        list.setAdapter(mAdapter);
 
         return v;
+    }
+
+    class EventAdapter extends SectionAdapter {
+        @Override
+        public int numberOfSections() {
+            return mDateEvents.size();
+        }
+
+        @Override
+        public int numberOfRows(int section) {
+            if (section > -1) {
+                return mDateEvents.get(section).size();
+            }
+            return 1;
+        }
+
+        @Override
+        public View getRowView(int section, int row, View convertView, ViewGroup parent) {
+            Event e = getRowItem(section, row);
+            if (convertView == null) {
+                LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                convertView = inflater.inflate(R.layout.event_item_row, null);
+            }
+            String channel = String.format("%02d", e.getChannel());
+            String quality = e.getQuality();
+
+            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+            String time = sdf.format(new Date(e.getStartDate()));
+
+            String title = channel + "\t\t" +time + "\t\t" + e.getName();
+            ((TextView) convertView.findViewById(R.id.event_item_row_title)).setText(title);
+
+            if (quality.equalsIgnoreCase("720p")) {
+                SpannableString ss = Utils.getHighDefBadge(title);
+                ((TextView) convertView.findViewById(R.id.event_item_row_title)).setText(ss);
+
+            }
+
+            return convertView;
+        }
+
+        @Override
+        public Event getRowItem(int section, int row) {
+            return mDateEvents.get(section).get(row);
+        }
+
+        @Override
+        public boolean hasSectionHeaderView(int section) {
+            return true;
+        }
+
+        @Override
+        public View getSectionHeaderView(int section, View convertView, ViewGroup parent) {
+            if (convertView == null) {
+                LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                convertView = inflater.inflate(R.layout.event_header_row, null);
+            }
+
+            String date = getSectionHeaderItem(section);
+
+            ((TextView) convertView.findViewById(R.id.event_header_row_title))
+                    .setText(date);
+
+            return convertView;
+        }
+
+        @Override
+        public String getSectionHeaderItem(int section) {
+            return mDate.get(section);
+        }
     }
 }
 
