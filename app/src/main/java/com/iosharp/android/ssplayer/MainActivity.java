@@ -39,19 +39,14 @@ public class MainActivity extends ActionBarActivity {
         FetchChannelTask fetchChannelTask = new FetchChannelTask(this);
         fetchChannelTask.execute();
 
-
         setupActionBar();
         setupTabs();
         imageLoaderInit();
-
 
         mCastManager = PlayerApplication.getCastManager(this);
         if (mCastManager != null) {
             mCastManager.reconnectSessionIfPossible(this, false);
         }
-
-//        Uri uri = ChannelContract.EventEntry.buildEventWithDate("20141123");
-//        System.out.println(getContentResolver().query(uri, null, null, null, null).getCount());
     }
 
 
