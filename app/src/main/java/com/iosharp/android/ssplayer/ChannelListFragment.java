@@ -37,6 +37,8 @@ public class ChannelListFragment extends Fragment implements LoaderManager.Loade
                     EventEntry.COLUMN_START_DATE,
             EventEntry.TABLE_NAME + "." + EventEntry.COLUMN_END_DATE,
             EventEntry.TABLE_NAME + "." + EventEntry.COLUMN_QUALITY,
+            EventEntry.TABLE_NAME + "." + EventEntry.COLUMN_LANGUAGE,
+
     };
 
     // Indices tied to CHANNEL_COLUMNS
@@ -48,6 +50,7 @@ public class ChannelListFragment extends Fragment implements LoaderManager.Loade
     public static final int COL_EVENT_START_DATE = 5;
     public static final int COL_EVENT_END_DATE = 6;
     public static final int COL_EVENT_QUALITY = 7;
+    public static final int COL_EVENT_LANGUAGE = 8;
 
     private ChannelAdapter mAdapter;
     private MiniController mMini;

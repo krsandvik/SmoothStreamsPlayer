@@ -202,6 +202,7 @@ public class FetchChannelTask extends AsyncTask<Void, Void, String> {
     @Override
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
-        EventListFragment.updateEvents();
+        // Refresh eventlist after we get the latest info
+        EventListFragment.updateEvents(mContext);
     }
 }

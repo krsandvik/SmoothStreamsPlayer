@@ -7,6 +7,7 @@ import android.support.v4.widget.CursorAdapter;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.style.ImageSpan;
 import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
@@ -40,7 +41,7 @@ class ChannelAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         showIcon(view, cursor);
-        setCurrentEvent(view, context, cursor);
+        setCurrentEvent(view, cursor);
 
         ((TextView) view.findViewById(R.id.textView1))
                 .setText(cursor.getString(ChannelListFragment.COL_CHANNEL_NAME));
@@ -60,7 +61,7 @@ class ChannelAdapter extends CursorAdapter {
                 .build());
     }
 
-    private void setCurrentEvent(View view, Context context, Cursor cursor) {
+    private void setCurrentEvent(View view, Cursor cursor) {
         String id = cursor.getString(ChannelListFragment.COL_EVENT_ID);
         TextView eventTitle = (TextView) view.findViewById(R.id.textView2);
 
@@ -69,24 +70,22 @@ class ChannelAdapter extends CursorAdapter {
             String title = cursor.getString(ChannelListFragment.COL_EVENT_NAME);
             Date startDate = new Date(cursor.getLong(ChannelListFragment.COL_EVENT_START_DATE));
             Date endDate = new Date(cursor.getLong(ChannelListFragment.COL_EVENT_END_DATE));
+            String language = cursor.getString(ChannelListFragment.COL_EVENT_LANGUAGE);
+            String quality = cursor.getString(ChannelListFragment.COL_EVENT_QUALITY);
 
             if (now.after(startDate) && now.before(endDate)) {
-                String quality = cursor.getString(ChannelListFragment.COL_EVENT_QUALITY);
-
-                eventTitle.setText(title);
-                eventTitle.setVisibility(View.VISIBLE);
+                SpannableString qualitySpannableString = new SpannableString("");
+                SpannableString languageSpannableString = new SpannableString("");
 
                 if (quality.equalsIgnoreCase("720p")) {
-                    eventTitle.setText(Utils.getHighDefBadge(title));
-                    eventTitle.setVisibility(View.VISIBLE);
-
-                } else {
-                    // Set textview to nothing due to views being recycled
-//                eventTitle.setText("");
+                    qualitySpannableString = Utils.getHighDefBadge();
                 }
-            } else {
-//            Set textview to nothing due to views being recycled
-//            eventTitle.setText("");
+                if (!language.equals("")) {
+                    languageSpannableString = Utils.getLanguageBadge(language.toUpperCase());
+                }
+
+                eventTitle.setText(TextUtils.concat(title, qualitySpannableString, languageSpannableString));
+                eventTitle.setVisibility(View.VISIBLE);
             }
         }
     }

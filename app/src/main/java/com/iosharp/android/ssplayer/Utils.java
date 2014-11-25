@@ -7,12 +7,15 @@ import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
 import android.text.style.StyleSpan;
 
 import com.google.android.gms.cast.MediaInfo;
 import com.google.android.gms.cast.MediaMetadata;
 import com.google.android.gms.common.images.WebImage;
 
+import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -136,11 +139,24 @@ public class Utils {
         return cal.getTime();
     }
 
-    public static SpannableString getHighDefBadge(String title) {
-        SpannableString ssTitle = new SpannableString(title + "\tHD");
-        final StyleSpan bss = new StyleSpan(Typeface.BOLD);
-        ssTitle.setSpan(bss, ssTitle.length() - 2, ssTitle.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-        return ssTitle;
+    public static SpannableString getHighDefBadge() {
+        String highDefStr = " HD";
+        final StyleSpan boldStyleSpan = new StyleSpan(Typeface.BOLD);
+        SpannableString highDefSpannableString = new SpannableString(highDefStr);
+
+        // Starting at one to not bold the space
+        highDefSpannableString.setSpan(boldStyleSpan, 1, highDefStr.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+        return highDefSpannableString;
+    }
+
+    public static SpannableString getLanguageBadge(String language) {
+        String languageStr = " " + language;
+        final StyleSpan italicStyleSpan = new StyleSpan(Typeface.ITALIC);
+        SpannableString languageSpannableString = new SpannableString(languageStr);
+
+        // Starting at one to not italize the space
+        languageSpannableString.setSpan(italicStyleSpan, 1, languageStr.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+        return languageSpannableString;
     }
 
     public static String getCleanTitle(String title) {
