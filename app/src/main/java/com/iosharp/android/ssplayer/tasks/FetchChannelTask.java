@@ -7,7 +7,6 @@ import android.util.Log;
 
 import com.iosharp.android.ssplayer.EventListFragment;
 import com.iosharp.android.ssplayer.Utils;
-import com.iosharp.android.ssplayer.model.Event;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -17,6 +16,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Date;
@@ -78,6 +78,7 @@ public class FetchChannelTask extends AsyncTask<Void, Void, String> {
                 JSONArray items = c.getJSONArray(TAG_CHANNEL_ITEMS);
 
                 for (int j = 0; j < items.length(); j++) {
+                    String cleanEventName = null;
                     JSONObject e = (JSONObject) items.get(j);
 
                     int eventId = Integer.parseInt(e.getString(TAG_EVENT_ID));
@@ -91,12 +92,20 @@ public class FetchChannelTask extends AsyncTask<Void, Void, String> {
                     String eventLanguage = e.getString(TAG_EVENT_LANGUAGE);
                     String eventQuality = e.getString(TAG_EVENT_QUALITY);
                     String eventDate = getDbDateString(Utils.convertDateToLong(e.getString(TAG_EVENT_START_DATE)));
-                
+
+                    // Handle umlaute http://hootcook.blogspot.de/2009/04/java-charset-encoding-utf-8.html
+                    try {
+                        byte[] bytes = eventName.getBytes("ISO-8859-1");
+                        cleanEventName = new String(bytes, "UTF-8");
+                    } catch (UnsupportedEncodingException e1) {
+                        e1.printStackTrace();
+                    }
+
                     ContentValues eventValues = new ContentValues();
                     eventValues.put(EventEntry._ID, eventId);
                     eventValues.put(EventEntry.COLUMN_KEY_CHANNEL, eventChannel);
                     eventValues.put(EventEntry.COLUMN_NETWORK, eventNetwork);
-                    eventValues.put(EventEntry.COLUMN_NAME, eventName);
+                    eventValues.put(EventEntry.COLUMN_NAME, cleanEventName);
                     eventValues.put(EventEntry.COLUMN_DESCRIPTION, eventDescription);
                     eventValues.put(EventEntry.COLUMN_START_DATE, eventStartDate);
                     eventValues.put(EventEntry.COLUMN_END_DATE, eventEndDate);
@@ -135,6 +144,7 @@ public class FetchChannelTask extends AsyncTask<Void, Void, String> {
 
         try {
             final String SMOOTHSTREAMS_JSON_FEED = "http://cdn.smoothstreams.tv/schedule/feed.json";
+//            final String SMOOTHSTREAMS_JSON_FEED = "http://pastebin.com/raw.php?i=KEwfzwYA";
 
             URL url = new URL(SMOOTHSTREAMS_JSON_FEED);
 
@@ -148,7 +158,7 @@ public class FetchChannelTask extends AsyncTask<Void, Void, String> {
             if (inputStream == null) {
                 return null;
             }
-            reader = new BufferedReader(new InputStreamReader(inputStream));
+            reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
 
             String line;
             while ((line = reader.readLine()) != null) {
@@ -160,8 +170,10 @@ public class FetchChannelTask extends AsyncTask<Void, Void, String> {
                 return null;
             }
 
-            channelsJsonStr = buffer.toString();
+//            byte[] bytes = buffer.toString().getBytes("ISO-8859-1");
+//            channelsJsonStr = new String(bytes, "UTF-8");
 
+            channelsJsonStr = buffer.toString();
         } catch (IOException e) {
             Log.e(TAG, "Error", e);
             return null;
