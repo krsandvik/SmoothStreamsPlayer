@@ -5,12 +5,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-
 import android.support.v4.app.Fragment;
 import android.text.SpannableString;
-import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import static com.iosharp.android.ssplayer.db.ChannelContract.*;
+import static com.iosharp.android.ssplayer.db.ChannelContract.EventEntry;
 
 public class EventListFragment extends Fragment {
     private static final String TAG = EventListFragment.class.getSimpleName();

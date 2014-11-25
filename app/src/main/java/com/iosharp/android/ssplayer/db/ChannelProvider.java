@@ -9,7 +9,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 
-import static com.iosharp.android.ssplayer.db.ChannelContract.*;
+import static com.iosharp.android.ssplayer.db.ChannelContract.CONTENT_AUTHORITY;
+import static com.iosharp.android.ssplayer.db.ChannelContract.ChannelEntry;
+import static com.iosharp.android.ssplayer.db.ChannelContract.EventEntry;
+import static com.iosharp.android.ssplayer.db.ChannelContract.PATH_CHANNEL;
+import static com.iosharp.android.ssplayer.db.ChannelContract.PATH_EVENT;
 
 public class ChannelProvider extends ContentProvider {
     private static final String TAG = ChannelProvider.class.getSimpleName();

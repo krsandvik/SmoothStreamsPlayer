@@ -2,14 +2,9 @@ package com.iosharp.android.ssplayer;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.graphics.Typeface;
 import android.support.v4.widget.CursorAdapter;
-import android.text.Spannable;
 import android.text.SpannableString;
-import android.text.Spanned;
 import android.text.TextUtils;
-import android.text.style.ImageSpan;
-import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
