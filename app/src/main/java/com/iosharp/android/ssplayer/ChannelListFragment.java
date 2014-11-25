@@ -72,21 +72,22 @@ public class ChannelListFragment extends Fragment implements LoaderManager.Loade
         getLoaderManager().initLoader(CURSOR_LOADER_ID, null, this);
     }
 
-    public void handleNavigation(Context c, MediaInfo info) {
-        if (mCastManager != null && mCastManager.isConnected()) {
-               mCastManager.startCastControllerActivity(c, info, 0, true);
-        } else {
-            Intent intent = new Intent(c, VideoActivity.class);
-            intent.putExtra("media", com.google.sample.castcompanionlibrary.utils.Utils.fromMediaInfo(info));
-            intent.putExtra("channel", mChannelId);
-            c.startActivity(intent);
+    public void handleNavigation(Context context, MediaInfo info) {
+        if (Utils.isInternetAvailable(context)) {
+            if (mCastManager != null && mCastManager.isConnected()) {
+                mCastManager.startCastControllerActivity(context, info, 0, true);
+            } else {
+                Intent intent = new Intent(context, VideoActivity.class);
+                intent.putExtra("media", com.google.sample.castcompanionlibrary.utils.Utils.fromMediaInfo(info));
+                intent.putExtra("channel", mChannelId);
+                context.startActivity(intent);
+            }
         }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-
         if (mCastManager != null) {
             mCastManager.incrementUiCounter();
         }

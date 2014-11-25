@@ -1,3 +1,8 @@
+#####0.07#####
+changes:
+
+ - check for internet connection before tasks that require one
+
 #####0.06#####
 changes:
 

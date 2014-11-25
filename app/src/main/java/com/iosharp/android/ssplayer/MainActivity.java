@@ -35,8 +35,10 @@ public class MainActivity extends ActionBarActivity {
 
         mCastManager = PlayerApplication.getCastManager(this);
 
-        FetchChannelTask fetchChannelTask = new FetchChannelTask(this);
-        fetchChannelTask.execute();
+        if (Utils.isInternetAvailable(this)) {
+            FetchChannelTask fetchChannelTask = new FetchChannelTask(this);
+            fetchChannelTask.execute();
+        }
 
         setupActionBar();
         setupTabs();

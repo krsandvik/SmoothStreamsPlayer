@@ -55,7 +55,7 @@ public class SettingsActivity extends PreferenceActivity implements
                 || key.equals(getString(R.string.pref_service_username_key))
                 || key.equals(getString(R.string.pref_service_password_key))) {
 
-            if (hasSetServiceDetails()) {
+            if (hasSetServiceDetails() && Utils.isInternetAvailable(getApplicationContext())) {
 
                 FetchLoginInfoTask fetchLoginInfoTask = new FetchLoginInfoTask(getApplicationContext());
                 fetchLoginInfoTask.execute();

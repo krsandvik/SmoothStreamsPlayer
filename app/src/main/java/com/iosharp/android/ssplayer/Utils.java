@@ -3,6 +3,8 @@ package com.iosharp.android.ssplayer;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.text.Spannable;
@@ -10,6 +12,8 @@ import android.text.SpannableString;
 import android.text.style.DynamicDrawableSpan;
 import android.text.style.ImageSpan;
 import android.text.style.StyleSpan;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.cast.MediaInfo;
 import com.google.android.gms.cast.MediaMetadata;
@@ -23,6 +27,8 @@ import java.util.SimpleTimeZone;
 import java.util.TimeZone;
 
 public class Utils {
+
+    private static final String TAG = Utils.class.getSimpleName();
 
     public static Long convertDateToLong(String dateString) {
         SimpleDateFormat dateFormat;
@@ -176,5 +182,18 @@ public class Utils {
     public static String getCleanTitle(String title) {
         String cleanTitle = title.replace("&amp;", "&");
         return cleanTitle;
+    }
+
+    public static boolean isInternetAvailable(Context context) {
+        NetworkInfo info = ((ConnectivityManager) context
+                .getSystemService(Context.CONNECTIVITY_SERVICE))
+                .getActiveNetworkInfo();
+
+        if (info == null) {
+            Toast.makeText(context, "No internet connection detected!", Toast.LENGTH_LONG).show();
+            Log.e(TAG, "No internet connection detected!");
+            return false;
+        }
+        return true;
     }
 }
