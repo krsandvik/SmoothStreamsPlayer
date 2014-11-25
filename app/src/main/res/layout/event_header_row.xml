@@ -1,11 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-          android:id="@+id/event_header_row_title"
-          android:layout_width="match_parent"
-          android:layout_height="match_parent"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:background="?attr/colorPrimaryDark"
-    android:textColor="@color/white"
-    android:paddingLeft="8dp">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/colorPrimaryDark"
+    android:paddingLeft="8dp"
+    android:orientation="vertical">
 
-</TextView>
+    <TextView
+        android:id="@+id/event_header_row_title"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/white">
+    </TextView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/event_header_row_subtitle"
+        android:id="@+id/event_header_row_subtitle"
+        android:textColor="@color/white"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textAllCaps="true"/>
+</LinearLayout>

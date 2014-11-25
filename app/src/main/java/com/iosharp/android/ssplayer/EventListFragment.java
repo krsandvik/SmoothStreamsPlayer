@@ -179,11 +179,12 @@ public class EventListFragment extends Fragment {
             if (quality.equalsIgnoreCase("720p")) {
                 qualitySpannableString = Utils.getHighDefBadge();
             }if (!language.equals("")) {
-                languageSpannableString = Utils.getLanguageBadge(language.toUpperCase());
+                languageSpannableString = Utils.getLanguageImg(getActivity(), language);
+//                languageSpannableString = Utils.getLanguageBadge(language.toUpperCase());
             }
 
             ((TextView) convertView.findViewById(R.id.event_item_row_title))
-                    .setText(TextUtils.concat(title, qualitySpannableString, languageSpannableString));
+                    .setText(TextUtils.concat(title, languageSpannableString, qualitySpannableString));
 
             return convertView;
         }

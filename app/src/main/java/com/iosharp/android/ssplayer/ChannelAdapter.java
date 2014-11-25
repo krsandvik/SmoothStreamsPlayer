@@ -77,14 +77,14 @@ class ChannelAdapter extends CursorAdapter {
                 SpannableString qualitySpannableString = new SpannableString("");
                 SpannableString languageSpannableString = new SpannableString("");
 
+                if (!language.equals("")) {
+                    languageSpannableString = Utils.getLanguageImg(mContext, language);
+                }
                 if (quality.equalsIgnoreCase("720p")) {
                     qualitySpannableString = Utils.getHighDefBadge();
                 }
-                if (!language.equals("")) {
-                    languageSpannableString = Utils.getLanguageBadge(language.toUpperCase());
-                }
 
-                eventTitle.setText(TextUtils.concat(title, qualitySpannableString, languageSpannableString));
+                eventTitle.setText(TextUtils.concat(title, languageSpannableString, qualitySpannableString));
                 eventTitle.setVisibility(View.VISIBLE);
             }
         }

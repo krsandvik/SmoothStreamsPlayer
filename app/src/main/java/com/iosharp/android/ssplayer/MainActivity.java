@@ -32,6 +32,7 @@ public class MainActivity extends ActionBarActivity {
         if (!(Build.MODEL.contains("AFT") || Build.MANUFACTURER.equals("Amazon"))) {
             VideoCastManager.checkGooglePlayServices(this);
         }
+        mCastManager = PlayerApplication.getCastManager(this);
 
         FetchChannelTask fetchChannelTask = new FetchChannelTask(this);
         fetchChannelTask.execute();
@@ -40,10 +41,9 @@ public class MainActivity extends ActionBarActivity {
         setupTabs();
         imageLoaderInit();
 
-        mCastManager = PlayerApplication.getCastManager(this);
-        if (mCastManager != null) {
-            mCastManager.reconnectSessionIfPossible(this, false);
-        }
+
+        mCastManager.reconnectSessionIfPossible(this, false);
+
     }
 
 

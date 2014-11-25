@@ -2,14 +2,20 @@ package com.iosharp.android.ssplayer;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
+import android.text.style.DynamicDrawableSpan;
+import android.text.style.ImageSpan;
 import android.text.style.StyleSpan;
+import android.view.View;
 
 import com.google.android.gms.cast.MediaInfo;
 import com.google.android.gms.cast.MediaMetadata;
@@ -149,13 +155,28 @@ public class Utils {
         return highDefSpannableString;
     }
 
-    public static SpannableString getLanguageBadge(String language) {
-        String languageStr = " " + language;
-        final StyleSpan italicStyleSpan = new StyleSpan(Typeface.ITALIC);
+    public static SpannableString getLanguageImg(Context context, String language) {
+        int flag = R.drawable.gb;
+        String lng = language.toLowerCase();
+
+        if (lng.equals("eng")) {
+            flag = R.drawable.gb;
+        } else if (lng.equals("nl")) {
+            flag = R.drawable.nl;
+        } else if (lng.equals("es")) {
+            flag = R.drawable.es;
+        } else if (lng.equals("fr")) {
+            flag = R.drawable.fr;
+        } else if (lng.equals("de")) {
+            flag = R.drawable.de;
+        }
+
+        String languageStr = " f";
+        ImageSpan imageSpan = new ImageSpan(context, flag, DynamicDrawableSpan.ALIGN_BASELINE);
         SpannableString languageSpannableString = new SpannableString(languageStr);
 
         // Starting at one to not italize the space
-        languageSpannableString.setSpan(italicStyleSpan, 1, languageStr.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+        languageSpannableString.setSpan(imageSpan, 1, languageStr.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
         return languageSpannableString;
     }
 

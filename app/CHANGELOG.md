@@ -1,9 +1,9 @@
 #####0.06#####
 changes:
 
- - handle umlaute in event names
+ - handle umlauts in event names
  - event list will update after task to get channel info is completed
- - tag to indicate event broadcast language if applicable
+ - flags to indicate event broadcast language if applicable
 
 #####0.051#####
 changes:
