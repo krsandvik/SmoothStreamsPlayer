@@ -11,8 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
+import com.squareup.picasso.Picasso;
 
 import java.util.Date;
 
@@ -35,25 +34,21 @@ class ChannelAdapter extends CursorAdapter {
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        showIcon(view, cursor);
+        showIcon(view, context, cursor);
         setCurrentEvent(view, cursor);
 
         ((TextView) view.findViewById(R.id.textView1))
                 .setText(cursor.getString(ChannelListFragment.COL_CHANNEL_NAME));
     }
 
-    private void showIcon(View view, Cursor cursor) {
+    private void showIcon(View view, Context context, Cursor cursor) {
         String SMOOTHSTREAMS_ICON_BASE = "http://smoothstreams.tv/schedule/includes/images/uploads/";
         String channelIcon = cursor.getString(ChannelListFragment.COL_CHANNEL_ICON);
         String SMOOTHSTREAMS_ICON_URL = SMOOTHSTREAMS_ICON_BASE + channelIcon;
 
         mIcon = (ImageView) view.findViewById(R.id.imageView1);
 
-        ImageLoader imageLoader = ImageLoader.getInstance();
-        imageLoader.displayImage(SMOOTHSTREAMS_ICON_URL, mIcon, new DisplayImageOptions.Builder()
-                .cacheInMemory(true)
-                .cacheOnDisk(true)
-                .build());
+        Picasso.with(context).load(SMOOTHSTREAMS_ICON_URL).into(mIcon);
     }
 
     private void setCurrentEvent(View view, Cursor cursor) {

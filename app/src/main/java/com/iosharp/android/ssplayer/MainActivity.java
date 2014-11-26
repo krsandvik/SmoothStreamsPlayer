@@ -16,8 +16,6 @@ import android.view.MenuItem;
 
 import com.google.sample.castcompanionlibrary.cast.VideoCastManager;
 import com.iosharp.android.ssplayer.tasks.FetchChannelTask;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -43,8 +41,6 @@ public class MainActivity extends ActionBarActivity {
 
         setupActionBar();
         setupTabs();
-        imageLoaderInit();
-
 
         if (mCastManager != null) {
             mCastManager.reconnectSessionIfPossible(this, false);
@@ -88,13 +84,6 @@ public class MainActivity extends ActionBarActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(getString(R.string.app_name));
         setSupportActionBar(toolbar);
-    }
-
-    private void imageLoaderInit() {
-        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this).build();
-        if (ImageLoader.getInstance().isInited() == false) {
-            ImageLoader.getInstance().init(config);
-        }
     }
 
     @Override

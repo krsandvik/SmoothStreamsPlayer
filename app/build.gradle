@@ -8,8 +8,8 @@ android {
         applicationId "com.iosharp.android.ssplayer"
         minSdkVersion 11
         targetSdkVersion 21
-        versionCode 9
-        versionName "0.07"
+        versionCode 10
+        versionName "0.08"
     }
     buildTypes {
         release {
@@ -31,7 +31,8 @@ dependencies {
     compile 'com.android.support:appcompat-v7:21.0.0'
     compile 'com.android.support:support-v4:21.0.0'
     compile project(':CastCompanionLibrary')
-    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.3'
     compile project(':HeaderListView')
     compile 'com.squareup.okhttp:okhttp:2.1.0'
+    compile 'com.squareup.okhttp:okhttp-urlconnection:2.1.0'
+    compile 'com.squareup.picasso:picasso:2.4.0'
 }

@@ -1,3 +1,10 @@
+#####0.08#####
+changes:
+
+ - user-agent sent on requests
+ - okhttp instead of httpurlconnection
+ - picasso instead of universal image loader
+
 #####0.07#####
 changes:
 

@@ -66,6 +66,6 @@
     <string name="action_about">About</string>
     <string name="about_version">Version</string>
     <string name="about_developed_by">Developed by aaearon</string>
-    <string name="about_body" translatable="false">\nA video player for the SmoothStreams.tv Networks (Live247.tv / MyStreams.tv / StarStreams.tv / MMA-TV.net / TFR) with Chromecast support.\n\nSSP takes advantage of the following libraries:\n\n\<b>Cast Companion Library</b> - https://github.com/googlecast/CastCompanionLibrary-android\n<b>Universal Image Loader</b> - https://github.com/nostra13/Android-Universal-Image-Loader\n<b>HeaderListView</b> - http://applidium.github.io/HeaderListView/</string>
+    <string name="about_body" translatable="false">\nA video player for the SmoothStreams.tv Networks (Live247.tv / MyStreams.tv / StarStreams.tv / MMA-TV.net / TFR) with Chromecast support.</string>
     <string name="event_header_row_subtitle">ch\t\ttime\t\tname</string>
 </resources>
