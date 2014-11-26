@@ -42,3 +42,4 @@ Thumbs.db
 .idea/dataSources.ids
 CastCompanionLibrary
 HeaderListView
+app/crashlytics.properties

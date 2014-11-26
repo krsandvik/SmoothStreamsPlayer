@@ -1,3 +1,8 @@
+#####0.081#####
+changes:
+
+ - added crashlytics
+
 #####0.08#####
 changes:
 
