@@ -9,6 +9,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.iosharp.android.ssplayer.MainActivity;
 import com.iosharp.android.ssplayer.R;
 import com.squareup.okhttp.OkHttpClient;
@@ -86,6 +87,7 @@ public class FetchLoginInfoTask extends AsyncTask<Void, Void, Void> {
             loginJsonStr = response.body().string();
 
         } catch (IOException e) {
+            Crashlytics.logException(e);
             e.printStackTrace();
         }
 
@@ -111,6 +113,7 @@ public class FetchLoginInfoTask extends AsyncTask<Void, Void, Void> {
                 Log.e(TAG, "Unknown response!");
             }
         } catch (JSONException e) {
+            Crashlytics.logException(e);
             e.printStackTrace();
         }
     }

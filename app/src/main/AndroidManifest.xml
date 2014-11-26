@@ -90,6 +90,7 @@
             android:name="com.iosharp.android.ssplayer.db.ChannelProvider"
             android:authorities="com.iosharp.android.ssplayer"
             android:exported="false" />
+        <meta-data android:name="com.crashlytics.ApiKey" android:value="4df4b0f435d2c01d5c9bc887a08cecf028494545"/>
 
     </application>
 

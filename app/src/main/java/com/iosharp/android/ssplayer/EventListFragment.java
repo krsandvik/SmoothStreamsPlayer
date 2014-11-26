@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.applidium.headerlistview.HeaderListView;
 import com.applidium.headerlistview.SectionAdapter;
+import com.crashlytics.android.Crashlytics;
 import com.google.sample.castcompanionlibrary.cast.VideoCastManager;
 import com.google.sample.castcompanionlibrary.widgets.MiniController;
 import com.iosharp.android.ssplayer.db.ChannelContract;
@@ -232,6 +233,7 @@ public class EventListFragment extends Fragment {
 
             return newDateString;
         } catch (ParseException e) {
+            Crashlytics.logException(e);
             e.printStackTrace();
         }
         return null;

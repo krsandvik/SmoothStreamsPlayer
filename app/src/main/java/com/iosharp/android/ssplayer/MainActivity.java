@@ -14,9 +14,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.sample.castcompanionlibrary.cast.VideoCastManager;
 import com.iosharp.android.ssplayer.tasks.FetchChannelTask;
 
+import io.fabric.sdk.android.Fabric;
 
 public class MainActivity extends ActionBarActivity {
     public static final String USER_AGENT = "SmoothStreamsPlayer";
@@ -26,6 +28,7 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_main);
 
         if (!(Build.MODEL.contains("AFT") || Build.MANUFACTURER.equals("Amazon"))) {

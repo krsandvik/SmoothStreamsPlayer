@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.crashlytics.android.Crashlytics;
 import com.iosharp.android.ssplayer.EventListFragment;
 import com.iosharp.android.ssplayer.MainActivity;
 import com.iosharp.android.ssplayer.Utils;
@@ -98,6 +99,7 @@ public class FetchChannelTask extends AsyncTask<Void, Void, String> {
                         byte[] bytes = eventName.getBytes("ISO-8859-1");
                         cleanEventName = new String(bytes, "UTF-8");
                     } catch (UnsupportedEncodingException e1) {
+                        Crashlytics.logException(e1);
                         e1.printStackTrace();
                     }
 
@@ -165,6 +167,7 @@ public class FetchChannelTask extends AsyncTask<Void, Void, String> {
             getChannelDataFromJson(channelsJsonStr);
         } catch (JSONException e) {
             Log.e(TAG, e.getMessage(), e);
+            Crashlytics.logException(e);
             e.printStackTrace();
         }
         return null;
