@@ -14,7 +14,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+
 import com.crashlytics.android.Crashlytics;
+
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.google.sample.castcompanionlibrary.cast.VideoCastManager;
 import com.iosharp.android.ssplayer.tasks.FetchChannelTask;
 
@@ -31,6 +35,7 @@ public class MainActivity extends ActionBarActivity {
         Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_main);
 
+        googleAnalytics();
         if (!(Build.MODEL.contains("AFT") || Build.MANUFACTURER.equals("Amazon"))) {
             VideoCastManager.checkGooglePlayServices(this);
         }
@@ -48,6 +53,14 @@ public class MainActivity extends ActionBarActivity {
         if (mCastManager != null) {
             mCastManager.reconnectSessionIfPossible(this, false);
         }
+    }
+
+    private void googleAnalytics() {
+        Tracker t = ((PlayerApplication) getApplication()).getTracker(
+                PlayerApplication.TrackerName.APP_TRACKER);
+
+        t.setScreenName("MainActivity");
+        t.send(new HitBuilders.AppViewBuilder().build());
     }
 
 
