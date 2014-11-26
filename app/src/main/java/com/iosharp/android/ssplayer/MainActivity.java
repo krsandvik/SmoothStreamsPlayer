@@ -21,6 +21,7 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 
 public class MainActivity extends ActionBarActivity {
+    public static final String USER_AGENT = "SmoothStreamsPlayer";
 
     private VideoCastManager mCastManager;
 

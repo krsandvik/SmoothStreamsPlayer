@@ -9,7 +9,11 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.iosharp.android.ssplayer.MainActivity;
 import com.iosharp.android.ssplayer.R;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,7 +25,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class FetchLoginInfoTask extends AsyncTask<Void, Void, String> {
+public class FetchLoginInfoTask extends AsyncTask<Void, Void, Void> {
 
     private static final String TAG = FetchLoginInfoTask.class.getSimpleName();
 
@@ -55,9 +59,8 @@ public class FetchLoginInfoTask extends AsyncTask<Void, Void, String> {
     }
 
     @Override
-    protected String doInBackground(Void... voids) {
-        HttpURLConnection urlConnection = null;
-        BufferedReader reader = null;
+    protected Void doInBackground(Void... voids) {
+        final OkHttpClient client = new OkHttpClient();
         String loginJsonStr = null;
 
         try {
@@ -75,43 +78,22 @@ public class FetchLoginInfoTask extends AsyncTask<Void, Void, String> {
 
             URL url = new URL(builtUri.toString());
 
-            urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.connect();
+            Request request = new Request.Builder()
+                    .url(url)
+                    .header("User-Agent", MainActivity.USER_AGENT)
+                    .build();
 
-            InputStream inputStream = urlConnection.getInputStream();
-            StringBuffer buffer = new StringBuffer();
-            if (inputStream == null) {
-                return null;
-            }
-            reader = new BufferedReader(new InputStreamReader(inputStream));
+            Response response = client.newCall(request).execute();
 
-            String line;
-            while ((line = reader.readLine()) != null) {
-                buffer.append(line + "\n");
-            }
+            if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
 
-            if (buffer.length() == 0) {
-                return null;
-            }
-            loginJsonStr = buffer.toString();
+            loginJsonStr = response.body().string();
+
         } catch (IOException e) {
-            Log.e(TAG, "Error ", e);
-            return null;
-        } finally {
-            if (urlConnection != null) {
-                urlConnection.disconnect();
-            }
-            if (reader != null) {
-                try {
-                    reader.close();
-                } catch (final IOException e) {
-                    Log.e(TAG, "Error closing stream", e);
-                }
-            }
+            e.printStackTrace();
         }
 
         parseLoginResponse(loginJsonStr);
-
         return null;
     }
 

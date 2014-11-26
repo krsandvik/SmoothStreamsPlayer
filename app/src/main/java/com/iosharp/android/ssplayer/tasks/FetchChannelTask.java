@@ -6,7 +6,11 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.iosharp.android.ssplayer.EventListFragment;
+import com.iosharp.android.ssplayer.MainActivity;
 import com.iosharp.android.ssplayer.Utils;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -138,56 +142,27 @@ public class FetchChannelTask extends AsyncTask<Void, Void, String> {
 
     @Override
     protected String doInBackground(Void... voids) {
-        HttpURLConnection urlConnection = null;
-        BufferedReader reader = null;
+        final OkHttpClient client = new OkHttpClient();
         String channelsJsonStr = null;
 
         try {
             final String SMOOTHSTREAMS_JSON_FEED = "http://cdn.smoothstreams.tv/schedule/feed.json";
-//            final String SMOOTHSTREAMS_JSON_FEED = "http://pastebin.com/raw.php?i=KEwfzwYA";
 
             URL url = new URL(SMOOTHSTREAMS_JSON_FEED);
 
-            urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setRequestMethod("GET");
-            urlConnection.connect();
+            Request request = new Request.Builder()
+                    .url(url)
+                    .header("User-Agent", MainActivity.USER_AGENT)
+                    .build();
 
-            // Read the input stream into a String
-            InputStream inputStream = urlConnection.getInputStream();
-            StringBuffer buffer = new StringBuffer();
-            if (inputStream == null) {
-                return null;
-            }
-            reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
+            Response response = client.newCall(request).execute();
 
-            String line;
-            while ((line = reader.readLine()) != null) {
-                // For easier debugging when printing to log.
-                buffer.append(line + "\n");
-            }
+            if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
 
-            if (buffer.length() == 0) {
-                return null;
-            }
-
-//            byte[] bytes = buffer.toString().getBytes("ISO-8859-1");
-//            channelsJsonStr = new String(bytes, "UTF-8");
-
-            channelsJsonStr = buffer.toString();
+            channelsJsonStr = response.body().string();
         } catch (IOException e) {
             Log.e(TAG, "Error", e);
             return null;
-        } finally {
-            if (urlConnection != null) {
-                urlConnection.disconnect();
-            }
-            if (reader != null) {
-                try {
-                    reader.close();
-                } catch (IOException e) {
-                    Log.e(TAG, "Error closing stream", e);
-                }
-            }
         }
 
         try {
