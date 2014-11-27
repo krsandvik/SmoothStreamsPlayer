@@ -16,11 +16,15 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.cast.MediaInfo;
 import com.google.sample.castcompanionlibrary.cast.VideoCastManager;
 import com.google.sample.castcompanionlibrary.widgets.MiniController;
 import com.iosharp.android.ssplayer.videoplayer.VideoActivity;
 
+import static com.iosharp.android.ssplayer.PlayerApplication.TrackerName;
+import static com.iosharp.android.ssplayer.PlayerApplication.getCastManager;
 import static com.iosharp.android.ssplayer.db.ChannelContract.ChannelEntry;
 import static com.iosharp.android.ssplayer.db.ChannelContract.EventEntry;
 
@@ -63,7 +67,7 @@ public class ChannelListFragment extends Fragment implements LoaderManager.Loade
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mCastManager = PlayerApplication.getCastManager(getActivity());
+        mCastManager = getCastManager(getActivity());
     }
 
     @Override
@@ -74,12 +78,24 @@ public class ChannelListFragment extends Fragment implements LoaderManager.Loade
 
     public void handleNavigation(Context context, MediaInfo info) {
         if (Utils.isInternetAvailable(context)) {
+            Tracker t = ((PlayerApplication) getActivity().getApplication()).getTracker(TrackerName.APP_TRACKER);
             if (mCastManager != null && mCastManager.isConnected()) {
+                t.send(new HitBuilders.EventBuilder()
+                        .setCategory("Playback")
+                        .setAction("Chromecast")
+                         .build());
+
                 mCastManager.startCastControllerActivity(context, info, 0, true);
             } else {
                 Intent intent = new Intent(context, VideoActivity.class);
                 intent.putExtra("media", com.google.sample.castcompanionlibrary.utils.Utils.fromMediaInfo(info));
                 intent.putExtra("channel", mChannelId);
+
+                t.send(new HitBuilders.EventBuilder()
+                        .setCategory("Playback")
+                        .setAction("Local")
+                        .build());
+
                 context.startActivity(intent);
             }
         }

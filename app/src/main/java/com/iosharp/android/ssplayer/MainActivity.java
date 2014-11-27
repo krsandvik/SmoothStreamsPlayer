@@ -14,9 +14,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-
 import com.crashlytics.android.Crashlytics;
-
+import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.google.sample.castcompanionlibrary.cast.VideoCastManager;
@@ -28,6 +27,10 @@ public class MainActivity extends ActionBarActivity {
     public static final String USER_AGENT = "SmoothStreamsPlayer";
 
     private VideoCastManager mCastManager;
+    private Tracker mTracker;
+
+    final String[] TAB_TITLES = {"Channels",
+            "Events"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,32 +38,32 @@ public class MainActivity extends ActionBarActivity {
         Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_main);
 
-        googleAnalytics();
         if (!(Build.MODEL.contains("AFT") || Build.MANUFACTURER.equals("Amazon"))) {
             VideoCastManager.checkGooglePlayServices(this);
         }
 
+        googleAnalytics();
+        setupActionBar();
+        setupTabs();
+
         mCastManager = PlayerApplication.getCastManager(this);
+        if (mCastManager != null) {
+            mCastManager.reconnectSessionIfPossible(this, false);
+
+        }
 
         if (Utils.isInternetAvailable(this)) {
             FetchChannelTask fetchChannelTask = new FetchChannelTask(this);
             fetchChannelTask.execute();
         }
-
-        setupActionBar();
-        setupTabs();
-
-        if (mCastManager != null) {
-            mCastManager.reconnectSessionIfPossible(this, false);
-        }
     }
 
     private void googleAnalytics() {
-        Tracker t = ((PlayerApplication) getApplication()).getTracker(
+        mTracker = ((PlayerApplication)getApplication()).getTracker(
                 PlayerApplication.TrackerName.APP_TRACKER);
 
-        t.setScreenName("MainActivity");
-        t.send(new HitBuilders.AppViewBuilder().build());
+        mTracker.setScreenName(TAB_TITLES[0]);
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
 
@@ -70,6 +73,28 @@ public class MainActivity extends ActionBarActivity {
 
         PagerTabStrip pagerTabStrip = (PagerTabStrip) findViewById(R.id.pagertabstrip);
         pagerTabStrip.setTabIndicatorColor(Color.GRAY);
+
+        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                mTracker = ((PlayerApplication) getApplication()).getTracker(
+                        PlayerApplication.TrackerName.APP_TRACKER);
+
+                mTracker.setScreenName(TAB_TITLES[position]);
+                mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+                GoogleAnalytics.getInstance(getApplicationContext()).dispatchLocalHits();
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     @Override
@@ -128,12 +153,12 @@ public class MainActivity extends ActionBarActivity {
 
     class ViewPagerAdapter extends FragmentPagerAdapter {
 
-        final String[] TAB_TITLES = {"Channels",
-                                    "Events"};
+
 
         public ViewPagerAdapter(FragmentManager fm) {
             super(fm);
         }
+
 
 
         @Override
@@ -143,8 +168,6 @@ public class MainActivity extends ActionBarActivity {
                     return new ChannelListFragment();
                 case 1:
                     return new EventListFragment();
-                case 2:
-                    return new ChannelListFragment();
             }
             return null;
         }
@@ -158,6 +181,7 @@ public class MainActivity extends ActionBarActivity {
         public int getCount() {
             return TAB_TITLES.length ;
         }
-    }
+
+        }
 
 }

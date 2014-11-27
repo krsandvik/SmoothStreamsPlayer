@@ -21,6 +21,8 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.cast.ApplicationMetadata;
 import com.google.android.gms.cast.MediaInfo;
 import com.google.android.gms.cast.MediaMetadata;
@@ -65,6 +67,9 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
         goFullscreen();
         getSupportActionBar().show();
 
+        Tracker t = ((PlayerApplication) getApplication()).getTracker(PlayerApplication.TrackerName.APP_TRACKER);
+        t.setScreenName("Video Player");
+        t.send(new HitBuilders.ScreenViewBuilder().build());
 
         Bundle b = getIntent().getExtras();
         if (b != null) {

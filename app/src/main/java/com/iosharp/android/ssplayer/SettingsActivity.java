@@ -11,6 +11,8 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceManager;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.iosharp.android.ssplayer.tasks.FetchLoginInfoTask;
 
 public class SettingsActivity extends PreferenceActivity implements
@@ -19,6 +21,10 @@ public class SettingsActivity extends PreferenceActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Tracker t = ((PlayerApplication) getApplication()).getTracker(PlayerApplication.TrackerName.APP_TRACKER);
+        t.setScreenName("Settings");
+        t.send(new HitBuilders.ScreenViewBuilder().build());
 
         PreferenceManager.setDefaultValues(getBaseContext(), R.xml.preferences,
                 false);
