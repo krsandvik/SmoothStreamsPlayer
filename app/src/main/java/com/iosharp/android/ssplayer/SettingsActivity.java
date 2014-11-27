@@ -23,7 +23,7 @@ public class SettingsActivity extends PreferenceActivity implements
         super.onCreate(savedInstanceState);
 
         Tracker t = ((PlayerApplication) getApplication()).getTracker(PlayerApplication.TrackerName.APP_TRACKER);
-        t.setScreenName("Settings");
+        t.setScreenName(getString(R.string.ga_screen_settings));
         t.send(new HitBuilders.ScreenViewBuilder().build());
 
         PreferenceManager.setDefaultValues(getBaseContext(), R.xml.preferences,

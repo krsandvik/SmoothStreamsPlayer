@@ -174,12 +174,13 @@ public class Utils {
         ImageSpan imageSpan = new ImageSpan(context, flag, DynamicDrawableSpan.ALIGN_BASELINE);
         SpannableString languageSpannableString = new SpannableString(languageStr);
 
-        // Starting at one to not italize the space
+        // Starting at one to not italic the space
         languageSpannableString.setSpan(imageSpan, 1, languageStr.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
         return languageSpannableString;
     }
 
     public static String getCleanTitle(String title) {
+        // For example, Mike &amp; Mike -> Mike & Mike
         String cleanTitle = title.replace("&amp;", "&");
         return cleanTitle;
     }
@@ -190,8 +191,8 @@ public class Utils {
                 .getActiveNetworkInfo();
 
         if (info == null) {
-            Toast.makeText(context, "No internet connection detected!", Toast.LENGTH_LONG).show();
-            Log.e(TAG, "No internet connection detected!");
+            Toast.makeText(context, context.getString(R.string.no_internet_connection_detected), Toast.LENGTH_LONG).show();
+            Log.e(TAG, context.getString(R.string.no_internet_connection_detected));
             return false;
         }
         return true;

@@ -38,7 +38,7 @@ public class AboutActivity extends ActionBarActivity {
             View rootView = inflater.inflate(R.layout.fragment_about, container, false);
 
             Tracker t = ((PlayerApplication) getActivity().getApplication()).getTracker(PlayerApplication.TrackerName.APP_TRACKER);
-            t.setScreenName("About");
+            t.setScreenName(getString(R.string.ga_screen_about));
             t.send(new HitBuilders.ScreenViewBuilder().build());
 
             ((TextView) rootView.findViewById(R.id.about_app_version)).setText(getVersionInfo());

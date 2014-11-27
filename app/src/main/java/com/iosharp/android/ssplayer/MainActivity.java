@@ -29,8 +29,8 @@ public class MainActivity extends ActionBarActivity {
     private VideoCastManager mCastManager;
     private Tracker mTracker;
 
-    final String[] TAB_TITLES = {"Channels",
-            "Events"};
+    final String[] TAB_TITLES = {getString(R.string.ga_screen_channels),
+            getString(R.string.ga_screen_events)};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
