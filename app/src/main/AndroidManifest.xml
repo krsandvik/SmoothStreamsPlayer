@@ -96,6 +96,9 @@
             android:exported="false" />
         <meta-data android:name="com.crashlytics.ApiKey" android:value="4df4b0f435d2c01d5c9bc887a08cecf028494545"/>
 
+        <service android:name=".service.SmoothService"/>
+        <receiver android:name=".service.SmoothService$AlarmReceiver" android:enabled="true"/>
+        <receiver android:name=".service.SmoothService$EventReceiver" android:enabled="true"/>
     </application>
 
 </manifest>

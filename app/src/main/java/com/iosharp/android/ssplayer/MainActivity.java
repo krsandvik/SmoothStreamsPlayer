@@ -1,5 +1,8 @@
 package com.iosharp.android.ssplayer;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -19,7 +22,7 @@ import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.google.sample.castcompanionlibrary.cast.VideoCastManager;
-import com.iosharp.android.ssplayer.tasks.FetchChannelTask;
+import com.iosharp.android.ssplayer.service.SmoothService;
 
 import io.fabric.sdk.android.Fabric;
 
@@ -29,14 +32,16 @@ public class MainActivity extends ActionBarActivity {
     private VideoCastManager mCastManager;
     private Tracker mTracker;
 
-    final String[] TAB_TITLES = {getString(R.string.ga_screen_channels),
-            getString(R.string.ga_screen_events)};
+    final String[] TAB_TITLES = {"Channels",
+            "Events"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_main);
+
+
 
         if (!(Build.MODEL.contains("AFT") || Build.MANUFACTURER.equals("Amazon"))) {
             VideoCastManager.checkGooglePlayServices(this);
@@ -52,10 +57,15 @@ public class MainActivity extends ActionBarActivity {
 
         }
 
-        if (Utils.isInternetAvailable(this)) {
-            FetchChannelTask fetchChannelTask = new FetchChannelTask(this);
-            fetchChannelTask.execute();
-        }
+        setAlarm();
+    }
+
+    private void setAlarm() {
+        Intent alarmIntent = new Intent(this, SmoothService.AlarmReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, PendingIntent.FLAG_ONE_SHOT);
+
+        AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        am.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 90000, pendingIntent);
     }
 
     private void googleAnalytics() {
@@ -99,6 +109,11 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     protected void onResume() {
+        if (Utils.isInternetAvailable(this)) {
+            Intent intent = new Intent(this, SmoothService.class);
+            this.startService(intent);
+        }
+
         if (mCastManager != null) {
             mCastManager.incrementUiCounter();
         }

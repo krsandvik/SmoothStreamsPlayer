@@ -1,3 +1,9 @@
+#####0.09#####
+changes:
+
+ - crash fix on Lollipop devices
+ - rework channel and event fetching
+
 #####0.082#####
 changes:
 
