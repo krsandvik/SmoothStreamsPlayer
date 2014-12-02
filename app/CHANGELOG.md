@@ -3,6 +3,8 @@ changes:
 
  - crash fix on Lollipop devices
  - rework channel and event fetching
+ - refresh button added
+ - ensure no duplicate days/events in events list
 
 #####0.082#####
 changes:

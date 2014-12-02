@@ -75,4 +75,5 @@
     <string name="ga_screen_video_player" translatable="false">Video Player</string>
     <string name="ga_screen_about" translatable="false">About</string>
     <string name="ga_screen_settings" translatable="false">Settings</string>
+    <string name="action_refresh">Refresh</string>
 </resources>

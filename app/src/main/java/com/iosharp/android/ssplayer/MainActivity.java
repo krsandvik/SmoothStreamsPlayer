@@ -107,12 +107,16 @@ public class MainActivity extends ActionBarActivity {
         });
     }
 
-    @Override
-    protected void onResume() {
+    private void getChannels() {
         if (Utils.isInternetAvailable(this)) {
             Intent intent = new Intent(this, SmoothService.class);
             this.startService(intent);
         }
+    }
+
+    @Override
+    protected void onResume() {
+        getChannels();
 
         if (mCastManager != null) {
             mCastManager.incrementUiCounter();
@@ -156,6 +160,9 @@ public class MainActivity extends ActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
+        if (id == R.id.action_refresh) {
+            getChannels();
+        }
         if (id == R.id.action_settings) {
             startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
             return true;
