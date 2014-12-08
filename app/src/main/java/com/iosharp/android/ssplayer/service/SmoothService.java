@@ -1,6 +1,8 @@
 package com.iosharp.android.ssplayer.service;
 
 import android.app.IntentService;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
@@ -11,6 +13,7 @@ import android.util.Log;
 import com.crashlytics.android.Crashlytics;
 import com.iosharp.android.ssplayer.EventListFragment;
 import com.iosharp.android.ssplayer.MainActivity;
+import com.iosharp.android.ssplayer.R;
 import com.iosharp.android.ssplayer.Utils;
 import com.iosharp.android.ssplayer.db.ChannelContract;
 import com.squareup.okhttp.OkHttpClient;
@@ -197,4 +200,17 @@ public class SmoothService extends IntentService {
             EventListFragment.updateEvents(context);
         }
     }
+
+//    static public class NotificationReceiver extends BroadcastReceiver {
+//        @Override
+//        public void onReceive(Context context, Intent intent) {
+//            String eventTitle;
+//
+//
+//            NotificationManager notificationManager;
+//
+//            notificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
+//            Notification notification = new Notification(R.drawable.ic_launcher, "Test Alarm")
+//        }
+//    }
 }
