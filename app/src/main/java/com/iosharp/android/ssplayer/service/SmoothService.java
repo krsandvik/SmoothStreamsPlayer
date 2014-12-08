@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.util.Date;
+import java.util.Vector;
 
 import static com.iosharp.android.ssplayer.db.ChannelContract.getDbDateString;
 
@@ -82,6 +83,9 @@ public class SmoothService extends IntentService {
 
         try {
             JSONObject channelList = new JSONObject(channelsJsonStr);
+            Vector<ContentValues> channelsVector = new Vector<ContentValues>(channelList.length());
+            Vector<ContentValues> eventsVector = new Vector<ContentValues>();
+
             for (int i = 1; i < channelList.length() + 1; i++) {
                 // Channel starts at 1, not zero
 
@@ -97,11 +101,12 @@ public class SmoothService extends IntentService {
                 channelValues.put(ChannelContract.ChannelEntry.COLUMN_NAME, channelName);
                 channelValues.put(ChannelContract.ChannelEntry.COLUMN_ICON, channelIcon);
 
-                getContentResolver().insert(ChannelContract.ChannelEntry.CONTENT_URI, channelValues);
+                channelsVector.add(channelValues);
 
                 // Get the channels' events, if any are there.
                 if (c.has(TAG_CHANNEL_ITEMS)) {
                     JSONArray items = c.getJSONArray(TAG_CHANNEL_ITEMS);
+//                    Vector<ContentValues> eventsVector = new Vector<ContentValues>(items.length());
 
                     for (int j = 0; j < items.length(); j++) {
                         String cleanEventName = null;
@@ -129,6 +134,7 @@ public class SmoothService extends IntentService {
                         }
 
                         ContentValues eventValues = new ContentValues();
+
                         eventValues.put(ChannelContract.EventEntry._ID, eventId);
                         eventValues.put(ChannelContract.EventEntry.COLUMN_KEY_CHANNEL, eventChannel);
                         eventValues.put(ChannelContract.EventEntry.COLUMN_NETWORK, eventNetwork);
@@ -141,9 +147,26 @@ public class SmoothService extends IntentService {
                         eventValues.put(ChannelContract.EventEntry.COLUMN_QUALITY, eventQuality);
                         eventValues.put(ChannelContract.EventEntry.COLUMN_DATE, eventDate);
 
-                       this.getContentResolver().insert(ChannelContract.EventEntry.CONTENT_URI, eventValues);
+                        eventsVector.add(eventValues);
                     }
                 }
+            }
+            if (eventsVector.size() > 0) {
+                ContentValues[] eventsArray = new ContentValues[eventsVector.size()];
+                eventsVector.toArray(eventsArray);
+                int eventRowsInserted = this.getContentResolver()
+                        .bulkInsert(ChannelContract.EventEntry.CONTENT_URI, eventsArray);
+
+//                        Log.v(TAG, "inserted " + eventRowsInserted + " rows of events");
+            }
+
+            if (channelsVector.size() > 0) {
+                ContentValues[] channelsArray = new ContentValues[channelsVector.size()];
+                channelsVector.toArray(channelsArray);
+                int channelRowsInserted = this.getContentResolver()
+                        .bulkInsert(ChannelContract.ChannelEntry.CONTENT_URI, channelsArray);
+
+//                Log.v(TAG, "inserted " + channelRowsInserted + " rows of channels");
             }
         } catch (JSONException e) {
             e.printStackTrace();

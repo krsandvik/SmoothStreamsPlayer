@@ -61,11 +61,11 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private void setAlarm() {
-        Intent alarmIntent = new Intent(this, SmoothService.AlarmReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, PendingIntent.FLAG_ONE_SHOT);
-
         AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        am.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 90000, pendingIntent);
+        Intent alarmIntent = new Intent(this, SmoothService.AlarmReceiver.class);
+
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        am.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), AlarmManager.INTERVAL_FIFTEEN_MINUTES, pendingIntent);
     }
 
     private void googleAnalytics() {
@@ -116,7 +116,7 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     protected void onResume() {
-        getChannels();
+//        getChannels();
 
         if (mCastManager != null) {
             mCastManager.incrementUiCounter();

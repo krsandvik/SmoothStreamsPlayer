@@ -325,4 +325,47 @@ public class ChannelProvider extends ContentProvider {
         }
         return rowsUpdated;
     }
+
+    public int bulkInsert(Uri uri, ContentValues[] values) {
+        final SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        final int match = sUriMatcher.match(uri);
+
+        int returnCount;
+        switch (match) {
+            case EVENT:
+                db.beginTransaction();
+                returnCount = 0;
+                try {
+                    for (ContentValues value : values) {
+                        long _id = db.insertWithOnConflict(EventEntry.TABLE_NAME, null, value, SQLiteDatabase.CONFLICT_REPLACE);
+                        if (_id != -1 ) {
+                            returnCount++;
+                        }
+                    }
+                    db.setTransactionSuccessful();
+                } finally {
+                    db.endTransaction();
+                }
+                getContext().getContentResolver().notifyChange(uri, null);
+                return returnCount;
+            case CHANNEL:
+                db.beginTransaction();
+                returnCount = 0;
+                try {
+                    for (ContentValues value : values) {
+                        long _id = db.insertWithOnConflict(ChannelEntry.TABLE_NAME, null, value, SQLiteDatabase.CONFLICT_REPLACE);
+                        if (_id != -1 ) {
+                            returnCount++;
+                        }
+                    }
+                    db.setTransactionSuccessful();
+                } finally {
+                    db.endTransaction();
+                }
+                getContext().getContentResolver().notifyChange(uri, null);
+                return returnCount;
+            default:
+                return super.bulkInsert(uri, values);
+        }
+    }
 }

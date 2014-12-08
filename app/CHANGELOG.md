@@ -1,3 +1,9 @@
+#####0.091#####
+changes:
+
+- bulk insert of events and channels
+- channel and event data properly fetched every 15 minutes
+
 #####0.09#####
 changes:
 
