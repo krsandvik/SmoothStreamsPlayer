@@ -26,8 +26,6 @@ import com.iosharp.android.ssplayer.service.SmoothService;
 import io.fabric.sdk.android.Fabric;
 
 public class MainActivity extends ActionBarActivity {
-    public static final String USER_AGENT = "SmoothStreamsPlayer";
-
     private VideoCastManager mCastManager;
     private Tracker mTracker;
 
@@ -79,7 +77,8 @@ public class MainActivity extends ActionBarActivity {
                 alarmIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
 
-        am.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), AlarmManager.INTERVAL_HOUR, pendingIntent);
+//        am.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), AlarmManager.INTERVAL_HOUR, pendingIntent);
+        am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 30000, pendingIntent);
     }
 
     private void googleAnalytics() {

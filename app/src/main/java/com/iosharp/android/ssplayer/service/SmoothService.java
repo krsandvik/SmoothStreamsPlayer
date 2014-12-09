@@ -13,7 +13,7 @@ import android.util.Log;
 import com.crashlytics.android.Crashlytics;
 import com.iosharp.android.ssplayer.AlertFragment;
 import com.iosharp.android.ssplayer.EventListFragment;
-import com.iosharp.android.ssplayer.MainActivity;
+import com.iosharp.android.ssplayer.PlayerApplication;
 import com.iosharp.android.ssplayer.R;
 import com.iosharp.android.ssplayer.Utils;
 import com.iosharp.android.ssplayer.db.ChannelContract;
@@ -43,6 +43,7 @@ public class SmoothService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
+        final String USER_AGENT = PlayerApplication.getUserAgent(getApplicationContext());
         final OkHttpClient client = new OkHttpClient();
         String channelsJsonStr;
 
@@ -53,7 +54,7 @@ public class SmoothService extends IntentService {
 
             Request request = new Request.Builder()
                     .url(url)
-                    .header("User-Agent", MainActivity.USER_AGENT)
+                    .header("User-Agent", USER_AGENT)
                     .build();
 
             Response response = client.newCall(request).execute();
@@ -208,7 +209,7 @@ public class SmoothService extends IntentService {
             int channel = intent.getIntExtra(AlertFragment.EXTRA_CHANNEL, -1);
             long time = intent.getLongExtra(AlertFragment.EXTRA_TIME, -1);
 
-            String formattedDateString = Utils.formatNotificationDate(time, AlertFragment.TIME_FORMAT);
+            String formattedDateString = Utils.formatLongToString(time, AlertFragment.TIME_FORMAT);
 
             NotificationManager notificationManager;
 

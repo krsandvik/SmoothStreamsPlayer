@@ -10,7 +10,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
-import com.iosharp.android.ssplayer.MainActivity;
+import com.iosharp.android.ssplayer.PlayerApplication;
 import com.iosharp.android.ssplayer.R;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -23,7 +23,6 @@ import java.io.IOException;
 import java.net.URL;
 
 public class FetchLoginInfoTask extends AsyncTask<Void, Void, Void> {
-
     private static final String TAG = FetchLoginInfoTask.class.getSimpleName();
 
     private SharedPreferences mSharedPreferences;
@@ -57,6 +56,7 @@ public class FetchLoginInfoTask extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected Void doInBackground(Void... voids) {
+        final String USER_AGENT = PlayerApplication.getUserAgent(mContext);
         final OkHttpClient client = new OkHttpClient();
         String loginJsonStr = null;
 
@@ -77,7 +77,7 @@ public class FetchLoginInfoTask extends AsyncTask<Void, Void, Void> {
 
             Request request = new Request.Builder()
                     .url(url)
-                    .header("User-Agent", MainActivity.USER_AGENT)
+                    .header("User-Agent", USER_AGENT)
                     .build();
 
             Response response = client.newCall(request).execute();

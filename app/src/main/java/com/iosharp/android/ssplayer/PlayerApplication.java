@@ -2,6 +2,8 @@ package com.iosharp.android.ssplayer;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Build;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
@@ -30,6 +32,26 @@ public class PlayerApplication extends Application {
             return mCastMgr;
         }
         return null;
+    }
+
+    public static String getUserAgent(Context context) {
+        return "SmoothStreamsPlayer " + getVersion(context);
+    }
+
+    public static String getVersion(Context context) {
+        String strVersion = "v";
+
+        PackageInfo packageInfo;
+        try {
+            packageInfo = context.getPackageManager().getPackageInfo(
+                    context.getPackageName(), 0);
+            strVersion += packageInfo.versionName;
+
+        } catch (PackageManager.NameNotFoundException e) {
+            strVersion += "Unknown";
+        }
+
+        return strVersion;
     }
 
     /**
