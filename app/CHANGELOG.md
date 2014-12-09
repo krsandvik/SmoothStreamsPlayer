@@ -1,3 +1,9 @@
+#####0.11####
+changes:
+
+ - can now set alerts as a reminder for upcoming events through the Events tab
+ - misc crash fixes
+
 #####0.1#####
 changes:
 
