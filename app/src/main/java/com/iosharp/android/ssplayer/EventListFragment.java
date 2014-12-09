@@ -1,7 +1,6 @@
 package com.iosharp.android.ssplayer;
 
 
-
 import android.app.FragmentManager;
 import android.content.Context;
 import android.database.Cursor;
@@ -10,7 +9,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.SpannableString;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +33,10 @@ import static com.iosharp.android.ssplayer.db.ChannelContract.EventEntry;
 public class EventListFragment extends Fragment {
     private static final String TAG = EventListFragment.class.getSimpleName();
 
+    public static final String BUNDLE_NAME = "name";
+    public static final String BUNDLE_CHANNEL = "channel";
+    public static final String BUNDLE_TIME = "time";
+
     private static ArrayList<ArrayList<Event>> mDateEvents;
     private static ArrayList<String> mDate;
     private static EventAdapter mAdapter;
@@ -46,13 +48,16 @@ public class EventListFragment extends Fragment {
     }
 
     private static void getDateEvents(Context context, ArrayList<String> dates, ArrayList<ArrayList<Event>> events) {
-        if (mDate != null) {
-            mDate.clear();
+        if (mDate == null) {
+            mDate = new ArrayList<String>();
         }
 
-        if (mDateEvents != null) {
-            mDateEvents.clear();
+        if (mDateEvents == null) {
+            mDateEvents = new ArrayList<ArrayList<Event>>();
         }
+
+        mDate.clear();
+        mDateEvents.clear();
 
         Uri uri = EventEntry.buildEventDate();
         Cursor dateCursor = context.getContentResolver().query(uri, null, null, null, null);
@@ -213,8 +218,14 @@ public class EventListFragment extends Fragment {
             Event e = getRowItem(section, row);
 
             FragmentManager fm = getActivity().getFragmentManager();
+            Bundle b = new Bundle();
 
-            AlertFragment alertFragment = new AlertFragment(e.getName(), e.getChannel(), e.getStartDate());
+            b.putString(BUNDLE_NAME, e.getName());
+            b.putInt(BUNDLE_CHANNEL, e.getChannel());
+            b.putLong(BUNDLE_TIME, e.getStartDate());
+
+            AlertFragment alertFragment = new AlertFragment();
+            alertFragment.setArguments(b);
             alertFragment.show(fm, AlertFragment.class.getSimpleName());
         }
 

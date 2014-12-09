@@ -103,4 +103,14 @@
         <item translatable="false">720</item>
         <item translatable="false">1440</item>
     </string-array>
+
+    <string name="alert_ok">OK</string>
+    <string name="alert_cancel">Cancel</string>
+    <string name="alert_title">Set Alert</string>
+    <string name="alert_event_name_label">Name</string>
+    <string name="alert_event_channel_label">Channel</string>
+    <string name="alert_event_time_label">Time</string>
+    <string name="alert_event_reminder_label">Reminder</string>
+    <string name="alert_successful">Alert created!</string>
+
 </resources>

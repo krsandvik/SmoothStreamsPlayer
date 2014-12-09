@@ -54,7 +54,7 @@ public class MainActivity extends ActionBarActivity {
 
         }
 
-        setAlarm();
+        setSyncBroadcast();
 //        testNotification();
     }
 
@@ -70,7 +70,7 @@ public class MainActivity extends ActionBarActivity {
         am.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), pendingIntent);
     }
 
-    private void setAlarm() {
+    private void setSyncBroadcast() {
         AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent alarmIntent = new Intent(this, SmoothService.SyncReceiver.class);
 
@@ -189,13 +189,9 @@ public class MainActivity extends ActionBarActivity {
 
     class ViewPagerAdapter extends FragmentPagerAdapter {
 
-
-
         public ViewPagerAdapter(FragmentManager fm) {
             super(fm);
         }
-
-
 
         @Override
         public Fragment getItem(int position) {

@@ -10,18 +10,20 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.iosharp.android.ssplayer.service.SmoothService;
 
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
-
 public class AlertFragment extends DialogFragment {
+    private static final String TAG = AlertFragment.class.getSimpleName();
+
     public static final String EXTRA_NAME = "name";
     public static final String EXTRA_CHANNEL = "channel";
     public static final String EXTRA_TIME = "time";
@@ -29,7 +31,6 @@ public class AlertFragment extends DialogFragment {
     public static final String TIME_FORMAT = "EEE MMM dd yyyy HH:mm";
 
     private String mSelectedValue;
-    private Spinner mSpinner;
     private String mEventName;
     private int mEventChannel;
     private long mEventTime;
@@ -37,27 +38,29 @@ public class AlertFragment extends DialogFragment {
     public AlertFragment() {
     }
 
-    public AlertFragment(String eventName, int eventChannel, long eventTime) {
-        mEventName = eventName;
-        mEventChannel = eventChannel;
-        mEventTime = eventTime;
-    }
-
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        Bundle b = getArguments();
+
+        if (b != null) {
+            mEventName = b.getString(EventListFragment.BUNDLE_NAME);
+            mEventChannel = b.getInt(EventListFragment.BUNDLE_CHANNEL);
+            mEventTime = b.getLong(EventListFragment.BUNDLE_TIME);
+        } else {
+            Crashlytics.log(Log.ERROR, TAG, "Bundle is null!");
+        }
+
         final TypedArray spinnerValues = getResources().obtainTypedArray(R.array.list_times_values);
 
         AlertDialog.Builder d = new AlertDialog.Builder(getActivity())
-//                .setIcon(R.drawable.ic_launcher)
-                .setTitle("Set Alert")
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                .setIcon(R.drawable.ic_launcher)
+                .setTitle(getString(R.string.alert_title))
+                .setPositiveButton(getString(R.string.alert_ok), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Integer id = (int) System.currentTimeMillis() / 1000;
                         int reminder = Integer.valueOf(mSelectedValue);
                         long reminderMilliseconds = reminder * 60 * 1000;
 
-                        AlarmManager am = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
                         Intent intent = new Intent(getActivity(), SmoothService.AlertReceiver.class);
                         intent.putExtra(EXTRA_NAME, mEventName);
                         intent.putExtra(EXTRA_TIME, mEventTime);
@@ -68,6 +71,7 @@ public class AlertFragment extends DialogFragment {
                                 intent,
                                 PendingIntent.FLAG_UPDATE_CURRENT);
 
+                        AlarmManager am = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
                         am.set(AlarmManager.RTC_WAKEUP, mEventTime, eventAlertIntent);
 
                         if (reminder != 0) {
@@ -79,11 +83,14 @@ public class AlertFragment extends DialogFragment {
                             am.set(AlarmManager.RTC_WAKEUP, mEventTime - reminderMilliseconds, reminderAlertIntent);
                         }
 
-                        Toast.makeText(getActivity(), "Alert made!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(),
+                                getActivity().getString(R.string.alert_successful),
+                                Toast.LENGTH_SHORT).show();
+
                         dismiss();
                     }
                 })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                .setNegativeButton(getString(R.string.alert_cancel), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dismiss();
@@ -92,17 +99,23 @@ public class AlertFragment extends DialogFragment {
 
         View view = getActivity().getLayoutInflater().inflate(R.layout.fragment_alert, null);
 
-        TextView nameView = (TextView) view.findViewById(R.id.reminder_dialog_event_name_field);
+        TextView nameView = (TextView) view.findViewById(R.id.alert_dialog_event_name_field);
         nameView.setText(mEventName);
 
-        TextView channelView = (TextView) view.findViewById(R.id.reminder_dialog_event_channel_field);
+        TextView channelView = (TextView) view.findViewById(R.id.alert_dialog_event_channel_field);
         channelView.setText(String.valueOf(mEventChannel));
 
-        TextView timeView = (TextView) view.findViewById(R.id.reminder_dialog_event_time_field);
+        TextView timeView = (TextView) view.findViewById(R.id.alert_dialog_event_time_field);
         timeView.setText(Utils.formatNotificationDate(mEventTime, TIME_FORMAT));
 
-        mSpinner = (Spinner) view.findViewById(R.id.reminder_dialog_spinner);
-        mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        Spinner spinner = (Spinner) view.findViewById(R.id.alert_dialog_spinner);
+
+        ArrayAdapter adapter = ArrayAdapter.createFromResource(getActivity(),
+                R.array.list_times, R.layout.spinner_item);
+        adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 mSelectedValue = spinnerValues.getString(position);
