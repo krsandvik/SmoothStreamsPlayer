@@ -116,7 +116,9 @@ public class EventListFragment extends Fragment {
 
     public static void updateEvents(Context context) {
         getDateEvents(context, mDate, mDateEvents);
-        mAdapter.notifyDataSetChanged();
+        if (mAdapter != null) {
+            mAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override
@@ -134,7 +136,6 @@ public class EventListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
         if (mDate != null && mDateEvents != null) {
             updateEvents(getActivity());
         } else {
