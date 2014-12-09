@@ -28,7 +28,7 @@
     <string name="pref_ss_uid_key" translatable="false">pref_ss_uid_key</string>
     <string name="pref_ss_password_key" translatable="false">pref_ss_password_key</string>
     <string name="pref_service_default_value" translatable="false">live247</string>
-    <string name="pref_server_default_value" translatable="false">dEU.smoothstreams.tv</string>
+    <string name="pref_server_default_value" translatable="false">dNAw.smoothstreams.tv</string>
 
     <string-array name="list_services" translatable="false">
         <item translatable="false">Live247</item>

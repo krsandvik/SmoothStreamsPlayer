@@ -15,3 +15,15 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+-keepattributes SourceFile,LineNumberTable
+
+-dontwarn com.squareup.okhttp.**
+-dontwarn okio.**
+-dontwarn com.crashlytics.**
+
+-libraryjars libs
+-keep class com.crashlytics.** { *; }
+-keep class android.support.** { *; }
+-keep interface android.support.** { *; }
+-keep class com.google.sample.** { *; }
+-keep class com.applidium.headerlistview.** { *; }

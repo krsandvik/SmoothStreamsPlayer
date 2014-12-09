@@ -1,3 +1,9 @@
+#####0.10#####
+changes:
+ - apk size reduction through optimization
+ - update support libraries
+ - minimum Android version is now ice cream sandwich (4.0)
+
 #####0.092#####
 changes:
 
