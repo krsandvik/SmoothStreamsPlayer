@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <TableLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:shrinkColumns="1">
+
+        <TableRow>
+            <TextView
+                android:id="@+id/reminder_dialog_event_name_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:text="Name"/>
+            <TextView
+                android:id="@+id/reminder_dialog_event_name_field"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:text="Event"/>
+        </TableRow>
+
+
+        <TableRow>
+            <TextView
+                android:id="@+id/reminder_dialog_event_channel_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:text="Channel"/>
+            <TextView
+                android:id="@+id/reminder_dialog_event_channel_field"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:text="Channel"/>
+        </TableRow>
+
+        <TableRow>
+            <TextView
+                android:id="@+id/reminder_dialog_event_time_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:text="Time"/>
+            <TextView
+                android:id="@+id/reminder_dialog_event_time_field"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:text="Time"/>
+        </TableRow>
+
+        <TableRow>
+            <TextView
+                android:id="@+id/reminder_dialog_time_before_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:text="Reminder"/>
+
+            <Spinner
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/reminder_dialog_spinner"
+                android:entries="@array/list_times"
+                android:entryValues="@array/list_times_values"
+                android:layout_column="1"/>
+        </TableRow>
+
+    </TableLayout>
+</RelativeLayout>

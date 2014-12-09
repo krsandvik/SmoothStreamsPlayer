@@ -76,4 +76,31 @@
     <string name="ga_screen_about" translatable="false">About</string>
     <string name="ga_screen_settings" translatable="false">Settings</string>
     <string name="action_refresh">Refresh</string>
+
+    <string-array name="list_times" translatable="false">
+        <item>None</item>
+        <item>5 minutes</item>
+        <item>10 minutes</item>
+        <item>15 minutes</item>
+        <item>30 minutes</item>
+        <item>1 hour</item>
+        <item>2 hours</item>
+        <item>3 hours</item>
+        <item>6 hours</item>
+        <item>12 hours</item>
+        <item>1 day</item>
+    </string-array>
+    <string-array name="list_times_values" translatable="false">
+        <item translatable="false">0</item>
+        <item translatable="false">5</item>
+        <item translatable="false">10</item>
+        <item translatable="false">15</item>
+        <item translatable="false">30</item>
+        <item translatable="false">60</item>
+        <item translatable="false">120</item>
+        <item translatable="false">180</item>
+        <item translatable="false">360</item>
+        <item translatable="false">720</item>
+        <item translatable="false">1440</item>
+    </string-array>
 </resources>

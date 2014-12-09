@@ -1,6 +1,8 @@
 package com.iosharp.android.ssplayer;
 
 
+
+import android.app.FragmentManager;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
@@ -8,9 +10,11 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.SpannableString;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.TextView;
 
 import com.applidium.headerlistview.HeaderListView;
@@ -97,8 +101,22 @@ public class EventListFragment extends Fragment {
     }
 
     public static void updateEvents(Context context) {
+<<<<<<< HEAD
         getDateEvents(context, mDate, mDateEvents);
         mAdapter.notifyDataSetChanged();
+=======
+        if (mDate != null) {
+            mDate.clear();
+        }
+        if (mDateEvents != null) {
+            mDateEvents.clear();
+        }
+
+        if (mDate != null & mDateEvents != null ) {
+            getDateEvents(context, mDate, mDateEvents);
+            mAdapter.notifyDataSetChanged();
+        }
+>>>>>>> alert work
     }
 
     @Override
@@ -165,6 +183,7 @@ public class EventListFragment extends Fragment {
         @Override
         public View getRowView(int section, int row, View convertView, ViewGroup parent) {
             Event e = getRowItem(section, row);
+
             if (convertView == null) {
                 LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 convertView = inflater.inflate(R.layout.event_item_row, null);
@@ -201,6 +220,16 @@ public class EventListFragment extends Fragment {
         @Override
         public boolean hasSectionHeaderView(int section) {
             return true;
+        }
+
+        @Override
+        public void onRowItemClick(AdapterView<?> parent, View view, int section, int row, long id) {
+            Event e = getRowItem(section, row);
+
+            FragmentManager fm = getActivity().getFragmentManager();
+
+            AlertFragment alertFragment = new AlertFragment(e.getName(), e.getChannel(), e.getStartDate());
+            alertFragment.show(fm, "AlertFragment");
         }
 
         @Override

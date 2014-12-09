@@ -55,11 +55,20 @@ public class MainActivity extends ActionBarActivity {
         }
 
         setAlarm();
+        //testNotification();
+    }
+
+    private void testNotification() {
+        AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent notificationIntent = new Intent(this, SmoothService.AlertReceiver.class);
+
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 23, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), System.currentTimeMillis() + 15000, pendingIntent);
     }
 
     private void setAlarm() {
         AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        Intent alarmIntent = new Intent(this, SmoothService.AlarmReceiver.class);
+        Intent alarmIntent = new Intent(this, SmoothService.SyncReceiver.class);
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         am.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), AlarmManager.INTERVAL_HOUR, pendingIntent);

@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
+import com.iosharp.android.ssplayer.AlertFragment;
 import com.iosharp.android.ssplayer.EventListFragment;
 import com.iosharp.android.ssplayer.MainActivity;
 import com.iosharp.android.ssplayer.Utils;
@@ -181,7 +182,7 @@ public class SmoothService extends IntentService {
         sendBroadcast(eventIntent);
     }
 
-    static public class AlarmReceiver extends BroadcastReceiver {
+    static public class SyncReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             Intent sendIntent = new Intent(context, SmoothService.class);
@@ -193,6 +194,28 @@ public class SmoothService extends IntentService {
         @Override
         public void onReceive(Context context, Intent intent) {
             EventListFragment.updateEvents(context);
+        }
+    }
+
+    static public class AlertReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.d(TAG, "AlertReceiver.onReceive() called");
+            String eventName = intent.getStringExtra(AlertFragment.EXTRA_NAME);
+            int channel = intent.getIntExtra(AlertFragment.EXTRA_CHANNEL, -1);
+            long time = intent.getLongExtra(AlertFragment.EXTRA_TIME, -1);
+
+            NotificationManager notificationManager;
+
+            notificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
+            Notification notification = new Notification.Builder(context)
+                    .setContentTitle(eventName)
+                    .setContentText("Event starting at " + new Date(time).toString() + " on channel " + channel)
+                    .setSmallIcon(R.drawable.ic_launcher)
+                    .setAutoCancel(true)
+                    .build();
+
+            notificationManager.notify(0, notification);
         }
     }
 }
