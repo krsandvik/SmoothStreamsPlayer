@@ -2,13 +2,16 @@ package com.iosharp.android.ssplayer;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +32,8 @@ import static com.iosharp.android.ssplayer.db.ChannelContract.ChannelEntry;
 import static com.iosharp.android.ssplayer.db.ChannelContract.EventEntry;
 
 public class ChannelListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+    public static final String TAG = ChannelListFragment.class.getSimpleName();
+
     private static final int CURSOR_LOADER_ID = 0;
 
     private static final String[] CHANNEL_EVENT_COLUMNS = {
@@ -144,8 +149,21 @@ public class ChannelListFragment extends Fragment implements LoaderManager.Loade
                 String channelIcon = c.getString(COL_CHANNEL_ICON);
 
                 if (Utils.checkForSetServiceCredentials(getActivity())) {
+
                     // Create MediaInfo based off channel
-                    String url = Utils.getStreamUrl(getActivity(), mChannelId);
+                    String url;
+                    if (mCastManager != null && mCastManager.isConnected()) {
+                        // Don't bother respecting protocol choice as Chromecast only supports HTML5
+                        url = StreamUrl.getUrl(getActivity(), mChannelId, StreamUrl.HTML5).toString();
+                    } else {
+                        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                        String protocol = sharedPreferences.getString(getActivity().getString(R.string.pref_protocol_key), "-1");
+
+                        url = StreamUrl.getUrl(getActivity(), mChannelId, Integer.valueOf(protocol)).toString();
+                    }
+
+                    Log.d(TAG, url);
+
                     MediaInfo mediaInfo = Utils.buildMediaInfo(channelName, "SmoothStreams", url, channelIcon);
 
                     // Pass to handleNavigation

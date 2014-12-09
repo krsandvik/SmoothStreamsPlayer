@@ -67,54 +67,6 @@ public class Utils {
         return false;
     }
 
-    public static String getStreamUrl(Context c, int i) {
-        // String format because the URL needs 01, 02, 03, etc when we have single digit integers
-        String channel = String.format("%02d", i);
-
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(c);
-        String uid = sharedPreferences.getString(c.getString(R.string.pref_ss_uid_key), null);
-        String password = sharedPreferences.getString(c.getString(R.string.pref_ss_password_key), null);
-        String server = sharedPreferences.getString(c.getString(R.string.pref_server_key), null);
-        String service = sharedPreferences.getString(c.getString(R.string.pref_service_key), null);
-        boolean quality = sharedPreferences.getBoolean(c.getString(R.string.pref_quality_key), false);
-
-        String streamQuality = null;
-
-        if (quality) {
-            streamQuality = "1";
-        } else {
-            streamQuality = "2";
-        }
-
-        String port = null;
-
-        if (service.equals("live247")) {
-            port = "12935";
-
-        } else if (service.equals("mystreams")) {
-            port = "29350";
-
-        } else if (service.equals("starstreams")) {
-            port = "3935";
-
-        } else if (service.equals("mma-tv")) {
-            port = "5540";
-        }
-
-        String SERVICE_URL_AND_PORT = server + ":" + port;
-        String STREAM_CHANNEL_AND_QUALITY = String.format("ch%sq%s.stream", channel, streamQuality);
-        String BASE_URL = "http://" + SERVICE_URL_AND_PORT + "/view/" + STREAM_CHANNEL_AND_QUALITY + "/playlist.m3u8";
-        String UID_PARAM = "u";
-        String PASSWORD_PARAM = "p";
-
-        Uri uri = Uri.parse(BASE_URL).buildUpon()
-                .appendQueryParameter(UID_PARAM, uid)
-                .appendQueryParameter(PASSWORD_PARAM, password)
-                .build();
-
-        return uri.toString();
-    }
-
     public static MediaInfo buildMediaInfo(String channel, String studio, String url, String iconUrl) {
         final String SMOOTHSTREAMS_ICON_PREFIX = "http://smoothstreams.tv/schedule/includes/images/uploads/";
         final String SMOOTHSTREAMS_LOGO =

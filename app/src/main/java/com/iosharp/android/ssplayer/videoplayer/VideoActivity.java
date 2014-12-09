@@ -20,6 +20,7 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
@@ -183,11 +184,14 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
      */
     @Override
     public boolean onError(MediaPlayer mediaPlayer, int what, int extra) {
-        Log.e(getPackageName(), String.format("Error(%s%s)", what, extra));
+        Log.e("MediaPlayer", String.format("Error(%s, %s)", what, extra));
 
         if (what == MediaPlayer.MEDIA_ERROR_SERVER_DIED) {
             mPlayer.reset();
         } else if (what == MediaPlayer.MEDIA_ERROR_UNKNOWN) {
+            Toast.makeText(getApplicationContext(),
+                    "Unknown media error. Try a different protocol/quality or open in an external player.",
+                    Toast.LENGTH_SHORT).show();
             mPlayer.reset();
         }
         mPlayer.setOnErrorListener(this);

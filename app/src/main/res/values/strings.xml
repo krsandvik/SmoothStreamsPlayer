@@ -20,6 +20,7 @@
     <string name="preferences_east">United States (East)</string>
     <string name="preferences_west">United States (West)</string>
     <string name="preferences_asia">Asia</string>
+    <string name="preferences_protocol">Protocol</string>
     <string name="pref_service_username_key" translatable="false">pref_service_username_key</string>
     <string name="pref_service_password_key" translatable="false">pref_service_password_key</string>
     <string name="pref_service_key" translatable="false">pref_service_key</string>
@@ -29,6 +30,8 @@
     <string name="pref_ss_password_key" translatable="false">pref_ss_password_key</string>
     <string name="pref_service_default_value" translatable="false">live247</string>
     <string name="pref_server_default_value" translatable="false">dNAw.smoothstreams.tv</string>
+    <string name="pref_protocol_key">pref_protocol_key</string>
+    <string name="pref_protocol_default_value">0</string>
 
     <string-array name="list_services" translatable="false">
         <item translatable="false">Live247</item>
@@ -102,6 +105,17 @@
         <item translatable="false">360</item>
         <item translatable="false">720</item>
         <item translatable="false">1440</item>
+    </string-array>
+
+    <string-array name="list_stream_protocols" translatable="false">
+        <item translatable="false">HLS (HTML5)</item>
+        <item translatable="false">RTMP</item>
+        <item translatable="false">RTSP</item>
+    </string-array>
+    <string-array name="list_stream_protocols_values" translatable="false">
+        <item translatable="false">0</item>
+        <item translatable="false">1</item>
+        <item translatable="false">2</item>
     </string-array>
 
     <string name="alert_ok">OK</string>
