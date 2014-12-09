@@ -4,7 +4,6 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -41,8 +40,6 @@ public class MainActivity extends ActionBarActivity {
         Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_main);
 
-
-
         if (!(Build.MODEL.contains("AFT") || Build.MANUFACTURER.equals("Amazon"))) {
             VideoCastManager.checkGooglePlayServices(this);
         }
@@ -65,7 +62,7 @@ public class MainActivity extends ActionBarActivity {
         Intent alarmIntent = new Intent(this, SmoothService.AlarmReceiver.class);
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        am.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), AlarmManager.INTERVAL_FIFTEEN_MINUTES, pendingIntent);
+        am.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), AlarmManager.INTERVAL_HOUR, pendingIntent);
     }
 
     private void googleAnalytics() {
@@ -116,7 +113,7 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     protected void onResume() {
-//        getChannels();
+        getChannels();
 
         if (mCastManager != null) {
             mCastManager.incrementUiCounter();

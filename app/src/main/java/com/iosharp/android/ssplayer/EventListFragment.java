@@ -42,7 +42,13 @@ public class EventListFragment extends Fragment {
     }
 
     private static void getDateEvents(Context context, ArrayList<String> dates, ArrayList<ArrayList<Event>> events) {
+        if (mDate != null) {
+            mDate.clear();
+        }
 
+        if (mDateEvents != null) {
+            mDateEvents.clear();
+        }
 
         Uri uri = EventEntry.buildEventDate();
         Cursor dateCursor = context.getContentResolver().query(uri, null, null, null, null);
@@ -91,9 +97,6 @@ public class EventListFragment extends Fragment {
     }
 
     public static void updateEvents(Context context) {
-        mDate.clear();
-        mDateEvents.clear();
-
         getDateEvents(context, mDate, mDateEvents);
         mAdapter.notifyDataSetChanged();
     }
@@ -182,7 +185,6 @@ public class EventListFragment extends Fragment {
                 qualitySpannableString = Utils.getHighDefBadge();
             }if (!language.equals("")) {
                 languageSpannableString = Utils.getLanguageImg(getActivity(), language);
-//                languageSpannableString = Utils.getLanguageBadge(language.toUpperCase());
             }
 
             ((TextView) convertView.findViewById(R.id.event_item_row_title))

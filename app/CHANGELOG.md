@@ -1,3 +1,10 @@
+#####0.092#####
+changes:
+
+ - theme changes
+ - should fix possible crash that happens when stream data is fetched in the background
+ - background stream data increased from 15 minutes to an hour
+
 #####0.091#####
 changes:
 
