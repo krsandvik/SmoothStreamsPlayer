@@ -77,8 +77,7 @@ public class MainActivity extends ActionBarActivity {
                 alarmIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
 
-//        am.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), AlarmManager.INTERVAL_HOUR, pendingIntent);
-        am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 30000, pendingIntent);
+        am.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), AlarmManager.INTERVAL_HOUR, pendingIntent);
     }
 
     private void googleAnalytics() {
