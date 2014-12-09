@@ -101,22 +101,8 @@ public class EventListFragment extends Fragment {
     }
 
     public static void updateEvents(Context context) {
-<<<<<<< HEAD
         getDateEvents(context, mDate, mDateEvents);
         mAdapter.notifyDataSetChanged();
-=======
-        if (mDate != null) {
-            mDate.clear();
-        }
-        if (mDateEvents != null) {
-            mDateEvents.clear();
-        }
-
-        if (mDate != null & mDateEvents != null ) {
-            getDateEvents(context, mDate, mDateEvents);
-            mAdapter.notifyDataSetChanged();
-        }
->>>>>>> alert work
     }
 
     @Override
@@ -229,7 +215,7 @@ public class EventListFragment extends Fragment {
             FragmentManager fm = getActivity().getFragmentManager();
 
             AlertFragment alertFragment = new AlertFragment(e.getName(), e.getChannel(), e.getStartDate());
-            alertFragment.show(fm, "AlertFragment");
+            alertFragment.show(fm, AlertFragment.class.getSimpleName());
         }
 
         @Override

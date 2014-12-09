@@ -48,14 +48,14 @@ public class AlertFragment extends DialogFragment {
         final TypedArray spinnerValues = getResources().obtainTypedArray(R.array.list_times_values);
 
         AlertDialog.Builder d = new AlertDialog.Builder(getActivity())
-                .setIcon(R.drawable.ic_launcher)
+//                .setIcon(R.drawable.ic_launcher)
                 .setTitle("Set Alert")
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Integer id = (int) System.currentTimeMillis() / 1000;
                         int reminder = Integer.valueOf(mSelectedValue);
-                        int reminderMilliseconds = reminder * 60 * 1000;
+                        long reminderMilliseconds = reminder * 60 * 1000;
 
                         AlarmManager am = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
                         Intent intent = new Intent(getActivity(), SmoothService.AlertReceiver.class);
@@ -63,13 +63,21 @@ public class AlertFragment extends DialogFragment {
                         intent.putExtra(EXTRA_TIME, mEventTime);
                         intent.putExtra(EXTRA_CHANNEL, mEventChannel);
 
-                        mEventTime = new Date().getTime();
+                        PendingIntent eventAlertIntent = PendingIntent.getBroadcast(getActivity(),
+                                (int) System.currentTimeMillis() / 1000,
+                                intent,
+                                PendingIntent.FLAG_UPDATE_CURRENT);
 
-                        PendingIntent alertIntent = PendingIntent.getBroadcast(getActivity(), id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                        am.set(AlarmManager.RTC_WAKEUP, mEventTime, eventAlertIntent);
 
-                        System.out.println("reminder: " + reminder);
+                        if (reminder != 0) {
+                            PendingIntent reminderAlertIntent = PendingIntent.getBroadcast(getActivity(),
+                                    (int) System.currentTimeMillis() / 1000,
+                                    intent,
+                                    PendingIntent.FLAG_UPDATE_CURRENT);
 
-                        am.setRepeating(AlarmManager.RTC_WAKEUP, mEventTime, mEventTime + 5000, alertIntent);
+                            am.set(AlarmManager.RTC_WAKEUP, mEventTime - reminderMilliseconds, reminderAlertIntent);
+                        }
 
                         Toast.makeText(getActivity(), "Alert made!", Toast.LENGTH_SHORT).show();
                         dismiss();
@@ -97,7 +105,7 @@ public class AlertFragment extends DialogFragment {
         mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                mSelectedValue = spinnerValues.getString(0);
+                mSelectedValue = spinnerValues.getString(position);
             }
 
             @Override

@@ -1,16 +1,20 @@
 package com.iosharp.android.ssplayer.service;
 
 import android.app.IntentService;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
 import com.iosharp.android.ssplayer.AlertFragment;
 import com.iosharp.android.ssplayer.EventListFragment;
 import com.iosharp.android.ssplayer.MainActivity;
+import com.iosharp.android.ssplayer.R;
 import com.iosharp.android.ssplayer.Utils;
 import com.iosharp.android.ssplayer.db.ChannelContract;
 import com.squareup.okhttp.OkHttpClient;
@@ -200,17 +204,18 @@ public class SmoothService extends IntentService {
     static public class AlertReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.d(TAG, "AlertReceiver.onReceive() called");
             String eventName = intent.getStringExtra(AlertFragment.EXTRA_NAME);
             int channel = intent.getIntExtra(AlertFragment.EXTRA_CHANNEL, -1);
             long time = intent.getLongExtra(AlertFragment.EXTRA_TIME, -1);
 
+            String formattedDateString = Utils.formatNotificationDate(time, AlertFragment.TIME_FORMAT);
+
             NotificationManager notificationManager;
 
             notificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
-            Notification notification = new Notification.Builder(context)
+            Notification notification = new NotificationCompat.Builder(context)
                     .setContentTitle(eventName)
-                    .setContentText("Event starting at " + new Date(time).toString() + " on channel " + channel)
+                    .setContentText("On channel " + channel + " at " + formattedDateString)
                     .setSmallIcon(R.drawable.ic_launcher)
                     .setAutoCancel(true)
                     .build();
