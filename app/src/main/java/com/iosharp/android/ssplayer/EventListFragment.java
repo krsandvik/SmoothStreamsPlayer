@@ -237,16 +237,21 @@ public class EventListFragment extends Fragment {
         public void onRowItemClick(AdapterView<?> parent, View view, int section, int row, long id) {
             Event e = getRowItem(section, row);
 
-            FragmentManager fm = getActivity().getFragmentManager();
-            Bundle b = new Bundle();
+            Date now = new Date();
+            Date startDate = new Date(e.getStartDate());
 
-            b.putString(BUNDLE_NAME, e.getName());
-            b.putInt(BUNDLE_CHANNEL, e.getChannel());
-            b.putLong(BUNDLE_TIME, e.getStartDate());
+            if (now.before(startDate)) {
+                FragmentManager fm = getActivity().getFragmentManager();
+                Bundle b = new Bundle();
 
-            AlertFragment alertFragment = new AlertFragment();
-            alertFragment.setArguments(b);
-            alertFragment.show(fm, AlertFragment.class.getSimpleName());
+                b.putString(BUNDLE_NAME, e.getName());
+                b.putInt(BUNDLE_CHANNEL, e.getChannel());
+                b.putLong(BUNDLE_TIME, e.getStartDate());
+
+                AlertFragment alertFragment = new AlertFragment();
+                alertFragment.setArguments(b);
+                alertFragment.show(fm, AlertFragment.class.getSimpleName());
+            }
         }
 
         @Override

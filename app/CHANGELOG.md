@@ -1,3 +1,8 @@
+#####0.12####
+changes:
+
+ - only prompt to set an alert if the event is in the future
+
 #####0.11####
 changes:
 
