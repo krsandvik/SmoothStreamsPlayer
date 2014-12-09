@@ -30,9 +30,8 @@ public class Utils {
 
     private static final String TAG = Utils.class.getSimpleName();
 
-    public static String formatNotificationDate(long date, String pattern) {
+    public static String formatLongToString(long date, String pattern) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
-
         return simpleDateFormat.format(new Date(date));
     }
 

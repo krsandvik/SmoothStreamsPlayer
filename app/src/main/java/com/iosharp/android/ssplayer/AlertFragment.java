@@ -106,7 +106,7 @@ public class AlertFragment extends DialogFragment {
         channelView.setText(String.valueOf(mEventChannel));
 
         TextView timeView = (TextView) view.findViewById(R.id.alert_dialog_event_time_field);
-        timeView.setText(Utils.formatNotificationDate(mEventTime, TIME_FORMAT));
+        timeView.setText(Utils.formatLongToString(mEventTime, TIME_FORMAT));
 
         Spinner spinner = (Spinner) view.findViewById(R.id.alert_dialog_spinner);
 
