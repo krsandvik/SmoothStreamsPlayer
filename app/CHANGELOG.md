@@ -1,4 +1,9 @@
-#####0.13####
+#####0.14#####
+changes:
+
+ - tapping on alert notification will open up the app
+
+#####0.13#####
 first public release!
 
 changes:

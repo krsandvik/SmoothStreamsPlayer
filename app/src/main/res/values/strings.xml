@@ -4,6 +4,7 @@
     <string name="app_name">SmoothStreams Player</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="action_search">Search</string>
     <string name="title_activity_settings">Settings</string>
     <string name="title_activity_main">Streams</string>
     <string name="media_controls_description">Media Controls</string>
@@ -78,7 +79,6 @@
     <string name="about_body" translatable="false">\nA video player for the SmoothStreams.tv Networks (Live247.tv / MyStreams.tv / StarStreams.tv / MMA-TV.net / TFR) with Chromecast support.</string>
     <string name="event_header_row_subtitle">ch\t\ttime\t\tname</string>
     <string name="no_internet_connection_detected">No internet connection detected!</string>
-
     <string name="ga_screen_channels" translatable="false">Channels</string>
     <string name="ga_screen_alert_dialog" translatable="false">Set Alert Dialog</string>
     <string name="ga_screen_events" translatable="false">Events</string>
@@ -86,13 +86,13 @@
     <string name="ga_screen_about" translatable="false">About</string>
     <string name="ga_screen_settings" translatable="false">Settings</string>
     <string name="action_refresh">Refresh</string>
-
     <string name="ga_events_category_playback" translatable="false">Playback Events</string>
     <string name="ga_events_action_local" translatable="false">Local</string>
     <string name="ga_events_action_chromecast" translatable="false">Chromecast</string>
     <string name="ga_events_action_external" translatable="false">External</string>
     <string name="ga_events_category_alert" translatable="false">Alert Events</string>
     <string name="ga_events_action_set_alert" translatable="false">Set Alert</string>
+    <string name="search_hint">Search for events</string>
 
     <string-array name="list_times" translatable="false">
         <item>None</item>
@@ -120,7 +120,6 @@
         <item translatable="false">720</item>
         <item translatable="false">1440</item>
     </string-array>
-
     <string-array name="list_stream_protocols" translatable="false">
         <item translatable="false">HLS (HTML5)</item>
         <item translatable="false">RTMP</item>
@@ -140,5 +139,6 @@
     <string name="alert_event_time_label">Time</string>
     <string name="alert_event_reminder_label">Reminder</string>
     <string name="alert_successful">Alert created!</string>
+    <string name="title_activity_searchable">Search</string>
 
 </resources>
