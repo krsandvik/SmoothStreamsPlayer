@@ -85,6 +85,7 @@
     <string name="ga_screen_video_player" translatable="false">Video Player</string>
     <string name="ga_screen_about" translatable="false">About</string>
     <string name="ga_screen_settings" translatable="false">Settings</string>
+    <string name="ga_screen_search" translatable="false">Search</string>
     <string name="action_refresh">Refresh</string>
     <string name="ga_events_category_playback" translatable="false">Playback Events</string>
     <string name="ga_events_action_local" translatable="false">Local</string>
@@ -92,7 +93,11 @@
     <string name="ga_events_action_external" translatable="false">External</string>
     <string name="ga_events_category_alert" translatable="false">Alert Events</string>
     <string name="ga_events_action_set_alert" translatable="false">Set Alert</string>
+    <string name="ga_events_category_search" translatable="false">Search Events</string>
+    <string name="ga_events_action_search" translatable="false">Search</string>
+
     <string name="search_hint">Search for events</string>
+    <string name="search_no_results">No results. Try your search again.</string>
 
     <string-array name="list_times" translatable="false">
         <item>None</item>

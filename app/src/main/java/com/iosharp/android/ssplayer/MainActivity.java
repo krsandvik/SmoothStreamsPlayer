@@ -167,14 +167,12 @@ public class MainActivity extends ActionBarActivity {
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
 
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setQueryRefinementEnabled(true);
         searchView.setIconifiedByDefault(false);
 
         if (mCastManager != null) {
             mCastManager.addMediaRouterButton(menu, R.id.media_route_menu_item);
         }
-
-
-
         return true;
     }
 
