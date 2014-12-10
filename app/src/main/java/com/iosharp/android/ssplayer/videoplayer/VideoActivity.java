@@ -22,6 +22,7 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.cast.ApplicationMetadata;
@@ -52,6 +53,7 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
     private MediaInfo mSelectedMedia;
     private int mChannelId;
     private int mChannelsCount;
+    private Tracker mTracker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,9 +70,11 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
         goFullscreen();
         getSupportActionBar().show();
 
-        Tracker t = ((PlayerApplication) getApplication()).getTracker(PlayerApplication.TrackerName.APP_TRACKER);
-        t.setScreenName("Video Player");
-        t.send(new HitBuilders.ScreenViewBuilder().build());
+        mTracker = ((PlayerApplication) getApplication()).getTracker(PlayerApplication.TrackerName.APP_TRACKER);
+        mTracker.setScreenName(getString(R.string.ga_screen_video_player));
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+        GoogleAnalytics.getInstance(this.getBaseContext()).dispatchLocalHits();
+
 
         Bundle b = getIntent().getExtras();
         if (b != null) {
@@ -275,7 +279,7 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
                 @Override
                 public void onApplicationConnected(ApplicationMetadata appMetadata, String sessionId, boolean wasLaunched) {
                     super.onApplicationConnected(appMetadata, sessionId, wasLaunched);
-                    onBackPressed();
+                    finish();
                     loadRemoteMedia(false);
                 }
             };
@@ -353,15 +357,27 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
         getMenuInflater().inflate(R.menu.menu_video, menu);
 
         if (mCastManager != null) {
+            mTracker.send(new HitBuilders.EventBuilder()
+                    .setCategory(getString(R.string.ga_events_category_playback))
+                    .setAction(getString(R.string.ga_events_action_chromecast))
+                    .build());
+
+            GoogleAnalytics.getInstance(this.getBaseContext()).dispatchLocalHits();
             mCastManager.addMediaRouterButton(menu, R.id.media_route_menu_item);
         }
 
         MenuItem menuItem = menu.findItem(R.id.action_share);
         ShareActionProvider mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
         if (mShareActionProvider != null) {
+
+            mTracker.send(new HitBuilders.EventBuilder()
+            .setCategory(getString(R.string.ga_events_category_playback))
+            .setAction(getString(R.string.ga_events_action_external))
+            .build());
+
+            GoogleAnalytics.getInstance(this.getBaseContext()).dispatchLocalHits();
             mShareActionProvider.setShareIntent(createStreamIntent());
         }
-
         return true;
     }
 }

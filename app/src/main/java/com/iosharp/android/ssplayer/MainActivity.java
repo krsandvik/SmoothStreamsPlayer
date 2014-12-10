@@ -17,7 +17,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.crashlytics.android.Crashlytics;
-import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.google.sample.castcompanionlibrary.cast.VideoCastManager;
@@ -109,7 +108,7 @@ public class MainActivity extends ActionBarActivity {
 
                 mTracker.setScreenName(TAB_TITLES[position]);
                 mTracker.send(new HitBuilders.ScreenViewBuilder().build());
-                GoogleAnalytics.getInstance(getApplicationContext()).dispatchLocalHits();
+
             }
 
             @Override
@@ -154,7 +153,7 @@ public class MainActivity extends ActionBarActivity {
 
     public void setupActionBar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle(getString(R.string.app_name));
+        toolbar.setTitle(getString(R.string.title_activity_main));
         setSupportActionBar(toolbar);
     }
 

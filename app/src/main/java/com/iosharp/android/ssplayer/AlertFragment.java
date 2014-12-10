@@ -19,6 +19,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.iosharp.android.ssplayer.service.SmoothService;
 
 public class AlertFragment extends DialogFragment {
@@ -34,12 +36,17 @@ public class AlertFragment extends DialogFragment {
     private String mEventName;
     private int mEventChannel;
     private long mEventTime;
+    private Tracker mTracker;
 
     public AlertFragment() {
     }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        mTracker = ((PlayerApplication) getActivity().getApplication()).getTracker(PlayerApplication.TrackerName.APP_TRACKER);
+        mTracker.setScreenName(getString(R.string.ga_screen_alert_dialog));
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+
         Bundle b = getArguments();
 
         if (b != null) {
@@ -86,6 +93,11 @@ public class AlertFragment extends DialogFragment {
                         Toast.makeText(getActivity(),
                                 getActivity().getString(R.string.alert_successful),
                                 Toast.LENGTH_SHORT).show();
+
+                        mTracker.send(new HitBuilders.EventBuilder()
+                                .setCategory(getString(R.string.ga_events_category_alert))
+                                .setAction(getString(R.string.ga_events_action_set_alert))
+                                .build());
 
                         dismiss();
                     }

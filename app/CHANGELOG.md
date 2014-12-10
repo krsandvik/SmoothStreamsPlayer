@@ -2,6 +2,7 @@
 changes:
 
  - users can select the protocol (HLS/RTSP/RTMP) to open streams up locally. casting a stream will still be HLS regardless of setting
+ - more layout tweaks
 
 #####0.12####
 changes:

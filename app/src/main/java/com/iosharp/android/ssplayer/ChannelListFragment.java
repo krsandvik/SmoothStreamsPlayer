@@ -19,6 +19,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.cast.MediaInfo;
@@ -83,24 +84,29 @@ public class ChannelListFragment extends Fragment implements LoaderManager.Loade
 
     public void handleNavigation(Context context, MediaInfo info) {
         if (Utils.isInternetAvailable(context)) {
+
             Tracker t = ((PlayerApplication) getActivity().getApplication()).getTracker(TrackerName.APP_TRACKER);
+
             if (mCastManager != null && mCastManager.isConnected()) {
                 t.send(new HitBuilders.EventBuilder()
-                        .setCategory("Playback")
-                        .setAction("Chromecast")
-                         .build());
+                        .setCategory(getString(R.string.ga_events_category_playback))
+                        .setAction(getString(R.string.ga_events_action_chromecast))
+                        .build());
+                GoogleAnalytics.getInstance(getActivity().getBaseContext()).dispatchLocalHits();
 
                 mCastManager.startCastControllerActivity(context, info, 0, true);
+
             } else {
                 Intent intent = new Intent(context, VideoActivity.class);
                 intent.putExtra("media", com.google.sample.castcompanionlibrary.utils.Utils.fromMediaInfo(info));
                 intent.putExtra("channel", mChannelId);
 
                 t.send(new HitBuilders.EventBuilder()
-                        .setCategory("Playback")
-                        .setAction("Local")
+                        .setCategory(getString(R.string.ga_events_category_playback))
+                        .setAction(getString(R.string.ga_events_action_local))
                         .build());
 
+                GoogleAnalytics.getInstance(getActivity().getBaseContext()).dispatchLocalHits();
                 context.startActivity(intent);
             }
         }
