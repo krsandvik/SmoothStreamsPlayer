@@ -23,8 +23,8 @@ android {
         applicationId "com.iosharp.android.ssplayer"
         minSdkVersion 14
         targetSdkVersion 21
-        versionCode 19
-        versionName "0.13"
+        versionCode 20
+        versionName "0.14"
     }
     buildTypes {
         release {

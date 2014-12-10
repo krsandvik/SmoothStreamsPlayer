@@ -2,6 +2,7 @@
 changes:
 
  - tapping on alert notification will open up the app
+ - added search and tapping on results that happen in the future open alert dialog
 
 #####0.13#####
 first public release!
