@@ -3,6 +3,7 @@ package com.iosharp.android.ssplayer.service;
 import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -13,6 +14,7 @@ import android.util.Log;
 import com.crashlytics.android.Crashlytics;
 import com.iosharp.android.ssplayer.AlertFragment;
 import com.iosharp.android.ssplayer.EventListFragment;
+import com.iosharp.android.ssplayer.MainActivity;
 import com.iosharp.android.ssplayer.PlayerApplication;
 import com.iosharp.android.ssplayer.R;
 import com.iosharp.android.ssplayer.Utils;
@@ -211,6 +213,9 @@ public class SmoothService extends IntentService {
 
             String formattedDateString = Utils.formatLongToString(time, AlertFragment.TIME_FORMAT);
 
+            Intent notificationIntent = new Intent(context, MainActivity.class);
+            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
+
             NotificationManager notificationManager;
 
             notificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
@@ -219,6 +224,7 @@ public class SmoothService extends IntentService {
                     .setContentText("On channel " + channel + " at " + formattedDateString)
                     .setSmallIcon(R.drawable.ic_launcher)
                     .setAutoCancel(true)
+                    .setContentIntent(pendingIntent)
                     .build();
 
             notificationManager.notify(0, notification);
