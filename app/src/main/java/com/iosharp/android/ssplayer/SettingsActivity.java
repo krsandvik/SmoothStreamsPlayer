@@ -1,5 +1,6 @@
 package com.iosharp.android.ssplayer;
 
+import android.app.FragmentManager;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
@@ -7,124 +8,166 @@ import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.MultiSelectListPreference;
 import android.preference.Preference;
-import android.preference.PreferenceActivity;
 import android.preference.PreferenceCategory;
+import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.iosharp.android.ssplayer.tasks.FetchLoginInfoTask;
 
-public class SettingsActivity extends PreferenceActivity implements
-        OnSharedPreferenceChangeListener {
+public class SettingsActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        setContentView(R.layout.preferences_activity);
+        setupActionBar();
+
+        getFragmentManager().beginTransaction().replace(R.id.container, new SettingsFragment()).commit();
+
+
         Tracker t = ((PlayerApplication) getApplication()).getTracker(PlayerApplication.TrackerName.APP_TRACKER);
         t.setScreenName(getString(R.string.ga_screen_settings));
         t.send(new HitBuilders.ScreenViewBuilder().build());
 
-        PreferenceManager.setDefaultValues(getBaseContext(), R.xml.preferences,
-                false);
 
-        addPreferencesFromResource(R.xml.preferences);
-        // Show the current value in the settings screen
-        for (int i = 0; i < getPreferenceScreen().getPreferenceCount(); i++) {
-            initSummary(getPreferenceScreen().getPreference(i));
-        }
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        getPreferenceScreen().getSharedPreferences()
-                .registerOnSharedPreferenceChangeListener(this);
+    public void setupActionBar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle(getString(R.string.title_activity_settings));
+        setSupportActionBar(toolbar);
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        getPreferenceScreen().getSharedPreferences()
-                .unregisterOnSharedPreferenceChangeListener(this);
-    }
+    public static class SettingsFragment extends PreferenceFragment implements OnSharedPreferenceChangeListener {
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
 
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
-                                          String key) {
-        updatePreferenceSummary(findPreference(key));
+            PreferenceManager.setDefaultValues(getActivity(), R.xml.preferences,
+                    false);
 
-        // Check only if one of the three below keys is changed to call method
-        // to get service id and password
-        if (key.equals(getString(R.string.pref_service_key))
-                || key.equals(getString(R.string.pref_service_username_key))
-                || key.equals(getString(R.string.pref_service_password_key))) {
-
-            if (hasSetServiceDetails() && Utils.isInternetAvailable(getApplicationContext())) {
-
-                FetchLoginInfoTask fetchLoginInfoTask = new FetchLoginInfoTask(getApplicationContext());
-                fetchLoginInfoTask.execute();
+            addPreferencesFromResource(R.xml.preferences);
+            // Show the current value in the settings screen
+            for (int i = 0; i < getPreferenceScreen().getPreferenceCount(); i++) {
+                initSummary(getPreferenceScreen().getPreference(i));
             }
         }
-    }
 
-    private void initSummary(Preference p) {
-        if (p instanceof PreferenceCategory) {
-            PreferenceCategory cat = (PreferenceCategory) p;
-            for (int i = 0; i < cat.getPreferenceCount(); i++) {
-                initSummary(cat.getPreference(i));
-            }
-        } else {
-            updatePreferenceSummary(p);
+        @Override
+        public void onResume() {
+            super.onResume();
+            getPreferenceScreen().getSharedPreferences()
+                    .registerOnSharedPreferenceChangeListener(this);
         }
-    }
 
-    private void updatePreferenceSummary(Preference p) {
-        if (p instanceof ListPreference) {
-            ListPreference listPref = (ListPreference) p;
-            p.setSummary(listPref.getEntry());
+        @Override
+        public void onPause() {
+            super.onPause();
+            getPreferenceScreen().getSharedPreferences()
+                    .unregisterOnSharedPreferenceChangeListener(this);
         }
-        if (p instanceof EditTextPreference) {
-            EditTextPreference editTextPref = (EditTextPreference) p;
-            // To show the password as masked instead of it being visible
-            if (p.getTitle().toString().contains("assword")) {
-                // Don't mask what isn't there
-                if (editTextPref.getText() == null) {
-                    p.setSummary("");
-                } else {
-                    p.setSummary(editTextPref.getText().replaceAll(".", "*"));
+
+        @Override
+        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
+                                              String key) {
+            updatePreferenceSummary(findPreference(key));
+
+            // Check only if one of the three below keys is changed to call method
+            // to get service id and password
+            if (key.equals(getString(R.string.pref_service_key))
+                    || key.equals(getString(R.string.pref_service_username_key))
+                    || key.equals(getString(R.string.pref_service_password_key))) {
+
+                if (hasSetServiceDetails() && Utils.isInternetAvailable(getActivity())) {
+
+                    FetchLoginInfoTask fetchLoginInfoTask = new FetchLoginInfoTask(getActivity());
+                    fetchLoginInfoTask.execute();
                 }
+            }
 
+            if (key.equals(getString(R.string.pref_protocol_key))) {
+                // check checkbox key to see if we should bother showing dialog
+                sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                boolean showNotice = sharedPreferences.getBoolean(getString(R.string.pref_protocol_notice_checkbox_key), true);
+
+                if (showNotice) {
+                    FragmentManager fm = getFragmentManager();
+                    NoticeDialogFragment noticeDialogFragment = new NoticeDialogFragment();
+                    noticeDialogFragment.show(fm, NoticeDialogFragment.class.getSimpleName());
+                }
+            }
+        }
+
+        private void initSummary(Preference p) {
+            if (p instanceof PreferenceCategory) {
+                PreferenceCategory cat = (PreferenceCategory) p;
+                for (int i = 0; i < cat.getPreferenceCount(); i++) {
+                    initSummary(cat.getPreference(i));
+                }
             } else {
-                // If it isn't a password field just show the text
+                updatePreferenceSummary(p);
+            }
+        }
+
+        private void updatePreferenceSummary(Preference p) {
+            if (p instanceof ListPreference) {
+                ListPreference listPref = (ListPreference) p;
+                p.setSummary(listPref.getEntry());
+            }
+            if (p instanceof EditTextPreference) {
+                EditTextPreference editTextPref = (EditTextPreference) p;
+                // To show the password as masked instead of it being visible
+                if (p.getTitle().toString().contains("assword")) {
+                    // Don't mask what isn't there
+                    if (editTextPref.getText() == null) {
+                        p.setSummary("");
+                    } else {
+                        p.setSummary(editTextPref.getText().replaceAll(".", "*"));
+                    }
+
+                } else {
+                    // If it isn't a password field just show the text
+                    p.setSummary(editTextPref.getText());
+                }
+            }
+            if (p instanceof MultiSelectListPreference) {
+                EditTextPreference editTextPref = (EditTextPreference) p;
                 p.setSummary(editTextPref.getText());
             }
         }
-        if (p instanceof MultiSelectListPreference) {
-            EditTextPreference editTextPref = (EditTextPreference) p;
-            p.setSummary(editTextPref.getText());
+
+        /**
+         * Checks to see if all needed fields for retrieving service id and username
+         * are filled out.
+         *
+         * @return boolean
+         */
+        private boolean hasSetServiceDetails() {
+            SharedPreferences prefs = PreferenceManager
+                    .getDefaultSharedPreferences(getActivity());
+
+            String username = prefs.getString(getString(R.string.pref_service_username_key), null);
+            String password = prefs.getString(getString(R.string.pref_service_password_key), null);
+            String service = prefs.getString(getString(R.string.pref_service_key), null);
+
+            if (username == null || password == null || service == null) {
+                return false;
+            } else {
+                return true;
+            }
         }
+
     }
 
-    /**
-     * Checks to see if all needed fields for retrieving service id and username
-     * are filled out.
-     *
-     * @return boolean
-     */
-    private boolean hasSetServiceDetails() {
-        SharedPreferences prefs = PreferenceManager
-                .getDefaultSharedPreferences(this);
 
-        String username = prefs.getString(getString(R.string.pref_service_username_key), null);
-        String password = prefs.getString(getString(R.string.pref_service_password_key), null);
-        String service = prefs.getString(getString(R.string.pref_service_key), null);
 
-        if (username == null || password == null || service == null) {
-            return false;
-        } else {
-            return true;
-        }
-    }
+
+
+
 }
+
