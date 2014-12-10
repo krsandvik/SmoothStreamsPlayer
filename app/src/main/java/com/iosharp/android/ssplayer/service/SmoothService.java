@@ -86,6 +86,7 @@ public class SmoothService extends IntentService {
         final String TAG_EVENT_CHANNEL = "channel";
         final String TAG_EVENT_LANGUAGE = "language";
         final String TAG_EVENT_QUALITY = "quality";
+        final String TAG_EVENT_CATEGORY = "category";
 
 
         try {
@@ -126,6 +127,7 @@ public class SmoothService extends IntentService {
                         long eventEndDate = Utils.convertDateToLong(e.getString(TAG_EVENT_END_DATE));
                         int eventRuntime = Integer.parseInt(e.getString(TAG_EVENT_RUNTIME));
                         int eventChannel = Integer.parseInt(e.getString(TAG_EVENT_CHANNEL));
+                        String eventCategory = e.getString(TAG_EVENT_CATEGORY);
                         String eventLanguage = e.getString(TAG_EVENT_LANGUAGE);
                         String eventQuality = e.getString(TAG_EVENT_QUALITY);
                         String eventDate = getDbDateString(Utils.convertDateToLong(e.getString(TAG_EVENT_START_DATE)));
@@ -149,6 +151,7 @@ public class SmoothService extends IntentService {
                         eventValues.put(ChannelContract.EventEntry.COLUMN_START_DATE, eventStartDate);
                         eventValues.put(ChannelContract.EventEntry.COLUMN_END_DATE, eventEndDate);
                         eventValues.put(ChannelContract.EventEntry.COLUMN_RUNTIME, eventRuntime);
+                        eventValues.put(ChannelContract.EventEntry.COLUMN_CATEGORY, eventCategory);
                         eventValues.put(ChannelContract.EventEntry.COLUMN_LANGUAGE, eventLanguage);
                         eventValues.put(ChannelContract.EventEntry.COLUMN_QUALITY, eventQuality);
                         eventValues.put(ChannelContract.EventEntry.COLUMN_DATE, eventDate);
