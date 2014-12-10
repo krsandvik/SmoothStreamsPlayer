@@ -36,6 +36,8 @@ import static com.iosharp.android.ssplayer.db.ChannelContract.EventEntry;
 public class EventListFragment extends Fragment {
     private static final String TAG = EventListFragment.class.getSimpleName();
 
+
+    // TODO: move these to AlertDialog as that makes more sense. also update references.
     public static final String BUNDLE_NAME = "name";
     public static final String BUNDLE_CHANNEL = "channel";
     public static final String BUNDLE_TIME = "time";

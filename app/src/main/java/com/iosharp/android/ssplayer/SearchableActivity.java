@@ -1,5 +1,6 @@
 package com.iosharp.android.ssplayer;
 
+import android.app.FragmentManager;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -11,11 +12,14 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
+
+import java.util.Date;
 
 import static com.iosharp.android.ssplayer.db.ChannelContract.EventEntry;
 
@@ -74,8 +78,8 @@ public class SearchableActivity extends ActionBarActivity {
     private void handleIntent(Intent intent) {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
-            mQuery = query;
-            doMySearch(query);
+            mQuery = query.trim();
+            doMySearch(query.trim());
         }
     }
 
@@ -112,7 +116,7 @@ public class SearchableActivity extends ActionBarActivity {
                 wildcaseQuery, wildcaseQuery, wildcaseQuery
                 , wildcaseQuery, wildcaseQuery, wildcaseQuery};
 
-        Cursor cursor = this.getContentResolver().query(EventEntry.CONTENT_URI, EVENT_COLUMNS, selection, queryArgs, null);
+        final Cursor cursor = this.getContentResolver().query(EventEntry.CONTENT_URI, EVENT_COLUMNS, selection, queryArgs, null);
 
         if (cursor.getCount() == 0) {
             mListView.setVisibility(View.GONE);
@@ -121,8 +125,40 @@ public class SearchableActivity extends ActionBarActivity {
             noResults.setVisibility(View.GONE);
             mListView.setVisibility(View.VISIBLE);
 
-            ResultAdapter events = new ResultAdapter(this, cursor, false);
+            final ResultAdapter events = new ResultAdapter(this, cursor, false);
             mListView.setAdapter(events);
+            mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Cursor c = (Cursor) events.getItem(position);
+                    c.moveToPosition(position);
+
+                    String name = c.getString(COL_EVENT_NAME);
+                    int channel = c.getInt(COL_EVENT_CHANNEL);
+                    long startLong = c.getLong(COL_EVENT_START_DATE);
+
+                    Date now = new Date();
+                    Date startDate = new Date(startLong);
+
+                    if (now.before(startDate)) {
+                        FragmentManager fm = getFragmentManager();
+                        Bundle b = new Bundle();
+
+                        b.putString(EventListFragment.BUNDLE_NAME, name);
+                        b.putInt(EventListFragment.BUNDLE_CHANNEL, channel);
+                        b.putLong(EventListFragment.BUNDLE_TIME, startLong);
+
+                        AlertFragment alertFragment = new AlertFragment();
+                        alertFragment.setArguments(b);
+                        alertFragment.show(fm, AlertFragment.class.getSimpleName());
+
+                        if (cursor != null) {
+                            cursor.close();
+                        }
+                    }
+
+                }
+            });
         }
 
 
