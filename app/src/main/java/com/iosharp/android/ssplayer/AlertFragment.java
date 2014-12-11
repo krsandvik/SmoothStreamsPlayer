@@ -26,13 +26,15 @@ import com.iosharp.android.ssplayer.service.SmoothService;
 public class AlertFragment extends DialogFragment {
     private static final String TAG = AlertFragment.class.getSimpleName();
 
-    public static final String EXTRA_NAME = "name";
-    public static final String EXTRA_CHANNEL = "channel";
-    public static final String EXTRA_TIME = "time";
+    public static final String BUNDLE_NAME = "name";
+    public static final String BUNDLE_CHANNEL = "channel";
+    public static final String BUNDLE_TIME = "time";
+    public static final String BUNDLE_ID = "id";
 
     public static final String TIME_FORMAT = "EEE MMM dd yyyy HH:mm";
 
     private String mSelectedValue;
+    private int mId;
     private String mEventName;
     private int mEventChannel;
     private long mEventTime;
@@ -50,9 +52,10 @@ public class AlertFragment extends DialogFragment {
         Bundle b = getArguments();
 
         if (b != null) {
-            mEventName = b.getString(EventListFragment.BUNDLE_NAME);
-            mEventChannel = b.getInt(EventListFragment.BUNDLE_CHANNEL);
-            mEventTime = b.getLong(EventListFragment.BUNDLE_TIME);
+            mId = b.getInt(BUNDLE_ID);
+            mEventName = b.getString(BUNDLE_NAME);
+            mEventChannel = b.getInt(BUNDLE_CHANNEL);
+            mEventTime = b.getLong(BUNDLE_TIME);
         } else {
             Crashlytics.log(Log.ERROR, TAG, "Bundle is null!");
         }
@@ -69,12 +72,12 @@ public class AlertFragment extends DialogFragment {
                         long reminderMilliseconds = reminder * 60 * 1000;
 
                         Intent intent = new Intent(getActivity(), SmoothService.AlertReceiver.class);
-                        intent.putExtra(EXTRA_NAME, mEventName);
-                        intent.putExtra(EXTRA_TIME, mEventTime);
-                        intent.putExtra(EXTRA_CHANNEL, mEventChannel);
+                        intent.putExtra(SmoothService.AlertReceiver.EXTRA_NAME, mEventName);
+                        intent.putExtra(SmoothService.AlertReceiver.EXTRA_TIME, mEventTime);
+                        intent.putExtra(SmoothService.AlertReceiver.EXTRA_CHANNEL, mEventChannel);
 
                         PendingIntent eventAlertIntent = PendingIntent.getBroadcast(getActivity(),
-                                (int) System.currentTimeMillis() / 1000,
+                                mId * 100,
                                 intent,
                                 PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -83,7 +86,7 @@ public class AlertFragment extends DialogFragment {
 
                         if (reminder != 0) {
                             PendingIntent reminderAlertIntent = PendingIntent.getBroadcast(getActivity(),
-                                    (int) System.currentTimeMillis() / 1000,
+                                    mId * 1000,
                                     intent,
                                     PendingIntent.FLAG_UPDATE_CURRENT);
 

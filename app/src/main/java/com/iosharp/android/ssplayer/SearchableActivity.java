@@ -85,10 +85,10 @@ public class SearchableActivity extends ActionBarActivity {
 
     private void doMySearch(String query) {
         mTracker.send(new HitBuilders.EventBuilder()
-                        .setCategory(getString(R.string.ga_events_category_search))
-                        .setAction(getString(R.string.ga_events_action_search))
-                        .setLabel(query)
-                        .build());
+                .setCategory(getString(R.string.ga_events_category_search))
+                .setAction(getString(R.string.ga_events_action_search))
+                .setLabel(query)
+                .build());
 
         TextView noResults = (TextView) findViewById(R.id.no_results);
 
@@ -145,9 +145,9 @@ public class SearchableActivity extends ActionBarActivity {
                         FragmentManager fm = getFragmentManager();
                         Bundle b = new Bundle();
 
-                        b.putString(EventListFragment.BUNDLE_NAME, name);
-                        b.putInt(EventListFragment.BUNDLE_CHANNEL, channel);
-                        b.putLong(EventListFragment.BUNDLE_TIME, startLong);
+                        b.putString(AlertFragment.BUNDLE_NAME, name);
+                        b.putInt(AlertFragment.BUNDLE_CHANNEL, channel);
+                        b.putLong(AlertFragment.BUNDLE_TIME, startLong);
 
                         AlertFragment alertFragment = new AlertFragment();
                         alertFragment.setArguments(b);

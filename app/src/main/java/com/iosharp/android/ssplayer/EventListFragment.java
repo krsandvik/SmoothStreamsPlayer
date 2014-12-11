@@ -36,12 +36,6 @@ import static com.iosharp.android.ssplayer.db.ChannelContract.EventEntry;
 public class EventListFragment extends Fragment {
     private static final String TAG = EventListFragment.class.getSimpleName();
 
-
-    // TODO: move these to AlertDialog as that makes more sense. also update references.
-    public static final String BUNDLE_NAME = "name";
-    public static final String BUNDLE_CHANNEL = "channel";
-    public static final String BUNDLE_TIME = "time";
-
     private static ArrayList<ArrayList<Event>> mDateEvents;
     private static ArrayList<String> mDate;
     private static EventAdapter mAdapter;
@@ -86,6 +80,7 @@ public class EventListFragment extends Fragment {
 
                     if (eventCursor != null) {
                         while (eventCursor.moveToNext()) {
+                            int id = eventCursor.getInt(eventCursor.getColumnIndex(EventEntry._ID));
                             String name = eventCursor.getString(eventCursor.getColumnIndex(EventEntry.COLUMN_NAME));
                             int channel = eventCursor.getInt(eventCursor.getColumnIndex(EventEntry.COLUMN_KEY_CHANNEL));
                             String quality = eventCursor.getString(eventCursor.getColumnIndex(EventEntry.COLUMN_QUALITY));
@@ -93,6 +88,7 @@ public class EventListFragment extends Fragment {
                             String language = eventCursor.getString(eventCursor.getColumnIndex(EventEntry.COLUMN_LANGUAGE));
 
                             Event e = new Event();
+                            e.setId(id);
                             e.setName(name);
                             e.setChannel(channel);
                             e.setQuality(quality);
@@ -247,9 +243,10 @@ public class EventListFragment extends Fragment {
                 FragmentManager fm = getActivity().getFragmentManager();
                 Bundle b = new Bundle();
 
-                b.putString(BUNDLE_NAME, e.getName());
-                b.putInt(BUNDLE_CHANNEL, e.getChannel());
-                b.putLong(BUNDLE_TIME, e.getStartDate());
+                b.putInt(AlertFragment.BUNDLE_ID, e.getId());
+                b.putString(AlertFragment.BUNDLE_NAME, e.getName());
+                b.putInt(AlertFragment.BUNDLE_CHANNEL, e.getChannel());
+                b.putLong(AlertFragment.BUNDLE_TIME, e.getStartDate());
 
                 AlertFragment alertFragment = new AlertFragment();
                 alertFragment.setArguments(b);
