@@ -16,7 +16,8 @@
     <string name="preferences_server_location">Server Location</string>
     <string name="preferences_high_quality">High Quality</string>
     <string name="preferences_europe">Europe</string>
-    <string name="preferences_amsterdam">Europe (Amsterdam)</string>
+    <string name="preferences_amsterdam_i3d">Europe (Amsterdam - i3d)</string>
+    <string name="preferences_amsterdam_evo">Europe (Amsterdam - Evo)</string>
     <string name="preferences_london">Europe (London)</string>
     <string name="preferences_united_states">United States</string>
     <string name="preferences_east">United States (East)</string>
@@ -54,7 +55,8 @@
     </string-array>
     <string-array name="list_servers" translatable="false">
         <item>@string/preferences_europe</item>
-        <item>@string/preferences_amsterdam</item>
+        <item>@string/preferences_amsterdam_i3d</item>
+        <item>@string/preferences_amsterdam_evo</item>
         <item>@string/preferences_london</item>
         <item>@string/preferences_united_states</item>
         <item>@string/preferences_east</item>
@@ -64,6 +66,7 @@
     <string-array name="list_servers_values" translatable="false">
         <item translatable="false">dEU.smoothstreams.tv</item>
         <item translatable="false">d77.smoothstreams.tv</item>
+        <item translatable="false">d71.smoothstreams.tv</item>
         <item translatable="false">d11.smoothstreams.tv</item>
         <item translatable="false">dNA.smoothstreams.tv</item>
         <item translatable="false">dNAe.smoothstreams.tv</item>
