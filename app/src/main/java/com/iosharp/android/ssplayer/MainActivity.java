@@ -54,7 +54,7 @@ public class MainActivity extends ActionBarActivity {
 
         }
 
-        setSyncBroadcast();
+//        setSyncBroadcast();
 //        testNotification();
     }
 
