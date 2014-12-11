@@ -41,6 +41,10 @@ public class FetchLoginInfoTask extends AsyncTask<Void, Void, Void> {
         mUsername = mSharedPreferences.getString(mContext.getString(R.string.pref_service_username_key), null);
         mPassword = mSharedPreferences.getString(mContext.getString(R.string.pref_service_password_key), null);
         mService = mSharedPreferences.getString(mContext.getString(R.string.pref_service_key), null);
+
+        mUsername = mUsername.trim();
+        mPassword = mPassword.trim();
+        mService = mService.trim();
     }
 
 
