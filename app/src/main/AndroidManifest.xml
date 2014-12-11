@@ -97,6 +97,10 @@
             android:name=".db.ChannelProvider"
             android:authorities="com.iosharp.android.ssplayer"
             android:exported="false" />
+        
+        <provider
+            android:authorities="com.iosharp.android.ssplayer.SearchSuggestionsProvider"
+            android:name=".SearchSuggestionsProvider" />
 
         <meta-data
             android:name="com.crashlytics.ApiKey"

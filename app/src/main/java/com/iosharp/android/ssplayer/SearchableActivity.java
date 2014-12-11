@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.provider.SearchRecentSuggestions;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SearchView;
@@ -78,7 +79,8 @@ public class SearchableActivity extends ActionBarActivity {
     private void handleIntent(Intent intent) {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
-            mQuery = query.trim();
+            SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this, SearchSuggestionsProvider.AUTHORITY, SearchSuggestionsProvider.MODE);
+            suggestions.saveRecentQuery(query, null);
             doMySearch(query.trim());
         }
     }
@@ -94,7 +96,7 @@ public class SearchableActivity extends ActionBarActivity {
 
         String wildcaseQuery = "%" + query + "%";
 
-        String[] SEARCH_COLUMNS = new String[] {
+        String[] SEARCH_COLUMNS = new String[]{
                 EventEntry.TABLE_NAME + "." + EventEntry._ID,
                 EventEntry.TABLE_NAME + "." + EventEntry.COLUMN_KEY_CHANNEL,
                 EventEntry.TABLE_NAME + "." + EventEntry.COLUMN_NETWORK,
@@ -113,7 +115,7 @@ public class SearchableActivity extends ActionBarActivity {
                 SEARCH_COLUMNS[6] + " LIKE ?";
 
         // Query is going to be the arg for each ?
-        String[] queryArgs = new String[] {wildcaseQuery,
+        String[] queryArgs = new String[]{wildcaseQuery,
                 wildcaseQuery, wildcaseQuery, wildcaseQuery
                 , wildcaseQuery, wildcaseQuery, wildcaseQuery};
 
@@ -173,7 +175,6 @@ public class SearchableActivity extends ActionBarActivity {
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         searchView.setQueryRefinementEnabled(true);
         searchView.setIconifiedByDefault(false);
-        searchView.setQuery(mQuery, false);
 
         return true;
     }
