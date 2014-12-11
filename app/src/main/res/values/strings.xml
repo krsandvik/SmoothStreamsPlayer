@@ -36,6 +36,7 @@
     <string name="pref_protocol_key">pref_protocol_key</string>
     <string name="pref_protocol_default_value">0</string>
     <string name="pref_protocol_notice_checkbox_key">pref_protocol_checkbox_key</string>
+    <string name="pref_debug_mode_key">pref_debug_mode_key</string>
     <string name="notice_dialog_dont_show">Do not show this notice again.</string>
     <string name="notice_dialog_dismiss">OK</string>
     <string name="notice_dialog_title">Notice!</string>
@@ -98,6 +99,9 @@
     <string name="ga_events_action_set_alert" translatable="false">Set Alert</string>
     <string name="ga_events_category_search" translatable="false">Search Events</string>
     <string name="ga_events_action_search" translatable="false">Search</string>
+    <string name="ga_events_category_debug" translatable="false">Debug Events</string>
+    <string name="ga_events_action_debug_enable" translatable="false">Debug mode enabled</string>
+
 
     <string name="search_hint">Search for events</string>
     <string name="search_no_results">No results. Try your search again.</string>
@@ -148,5 +152,6 @@
     <string name="alert_event_reminder_label">Reminder</string>
     <string name="alert_successful">Alert created!</string>
     <string name="title_activity_searchable">Search</string>
+    <string name="button_disable_debug">Disable debug mode</string>
 
 </resources>

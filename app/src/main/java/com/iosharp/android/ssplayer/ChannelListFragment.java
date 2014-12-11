@@ -11,7 +11,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -74,6 +73,11 @@ public class ChannelListFragment extends Fragment implements LoaderManager.Loade
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mCastManager = getCastManager(getActivity());
+    }
+
+    private static boolean getDebugMode(Context context) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getBoolean(context.getString(R.string.pref_debug_mode_key), false);
     }
 
     @Override
@@ -167,13 +171,15 @@ public class ChannelListFragment extends Fragment implements LoaderManager.Loade
 
                         url = StreamUrl.getUrl(getActivity(), mChannelId, Integer.valueOf(protocol)).toString();
                     }
-
-                    Log.d(TAG, url);
-
                     MediaInfo mediaInfo = Utils.buildMediaInfo(channelName, "SmoothStreams", url, channelIcon);
 
-                    // Pass to handleNavigation
-                    handleNavigation(getActivity(), mediaInfo);
+                    if (getDebugMode(getActivity())) {
+                        // If debug mode is enabled, we do not want to launch a stream instead in a toast put the URL
+                        Toast.makeText(getActivity(), "=====DEBUG MODE!=====\nURL: " + url, Toast.LENGTH_LONG).show();
+                    } else {
+                        // Pass to handleNavigation
+                        handleNavigation(getActivity(), mediaInfo);
+                    }
                 } else {
                     // Launch settings
                     Intent intent = new Intent(getActivity(), SettingsActivity.class);

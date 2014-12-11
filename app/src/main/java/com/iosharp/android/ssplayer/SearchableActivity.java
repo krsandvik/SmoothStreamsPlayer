@@ -87,6 +87,7 @@ public class SearchableActivity extends ActionBarActivity {
         mTracker.send(new HitBuilders.EventBuilder()
                         .setCategory(getString(R.string.ga_events_category_search))
                         .setAction(getString(R.string.ga_events_action_search))
+                        .setLabel(query)
                         .build());
 
         TextView noResults = (TextView) findViewById(R.id.no_results);

@@ -47,4 +47,13 @@
         android:text="@string/about_body"
         android:textAppearance="?android:attr/textAppearanceSmall"/>
 
+    <Button
+        android:visibility="gone"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/disable_debug"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/button_disable_debug"
+        />
+
 </RelativeLayout>
