@@ -50,10 +50,6 @@ public class DbHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + ChannelEntry.TABLE_NAME);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + EventEntry.TABLE_NAME);
 
-        // Remove following two lines after release
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS channel");
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS event");
-
         onCreate(sqLiteDatabase);
     }
 }
