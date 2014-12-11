@@ -1,3 +1,9 @@
+#####0.15#####
+changes:
+
+ - added debug mode to help with troubleshooting.
+ - when searching, past queries show up.
+
 #####0.14#####
 changes:
 
