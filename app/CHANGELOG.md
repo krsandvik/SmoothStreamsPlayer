@@ -1,3 +1,9 @@
+#####0.151#####
+changes:
+
+ - fix crash that happens every so often when app is in the background
+ - port fix (hopefully) for mystreams HLS
+
 #####0.15#####
 changes:
 

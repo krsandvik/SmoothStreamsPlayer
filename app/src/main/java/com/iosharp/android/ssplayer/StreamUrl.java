@@ -10,6 +10,8 @@ public class StreamUrl {
     public static final int RTMP = 1;
     public static final int RTSP = 2;
 
+
+
     public static Uri getUrl(Context context, int channel, int protocol) {
         // String format because the URL needs 01, 02, 03, etc when we have single digit integers
         String channelId = String.format("%02d", channel);
@@ -31,17 +33,32 @@ public class StreamUrl {
 
         String port = null;
 
-        if (service.equals("live247")) {
-            port = "2935";
+        if (protocol == 0) {
+            if (service.equals("live247")) {
+                port = "12935";
 
-        } else if (service.equals("mystreams")) {
-            port = "29350";
+            } else if (service.equals("mystreams")) {
+                port = "29355";
 
-        } else if (service.equals("starstreams")) {
-            port = "3935";
+            } else if (service.equals("starstreams")) {
+                port = "39355";
 
-        } else if (service.equals("mma-tv")) {
-            port = "5540";
+            } else if (service.equals("mma-tv")) {
+                port = "5545";
+            }
+        } else {
+            if (service.equals("live247")) {
+                port = "2935";
+
+            } else if (service.equals("mystreams")) {
+                port = "29350";
+
+            } else if (service.equals("starstreams")) {
+                port = "3935";
+
+            } else if (service.equals("mma-tv")) {
+                port = "5540";
+            }
         }
 
         String SERVICE_URL_AND_PORT = server + ":" + port;
