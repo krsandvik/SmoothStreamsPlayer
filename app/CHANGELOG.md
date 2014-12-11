@@ -1,7 +1,7 @@
 #####0.15#####
 changes:
 
- - added debug mode to help with troubleshooting.
+ - added debug mode to help with troubleshooting. launching of streams does not work with debug enabled
  - when searching, past queries show up.
 
 #####0.14#####

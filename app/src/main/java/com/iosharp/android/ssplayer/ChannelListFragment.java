@@ -1,5 +1,6 @@
 package com.iosharp.android.ssplayer;
 
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -133,7 +134,7 @@ public class ChannelListFragment extends Fragment implements LoaderManager.Loade
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_channel_list, container, false);
 
@@ -175,7 +176,11 @@ public class ChannelListFragment extends Fragment implements LoaderManager.Loade
 
                     if (getDebugMode(getActivity())) {
                         // If debug mode is enabled, we do not want to launch a stream instead in a toast put the URL
-                        Toast.makeText(getActivity(), "=====DEBUG MODE!=====\nURL: " + url, Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), "=====DEBUG MODE!=====\nURL: " + url + " copied to clipboard!"
+                                , Toast.LENGTH_LONG).show();
+                        ClipboardManager clipboardManager = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+                        // TODO: setText is deprecated
+                        clipboardManager.setText(url);
                     } else {
                         // Pass to handleNavigation
                         handleNavigation(getActivity(), mediaInfo);
