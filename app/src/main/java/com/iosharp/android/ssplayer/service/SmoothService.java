@@ -203,7 +203,11 @@ public class SmoothService extends IntentService {
     static public class EventReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            EventListFragment.updateEvents(context);
+            try {
+                EventListFragment.updateEvents(context);
+            } catch (Exception e) {
+                Crashlytics.logException(e);
+            }
         }
     }
 

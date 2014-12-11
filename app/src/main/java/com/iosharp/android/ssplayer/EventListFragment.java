@@ -109,6 +109,8 @@ public class EventListFragment extends Fragment {
             }
         } catch (NullPointerException e) {
             Crashlytics.logException(e);
+        } catch (Exception e) {
+            Crashlytics.logException(e);
         }
     }
 
