@@ -119,7 +119,9 @@ public class SearchableActivity extends ActionBarActivity {
                 wildcaseQuery, wildcaseQuery, wildcaseQuery
                 , wildcaseQuery, wildcaseQuery, wildcaseQuery};
 
-        final Cursor cursor = this.getContentResolver().query(EventEntry.CONTENT_URI, EVENT_COLUMNS, selection, queryArgs, null);
+        String sortOrder = EventEntry.TABLE_NAME + "." + EventEntry.COLUMN_START_DATE;
+
+        final Cursor cursor = this.getContentResolver().query(EventEntry.CONTENT_URI, EVENT_COLUMNS, selection, queryArgs, sortOrder);
 
         if (cursor.getCount() == 0) {
             mListView.setVisibility(View.GONE);
