@@ -86,7 +86,7 @@ public class AlertFragment extends DialogFragment {
 
                         if (reminder != 0) {
                             PendingIntent reminderAlertIntent = PendingIntent.getBroadcast(getActivity(),
-                                    mId * 1000,
+                                    mId * 100 - 1,
                                     intent,
                                     PendingIntent.FLAG_UPDATE_CURRENT);
 
