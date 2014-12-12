@@ -65,12 +65,6 @@ public class SearchableActivity extends ActionBarActivity {
         handleIntent(getIntent());
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        handleIntent(getIntent());
-    }
-
     private void setupActionBar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(getString(R.string.title_activity_searchable));
