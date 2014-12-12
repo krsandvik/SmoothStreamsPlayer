@@ -54,23 +54,11 @@ public class MainActivity extends ActionBarActivity {
 
         }
 
-//        setSyncBroadcast();
-//        testNotification();
+        // Cancel background data fetch if it exists
+        cancelSyncBroadcast();
     }
 
-    private void testNotification() {
-        AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        Intent notificationIntent = new Intent(this, SmoothService.AlertReceiver.class);
-
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this,
-                (int) System.currentTimeMillis() / 1000,
-                notificationIntent,
-                PendingIntent.FLAG_ONE_SHOT);
-
-        am.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), pendingIntent);
-    }
-
-    private void setSyncBroadcast() {
+   private void cancelSyncBroadcast() {
         AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent alarmIntent = new Intent(this, SmoothService.SyncReceiver.class);
 
@@ -79,7 +67,13 @@ public class MainActivity extends ActionBarActivity {
                 alarmIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
 
-        am.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), AlarmManager.INTERVAL_HOUR, pendingIntent);
+       PendingIntent pendingIntent2 = PendingIntent.getBroadcast(this,
+               0,
+               alarmIntent,
+               PendingIntent.FLAG_UPDATE_CURRENT);
+
+        am.cancel(pendingIntent);
+        am.cancel(pendingIntent2);
     }
 
     private void googleAnalytics() {

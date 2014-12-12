@@ -1,3 +1,8 @@
+#####0.152#####
+changes:
+
+  - more work to remove the crash that happens when app is not running or in background
+
 #####0.151#####
 changes:
 
