@@ -63,17 +63,13 @@ public class MainActivity extends ActionBarActivity {
         Intent alarmIntent = new Intent(this, SmoothService.SyncReceiver.class);
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this,
-                (int) System.currentTimeMillis() / 1000,
+                0,
                 alarmIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
+                PendingIntent.FLAG_CANCEL_CURRENT);
 
-       PendingIntent pendingIntent2 = PendingIntent.getBroadcast(this,
-               0,
-               alarmIntent,
-               PendingIntent.FLAG_UPDATE_CURRENT);
 
+        am.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), pendingIntent);
         am.cancel(pendingIntent);
-        am.cancel(pendingIntent2);
     }
 
     private void googleAnalytics() {
