@@ -81,7 +81,9 @@
     <string name="about_version">Version</string>
     <string name="about_developed_by">Developed by aaearon</string>
     <string name="about_body" translatable="false">\nA video player for the SmoothStreams.tv Networks (Live247.tv / MyStreams.tv / StarStreams.tv / MMA-TV.net / TFR) with Chromecast support.</string>
-    <string name="event_header_row_subtitle">ch\t\ttime\t\tname</string>
+    <string name="event_header_row_channel">CH</string>
+    <string name="event_header_row_time">TIME</string>
+    <string name="event_header_row_name">NAME</string>
     <string name="no_internet_connection_detected">No internet connection detected!</string>
     <string name="ga_screen_channels" translatable="false">Channels</string>
     <string name="ga_screen_alert_dialog" translatable="false">Set Alert Dialog</string>

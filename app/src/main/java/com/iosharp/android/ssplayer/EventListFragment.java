@@ -200,9 +200,6 @@ public class EventListFragment extends Fragment {
                 LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 convertView = inflater.inflate(R.layout.event_item_row, null);
             }
-
-            SpannableString qualitySpannableString = new SpannableString("");
-            SpannableString languageSpannableString = new SpannableString("");
             String channel = String.format("%02d", e.getChannel());
             String quality = e.getQuality();
             String language = e.getLanguage();
@@ -210,7 +207,16 @@ public class EventListFragment extends Fragment {
             SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
             String time = sdf.format(new Date(e.getStartDate()));
 
-            SpannableString title = new SpannableString(channel + "\t\t" +time + "\t\t" + e.getName());
+            TextView tvChannel = (TextView) convertView.findViewById(R.id.event_item_row_channel);
+            tvChannel.setText(channel);
+            TextView tvTime = (TextView) convertView.findViewById(R.id.event_item_row_time);
+            tvTime.setText(time);
+            TextView tvTitle = (TextView) convertView.findViewById(R.id.event_item_row_title);
+
+            SpannableString qualitySpannableString = new SpannableString("");
+            SpannableString languageSpannableString = new SpannableString("");
+
+            SpannableString title = new SpannableString(e.getName());
 
             if (quality.equalsIgnoreCase("720p")) {
                 qualitySpannableString = Utils.getHighDefBadge();
@@ -218,8 +224,7 @@ public class EventListFragment extends Fragment {
                 languageSpannableString = Utils.getLanguageImg(getActivity(), language);
             }
 
-            ((TextView) convertView.findViewById(R.id.event_item_row_title))
-                    .setText(TextUtils.concat(title, languageSpannableString, qualitySpannableString));
+            tvTitle.setText(TextUtils.concat(title, languageSpannableString, qualitySpannableString));
 
             return convertView;
         }

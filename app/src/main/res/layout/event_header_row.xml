@@ -11,17 +11,44 @@
         android:id="@+id/event_header_row_title"
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@color/white">
     </TextView>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/event_header_row_subtitle"
-        android:id="@+id/event_header_row_subtitle"
-        android:textColor="@color/white"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textAllCaps="true"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/event_header_row_channel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="15dp"
+            android:text="@string/event_header_row_channel"
+            android:textColor="@color/white"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textAllCaps="true"/>
+
+        <TextView
+            android:id="@+id/event_header_row_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="15dp"
+            android:text="@string/event_header_row_time"
+            android:textColor="@color/white"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textAllCaps="true"/>
+
+        <TextView
+            android:id="@+id/event_header_row_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="20dp"
+            android:text="@string/event_header_row_name"
+            android:textColor="@color/white"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textAllCaps="true"/>
+
+        </LinearLayout>
 </LinearLayout>
