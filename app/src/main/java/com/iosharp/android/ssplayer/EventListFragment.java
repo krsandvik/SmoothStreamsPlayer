@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.SpannableString;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -139,7 +138,6 @@ public class EventListFragment extends Fragment {
         if (mDate != null && mDateEvents != null) {
             updateEvents(getActivity());
         } else {
-            Crashlytics.log(Log.ERROR, TAG, "mDate & mDateEvents were null!");
             mDate = new ArrayList<>();
             mDateEvents = new ArrayList<>();
             updateEvents(getActivity());
@@ -171,6 +169,7 @@ public class EventListFragment extends Fragment {
 
         HeaderListView list = (HeaderListView) rootView.findViewById(R.id.channel_list_view);
         // This can be removed when HeaderListView fixes a bug https://github.com/applidium/HeaderListView/issues/28
+        //noinspection ResourceType
         list.setId(2);
         mAdapter = new EventAdapter();
         list.setAdapter(mAdapter);
