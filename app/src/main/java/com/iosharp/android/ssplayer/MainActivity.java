@@ -67,7 +67,6 @@ public class MainActivity extends ActionBarActivity {
                 alarmIntent,
                 PendingIntent.FLAG_CANCEL_CURRENT);
 
-
         am.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), pendingIntent);
         am.cancel(pendingIntent);
     }
