@@ -1,7 +1,5 @@
 package com.iosharp.android.ssplayer;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -53,22 +51,6 @@ public class MainActivity extends ActionBarActivity {
             mCastManager.reconnectSessionIfPossible(this, false);
 
         }
-
-        // Cancel background data fetch if it exists
-        cancelSyncBroadcast();
-    }
-
-   private void cancelSyncBroadcast() {
-        AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        Intent alarmIntent = new Intent(this, SmoothService.SyncReceiver.class);
-
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this,
-                0,
-                alarmIntent,
-                PendingIntent.FLAG_CANCEL_CURRENT);
-
-        am.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), pendingIntent);
-        am.cancel(pendingIntent);
     }
 
     private void googleAnalytics() {
