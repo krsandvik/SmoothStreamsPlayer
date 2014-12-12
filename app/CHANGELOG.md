@@ -1,3 +1,10 @@
+#####0.153#####
+changes:
+
+  - search results are no longer cleared after 'set alert' dialog pops up
+  - search results are now sorted by air date
+  - minor tweak to channels tab so that channel names line up
+
 #####0.152#####
 changes:
 
