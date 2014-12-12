@@ -179,9 +179,11 @@ public class ChannelListFragment extends Fragment implements LoaderManager.Loade
                         // If debug mode is enabled, we do not want to launch a stream instead in a toast put the URL
                         Toast.makeText(getActivity(), "=====DEBUG MODE!=====\nURL: " + url + " copied to clipboard!"
                                 , Toast.LENGTH_LONG).show();
+
                         ClipboardManager clipboardManager = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
                         ClipData streamUrl = ClipData.newPlainText("url", url);
                         clipboardManager.setPrimaryClip(streamUrl);
+
                     } else {
                         // Pass to handleNavigation
                         handleNavigation(getActivity(), mediaInfo);
