@@ -65,6 +65,12 @@ public class SearchableActivity extends ActionBarActivity {
         handleIntent(getIntent());
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        handleIntent(getIntent());
+    }
+
     private void setupActionBar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(getString(R.string.title_activity_searchable));
@@ -146,20 +152,18 @@ public class SearchableActivity extends ActionBarActivity {
                     Date startDate = new Date(startLong);
 
                     if (now.before(startDate)) {
-                        FragmentManager fm = getFragmentManager();
+
                         Bundle b = new Bundle();
 
                         b.putString(AlertFragment.BUNDLE_NAME, name);
                         b.putInt(AlertFragment.BUNDLE_CHANNEL, channel);
                         b.putLong(AlertFragment.BUNDLE_TIME, startLong);
 
+                        FragmentManager fm = getFragmentManager();
+
                         AlertFragment alertFragment = new AlertFragment();
                         alertFragment.setArguments(b);
                         alertFragment.show(fm, AlertFragment.class.getSimpleName());
-
-                        if (cursor != null) {
-                            cursor.close();
-                        }
                     }
 
                 }
