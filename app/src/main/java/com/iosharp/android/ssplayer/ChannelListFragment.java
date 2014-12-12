@@ -1,5 +1,6 @@
 package com.iosharp.android.ssplayer;
 
+import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
@@ -179,8 +180,8 @@ public class ChannelListFragment extends Fragment implements LoaderManager.Loade
                         Toast.makeText(getActivity(), "=====DEBUG MODE!=====\nURL: " + url + " copied to clipboard!"
                                 , Toast.LENGTH_LONG).show();
                         ClipboardManager clipboardManager = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
-                        // TODO: setText is deprecated
-                        clipboardManager.setText(url);
+                        ClipData streamUrl = ClipData.newPlainText("url", url);
+                        clipboardManager.setPrimaryClip(streamUrl);
                     } else {
                         // Pass to handleNavigation
                         handleNavigation(getActivity(), mediaInfo);
