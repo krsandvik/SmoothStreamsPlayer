@@ -48,7 +48,11 @@ class ChannelAdapter extends CursorAdapter {
 
         mIcon = (ImageView) view.findViewById(R.id.imageView1);
 
-        Picasso.with(context).load(SMOOTHSTREAMS_ICON_URL).into(mIcon);
+        Picasso.with(context)
+                .load(SMOOTHSTREAMS_ICON_URL)
+                .resize(100, 100)
+                .centerInside()
+                .into(mIcon);
     }
 
     private void setCurrentEvent(View view, Cursor cursor) {
