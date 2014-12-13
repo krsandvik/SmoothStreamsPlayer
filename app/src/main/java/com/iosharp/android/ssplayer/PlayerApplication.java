@@ -6,6 +6,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
 import com.google.sample.castcompanionlibrary.cast.VideoCastManager;
@@ -48,6 +49,7 @@ public class PlayerApplication extends Application {
             strVersion += packageInfo.versionName;
 
         } catch (PackageManager.NameNotFoundException e) {
+            Crashlytics.logException(e);
             strVersion += "Unknown";
         }
 

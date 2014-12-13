@@ -20,6 +20,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 public class FetchLoginInfoTask extends AsyncTask<Void, Void, Void> {
@@ -90,9 +91,10 @@ public class FetchLoginInfoTask extends AsyncTask<Void, Void, Void> {
 
             loginJsonStr = response.body().string();
 
+        } catch (MalformedURLException e) {
+            Crashlytics.logException(e);
         } catch (IOException e) {
             Crashlytics.logException(e);
-            e.printStackTrace();
         }
 
         parseLoginResponse(loginJsonStr);
@@ -118,7 +120,6 @@ public class FetchLoginInfoTask extends AsyncTask<Void, Void, Void> {
             }
         } catch (JSONException e) {
             Crashlytics.logException(e);
-            e.printStackTrace();
         }
     }
 

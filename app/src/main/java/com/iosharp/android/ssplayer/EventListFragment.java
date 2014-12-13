@@ -289,7 +289,6 @@ public class EventListFragment extends Fragment {
             return newDateString;
         } catch (ParseException e) {
             Crashlytics.logException(e);
-            e.printStackTrace();
         }
         return null;
     }

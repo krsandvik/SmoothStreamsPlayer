@@ -15,6 +15,7 @@ import android.text.style.StyleSpan;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.cast.MediaInfo;
 import com.google.android.gms.cast.MediaMetadata;
 import com.google.android.gms.common.images.WebImage;
@@ -50,7 +51,7 @@ public class Utils {
 //            }
             return convertedDate.getTime();
         } catch (ParseException e) {
-            e.printStackTrace();
+            Crashlytics.logException(e);
         }
         return null;
     }

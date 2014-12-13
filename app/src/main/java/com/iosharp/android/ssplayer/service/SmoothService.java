@@ -29,6 +29,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Date;
 import java.util.Vector;
@@ -37,7 +38,6 @@ import static com.iosharp.android.ssplayer.db.ChannelContract.getDbDateString;
 
 public class SmoothService extends IntentService {
     private static final String TAG = SmoothService.class.getSimpleName();
-    private Context mContext;
 
     public SmoothService() {
         super("SmoothService");
@@ -47,7 +47,7 @@ public class SmoothService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         final String USER_AGENT = PlayerApplication.getUserAgent(getApplicationContext());
         final OkHttpClient client = new OkHttpClient();
-        String channelsJsonStr;
+        String channelsJsonStr = null;
 
         try {
             final String SMOOTHSTREAMS_JSON_FEED = "http://smoothstreams.tv/schedule/feed.json";
@@ -64,9 +64,11 @@ public class SmoothService extends IntentService {
             if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
 
             channelsJsonStr = response.body().string();
+
+        } catch (MalformedURLException e) {
+            Crashlytics.logException(e);
         } catch (IOException e) {
-            Log.e(TAG, "Error", e);
-            return;
+            Crashlytics.logException(e);
         }
 
         // Channel information
@@ -88,8 +90,9 @@ public class SmoothService extends IntentService {
         final String TAG_EVENT_QUALITY = "quality";
         final String TAG_EVENT_CATEGORY = "category";
 
-
         try {
+            long startTime = System.currentTimeMillis();
+
             JSONObject channelList = new JSONObject(channelsJsonStr);
             Vector<ContentValues> channelsVector = new Vector<ContentValues>(channelList.length());
             Vector<ContentValues> eventsVector = new Vector<ContentValues>();
@@ -160,6 +163,12 @@ public class SmoothService extends IntentService {
                     }
                 }
             }
+
+            long endTime = System.currentTimeMillis();
+            long totalTime = endTime - startTime;
+
+            Log.v(TAG, "PARSING TIME: " + totalTime);
+
             if (eventsVector.size() > 0) {
                 ContentValues[] eventsArray = new ContentValues[eventsVector.size()];
                 eventsVector.toArray(eventsArray);
@@ -177,8 +186,8 @@ public class SmoothService extends IntentService {
 
 //                Log.v(TAG, "inserted " + channelRowsInserted + " rows of channels");
             }
-        } catch (JSONException e) {
-            e.printStackTrace();
+        }  catch (JSONException e) {
+            Crashlytics.logException(e);
         }
 
         // Delete events that have already passed
