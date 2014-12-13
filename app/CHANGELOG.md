@@ -1,7 +1,7 @@
 #####0.154#####
 changes:
 
- - layout fix
+ - minor layout tweak to events tab
 
 #####0.153#####
 changes:
