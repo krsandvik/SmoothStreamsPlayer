@@ -28,8 +28,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import io.fabric.sdk.android.Fabric;
-
 import static com.iosharp.android.ssplayer.db.ChannelContract.EventEntry;
 
 public class EventListFragment extends Fragment {
@@ -46,11 +44,15 @@ public class EventListFragment extends Fragment {
     }
 
     private static void getDateEvents(Context context, ArrayList<String> dates, ArrayList<ArrayList<Event>> events) {
-        if (mDate != null) {
+        if (mDate == null) {
+            mDate = new ArrayList<>();
+        } else {
             mDate.clear();
         }
 
-        if (mDateEvents != null) {
+        if (mDateEvents == null) {
+            mDateEvents = new ArrayList<>();
+        } else {
             mDateEvents.clear();
         }
 
@@ -123,25 +125,13 @@ public class EventListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Fabric.with(getActivity(), new Crashlytics());
-
         mCastManager = PlayerApplication.getCastManager(getActivity());
-
-        // Init array lists before they are passed to getDateEvents() and populated
-        mDate = new ArrayList<>();
-        mDateEvents = new ArrayList<>();
    }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (mDate != null && mDateEvents != null) {
-            updateEvents(getActivity());
-        } else {
-            mDate = new ArrayList<>();
-            mDateEvents = new ArrayList<>();
-            updateEvents(getActivity());
-        }
+        updateEvents(getActivity());
 
         if (mCastManager != null) {
             mCastManager.incrementUiCounter();
@@ -160,6 +150,8 @@ public class EventListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_event_list, container, false);
+
+        updateEvents(getActivity());
 
         //MiniController
         if (mCastManager != null) {
