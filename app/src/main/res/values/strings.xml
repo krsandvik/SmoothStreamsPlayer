@@ -24,6 +24,9 @@
     <string name="preferences_west">United States (West)</string>
     <string name="preferences_asia">Asia</string>
     <string name="preferences_protocol">Protocol</string>
+    <string name="preferences_other">Other</string>
+    <string name="preferences_clear_search_history">Clear local search history</string>
+    <string name="preferences_clear_search_history_hint">Remove searches you have performed from this device</string>
     <string name="pref_service_username_key" translatable="false">pref_service_username_key</string>
     <string name="pref_service_password_key" translatable="false">pref_service_password_key</string>
     <string name="pref_service_key" translatable="false">pref_service_key</string>
@@ -37,6 +40,7 @@
     <string name="pref_protocol_default_value">0</string>
     <string name="pref_protocol_notice_checkbox_key">pref_protocol_checkbox_key</string>
     <string name="pref_debug_mode_key">pref_debug_mode_key</string>
+    <string name="pref_clear_search_history_key">pref_clear_search_history_key</string>
     <string name="notice_dialog_dont_show">Do not show this notice again.</string>
     <string name="notice_dialog_dismiss">OK</string>
     <string name="notice_dialog_title">Notice!</string>

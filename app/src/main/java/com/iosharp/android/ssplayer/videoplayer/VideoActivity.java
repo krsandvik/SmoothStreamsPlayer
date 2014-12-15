@@ -22,6 +22,7 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
@@ -37,7 +38,6 @@ import com.iosharp.android.ssplayer.R;
 
 import java.io.IOException;
 
-
 public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Callback, MediaPlayer.OnPreparedListener,
         VideoControllerView.MediaPlayerControl, MediaPlayer.OnErrorListener {
 
@@ -51,8 +51,6 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
     private SurfaceHolder mSurfaceHolder;
     private VideoCastManager mCastManager;
     private MediaInfo mSelectedMedia;
-    private int mChannelId;
-    private int mChannelsCount;
     private Tracker mTracker;
 
     @Override
@@ -79,9 +77,6 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
         Bundle b = getIntent().getExtras();
         if (b != null) {
             mSelectedMedia = Utils.toMediaInfo(getIntent().getBundleExtra("media"));
-            mChannelId = b.getInt("channelid");
-            mChannelsCount = b.getInt("channelSize");
-
 
             mURL = mSelectedMedia.getContentId();
             String title = mSelectedMedia.getMetadata().getString(MediaMetadata.KEY_TITLE);
@@ -107,7 +102,7 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
 
             mPlayer.setOnErrorListener(this);
         } catch (IOException e) {
-            e.printStackTrace();
+            Crashlytics.logException(e);
         }
 
         if (mCastManager != null) {
@@ -324,13 +319,6 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
         }
     }
 
-    private Intent createStreamIntent() {
-        Intent shareIntent = new Intent(Intent.ACTION_VIEW);
-        shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-        shareIntent.setDataAndType(Uri.parse(mSelectedMedia.getContentId()), "application/x-mpegURL");
-        return shareIntent;
-    }
-
     private void hideSoftKeys() {
         final View v = getWindow().getDecorView();
         final int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
@@ -351,6 +339,12 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
         });
     }
 
+    private Intent createStreamIntent() {
+        Intent shareIntent = new Intent(Intent.ACTION_VIEW);
+        shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+        shareIntent.setDataAndType(Uri.parse(mSelectedMedia.getContentId()), "application/x-mpegURL");
+        return shareIntent;
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
@@ -369,7 +363,6 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
         MenuItem menuItem = menu.findItem(R.id.action_share);
         ShareActionProvider mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
         if (mShareActionProvider != null) {
-
             mTracker.send(new HitBuilders.EventBuilder()
             .setCategory(getString(R.string.ga_events_category_playback))
             .setAction(getString(R.string.ga_events_action_external))

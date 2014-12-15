@@ -39,5 +39,12 @@
             android:title="@string/preferences_protocol"
             />
     </PreferenceCategory>
+    <PreferenceCategory android:title="@string/preferences_other">
+        <Preference
+            android:key="@string/pref_clear_search_history_key"
+            android:title="@string/preferences_clear_search_history"
+            android:summary="@string/preferences_clear_search_history_hint" />
+
+    </PreferenceCategory>
 
 </PreferenceScreen>
