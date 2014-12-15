@@ -1,7 +1,6 @@
 #####0.154#####
 changes:
 
- - upgrade support libraries
  - minor layout tweak to events tab
 
 #####0.153#####
