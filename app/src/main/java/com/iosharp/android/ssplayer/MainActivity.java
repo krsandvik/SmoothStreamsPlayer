@@ -16,6 +16,8 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.analytics.HitBuilders;
@@ -44,13 +46,22 @@ public class MainActivity extends ActionBarActivity {
 
         googleAnalytics();
         setupActionBar();
+//        setupStatusBar();
         setupTabs();
+
 
         mCastManager = PlayerApplication.getCastManager(this);
         if (mCastManager != null) {
             mCastManager.reconnectSessionIfPossible(this, false);
 
         }
+    }
+
+    private void setupStatusBar() {
+        Window window = getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+//        window.setStatusBarColor(getResources().getColor(R.c));
     }
 
     private void googleAnalytics() {
@@ -67,7 +78,7 @@ public class MainActivity extends ActionBarActivity {
         viewPager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager()));
 
         PagerTabStrip pagerTabStrip = (PagerTabStrip) findViewById(R.id.pagertabstrip);
-        pagerTabStrip.setTabIndicatorColor(getResources().getColor(R.color.SteelBlue));
+        pagerTabStrip.setTabIndicatorColor(getResources().getColor(R.color.primary_500));
 
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override

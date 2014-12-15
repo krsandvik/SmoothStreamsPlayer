@@ -25,7 +25,7 @@ public class SettingsActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.preferences_activity);
+        setContentView(R.layout.activity_preferences);
         setupActionBar();
 
         getFragmentManager().beginTransaction().replace(R.id.container, new SettingsFragment()).commit();

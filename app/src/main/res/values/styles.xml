@@ -5,9 +5,20 @@
     <style name="AppTheme.Base" parent="Theme.AppCompat.Light">
         <item name="android:windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
+
+        <item name="colorPrimary">@color/SteelBlue</item>
     </style>
 
     <style name="AlertDialog" parent="@android:style/Theme.Dialog">
         <item name="android:textColor">@color/SteelBlue</item>
+    </style>
+
+    <style name="AppTheme.Material" parent="Theme.AppCompat.Light">
+        <item name="android:windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+
+        <item name="colorPrimary">@color/primary_500</item>
+        <item name="colorPrimaryDark">@color/primary_700</item>
+        <item name="colorAccent">@color/primary_accent</item>
     </style>
 </resources>

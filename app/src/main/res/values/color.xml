@@ -110,7 +110,6 @@
 <color name="CornflowerBlue">#6495ED</color>
 <color name="CadetBlue">#5F9EA0</color>
 <color name="DarkOliveGreen">#556B2F</color>
-<color name="Indigo">#4B0082</color>
 <color name="MediumTurquoise">#48D1CC</color>
 <color name="DarkSlateBlue">#483D8B</color>
 <color name="SteelBlue">#4682B4</color>
@@ -140,4 +139,9 @@
 <color name="DarkBlue">#00008B</color>
 <color name="Navy">#000080</color>
 <color name="Black">#000000</color>
+
+<color name="primary_500">#3F51B5</color>
+<color name="primary_700">#303F9F</color>
+<color name="primary_accent">#C5CAE9</color>
+
 </resources>
