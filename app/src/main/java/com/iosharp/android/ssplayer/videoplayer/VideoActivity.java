@@ -22,6 +22,7 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
@@ -107,7 +108,7 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
 
             mPlayer.setOnErrorListener(this);
         } catch (IOException e) {
-            e.printStackTrace();
+            Crashlytics.logException(e);
         }
 
         if (mCastManager != null) {

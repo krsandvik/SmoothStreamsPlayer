@@ -1,7 +1,9 @@
 #####0.154#####
 changes:
 
- - minor layout tweak to events tab
+ - ability to clear search history in settings
+ - upgrade support libraries
+ - minor layout tweaks
 
 #####0.153#####
 changes:

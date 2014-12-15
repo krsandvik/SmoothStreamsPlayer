@@ -11,6 +11,7 @@ import android.preference.Preference;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
+import android.provider.SearchRecentSuggestions;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -52,6 +53,19 @@ public class SettingsActivity extends ActionBarActivity {
                     false);
 
             addPreferencesFromResource(R.xml.preferences);
+
+            Preference clearHistory = (Preference) findPreference(getString(R.string.pref_clear_search_history_key));
+            clearHistory.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    System.out.println("Changed key");
+                    SearchRecentSuggestions suggestions = new SearchRecentSuggestions(getActivity(),
+                            SearchSuggestionsProvider.AUTHORITY, SearchSuggestionsProvider.MODE);
+                    suggestions.clearHistory();
+                    return true;
+                }
+            });
+
             // Show the current value in the settings screen
             for (int i = 0; i < getPreferenceScreen().getPreferenceCount(); i++) {
                 initSummary(getPreferenceScreen().getPreference(i));
@@ -116,8 +130,11 @@ public class SettingsActivity extends ActionBarActivity {
 
         private void updatePreferenceSummary(Preference p) {
             if (p instanceof ListPreference) {
-                ListPreference listPref = (ListPreference) p;
-                p.setSummary(listPref.getEntry());
+                if (!p.getTitle().toString().equals(getString(R.string.preferences_clear_search_history))) {
+                    // We don't want some summaries to be set as some are already defined in XML
+                    ListPreference listPref = (ListPreference) p;
+                    p.setSummary(listPref.getEntry());
+                }
             }
             if (p instanceof EditTextPreference) {
                 EditTextPreference editTextPref = (EditTextPreference) p;
