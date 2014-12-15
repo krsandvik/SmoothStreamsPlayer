@@ -78,7 +78,7 @@ public class MainActivity extends ActionBarActivity {
         viewPager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager()));
 
         PagerTabStrip pagerTabStrip = (PagerTabStrip) findViewById(R.id.pagertabstrip);
-        pagerTabStrip.setTabIndicatorColor(getResources().getColor(R.color.primary_500));
+        pagerTabStrip.setTabIndicatorColor(getResources().getColor(R.color.SteelBlue));
 
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
