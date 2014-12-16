@@ -189,7 +189,7 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
      */
     @Override
     public boolean onError(MediaPlayer mediaPlayer, int what, int extra) {
-        Log.e("MediaPlayer", String.format("Error(%s, %s)", what, extra));
+        Crashlytics.log(Log.ERROR, "MediaPlayer", String.format("Error(%s, %s)", what, extra));
 
         if (what == MediaPlayer.MEDIA_ERROR_SERVER_DIED) {
             mPlayer.reset();

@@ -33,6 +33,7 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
 import com.iosharp.android.ssplayer.R;
 
 import java.lang.ref.WeakReference;
@@ -197,7 +198,7 @@ public class VideoControllerView extends FrameLayout {
         mUseFastForward = true;
         mFromXml = true;
 
-        Log.i(TAG, TAG);
+        Crashlytics.log(Log.INFO, TAG, TAG);
     }
 
     public VideoControllerView(Context context, boolean useFastForward) {
@@ -205,13 +206,13 @@ public class VideoControllerView extends FrameLayout {
         mContext = context;
         mUseFastForward = useFastForward;
 
-        Log.i(TAG, TAG);
+        Crashlytics.log(Log.INFO, TAG, TAG);
     }
 
     public VideoControllerView(Context context) {
         this(context, true);
 
-        Log.i(TAG, TAG);
+        Crashlytics.log(Log.INFO, TAG, TAG);
     }
 
     @Override
@@ -406,7 +407,8 @@ public class VideoControllerView extends FrameLayout {
             mAnchor.removeView(this);
             mHandler.removeMessages(SHOW_PROGRESS);
         } catch (IllegalArgumentException ex) {
-            Log.w("MediaController", "already removed");
+            Crashlytics.log(Log.WARN, "MediaController", "already removed");
+            Crashlytics.logException(ex);
         }
         mShowing = false;
     }

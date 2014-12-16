@@ -1,3 +1,8 @@
+#####0.155#####
+changes:
+
+ - event list should now update on refresh
+
 #####0.154#####
 changes:
 

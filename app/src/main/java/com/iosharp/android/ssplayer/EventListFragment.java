@@ -44,17 +44,8 @@ public class EventListFragment extends Fragment {
     }
 
     private static void getDateEvents(Context context, ArrayList<String> dates, ArrayList<ArrayList<Event>> events) {
-        if (mDate == null) {
-            mDate = new ArrayList<>();
-        } else {
-            mDate.clear();
-        }
-
-        if (mDateEvents == null) {
-            mDateEvents = new ArrayList<>();
-        } else {
-            mDateEvents.clear();
-        }
+        if (!dates.isEmpty()) dates.clear();
+        if (!events.isEmpty()) events.clear();
 
         Uri uri = EventEntry.buildEventDate();
         Cursor dateCursor = context.getContentResolver().query(uri, null, null, null, null);
@@ -116,7 +107,15 @@ public class EventListFragment extends Fragment {
     }
 
     public static void updateEvents(Context context) {
+        if (mDate == null) {
+            mDate = new ArrayList<>();
+        }
+        if (mDateEvents == null) {
+            mDateEvents = new ArrayList<>();
+        }
+
         getDateEvents(context, mDate, mDateEvents);
+
         if (mAdapter != null) {
             mAdapter.notifyDataSetChanged();
         }

@@ -132,6 +132,7 @@ public class AboutActivity extends ActionBarActivity {
                 strVersion += packageInfo.versionName;
 
             } catch (PackageManager.NameNotFoundException e) {
+                Crashlytics.logException(e);
                 strVersion += "Unknown";
             }
 
