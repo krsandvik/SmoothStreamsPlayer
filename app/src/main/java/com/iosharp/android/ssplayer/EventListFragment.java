@@ -107,12 +107,8 @@ public class EventListFragment extends Fragment {
     }
 
     public static void updateEvents(Context context) {
-        if (mDate == null) {
-            mDate = new ArrayList<>();
-        }
-        if (mDateEvents == null) {
-            mDateEvents = new ArrayList<>();
-        }
+        if (mDate == null) mDate = new ArrayList<>();
+        if (mDateEvents == null) mDateEvents = new ArrayList<>();
 
         getDateEvents(context, mDate, mDateEvents);
 
