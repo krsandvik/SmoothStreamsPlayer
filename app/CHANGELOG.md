@@ -1,3 +1,8 @@
+#####0.156#####
+changes:
+
+ - url encoding on user/pass when generating stream url
+
 #####0.155#####
 changes:
 
