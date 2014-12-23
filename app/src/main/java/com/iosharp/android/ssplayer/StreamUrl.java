@@ -5,8 +5,10 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 
+import com.crashlytics.android.Crashlytics;
+
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
+import java.net.URLDecoder;
 
 public class StreamUrl {
     public static final int HTML5 = 0;
@@ -15,7 +17,7 @@ public class StreamUrl {
 
 
 
-    public static Uri getUrl(Context context, int channel, int protocol) {
+    public static String getUrl(Context context, int channel, int protocol) {
         // String format because the URL needs 01, 02, 03, etc when we have single digit integers
         String channelId = String.format("%02d", channel);
 
@@ -76,44 +78,43 @@ public class StreamUrl {
                 STREAM_CHANNEL_AND_QUALITY = String.format("ch%sq%s.stream", channelId, streamQuality);
                 BASE_URL = "http://" + SERVICE_URL_AND_PORT + "/view/" + STREAM_CHANNEL_AND_QUALITY + "/playlist.m3u8";
 
-                try {
-                    uri = Uri.parse(BASE_URL).buildUpon()
-                            .appendQueryParameter(UID_PARAM, uid)
-                            .appendQueryParameter(PASSWORD_PARAM, URLEncoder.encode(password, "UTF-8"))
-                            .build();
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                }
+                uri = Uri.parse(BASE_URL).buildUpon()
+                        .appendQueryParameter(UID_PARAM, uid)
+                        .appendQueryParameter(PASSWORD_PARAM, password)
+                        .build();
                 break;
             case StreamUrl.RTMP:
                 STREAM_CHANNEL_AND_QUALITY = String.format("ch%sq%s.stream", channelId, streamQuality);
                 BASE_URL = "rtmp://" + SERVICE_URL_AND_PORT + "/view/" + STREAM_CHANNEL_AND_QUALITY;
 
-                try {
-                    uri = Uri.parse(BASE_URL).buildUpon()
-                            .appendQueryParameter(UID_PARAM, uid)
-                            .appendQueryParameter(PASSWORD_PARAM, URLEncoder.encode(password, "UTF-8"))
-                            .build();
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                }
+                uri = Uri.parse(BASE_URL).buildUpon()
+                        .appendQueryParameter(UID_PARAM, uid)
+                        .appendQueryParameter(PASSWORD_PARAM, password)
+                        .build();
                 break;
             case StreamUrl.RTSP:
                 STREAM_CHANNEL_AND_QUALITY = String.format("ch%sq%s.stream", channelId, streamQuality);
                 BASE_URL = "rtsp://" + SERVICE_URL_AND_PORT + "/view/" + STREAM_CHANNEL_AND_QUALITY;
 
-                try {
-                    uri = Uri.parse(BASE_URL).buildUpon()
-                            .appendQueryParameter(UID_PARAM, uid)
-                            .appendQueryParameter(PASSWORD_PARAM, URLEncoder.encode(password, "UTF-8"))
-                            .build();
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                }
+
+                uri = Uri.parse(BASE_URL).buildUpon()
+                        .appendQueryParameter(UID_PARAM, uid)
+                        .appendQueryParameter(PASSWORD_PARAM, password)
+                        .build();
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown protocol: " + protocol);
         }
-        return uri;
+
+        String url = null;
+
+        // In case password has special characters
+        try {
+            url = URLDecoder.decode(uri.toString(), "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            Crashlytics.logException(e);
+        }
+
+        return url.toString();
     }
 }

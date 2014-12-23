@@ -64,11 +64,10 @@ public class SmoothService extends IntentService {
             if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
 
             channelsJsonStr = response.body().string();
-
         } catch (MalformedURLException e) {
-            Crashlytics.logException(e);
+            e.printStackTrace();
         } catch (IOException e) {
-            Crashlytics.logException(e);
+            e.printStackTrace();
         }
 
         // Channel information
@@ -187,6 +186,8 @@ public class SmoothService extends IntentService {
 //                Log.v(TAG, "inserted " + channelRowsInserted + " rows of channels");
             }
         }  catch (JSONException e) {
+            Crashlytics.logException(e);
+        } catch (NullPointerException e) {
             Crashlytics.logException(e);
         }
 

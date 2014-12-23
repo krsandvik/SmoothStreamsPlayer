@@ -1,3 +1,13 @@
+#####0.158#####
+changes:
+
+ - better exception handling when retrieving latest stream data. this should prevent some crashes
+
+#####0.157#####
+changes:
+
+ - oops. url DECODING is whats needed on stream url
+
 #####0.156#####
 changes:
 

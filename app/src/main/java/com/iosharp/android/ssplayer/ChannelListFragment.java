@@ -166,12 +166,12 @@ public class ChannelListFragment extends Fragment implements LoaderManager.Loade
                     String url;
                     if (mCastManager != null && mCastManager.isConnected()) {
                         // Don't bother respecting protocol choice as Chromecast only supports HTML5
-                        url = StreamUrl.getUrl(getActivity(), mChannelId, StreamUrl.HTML5).toString();
+                        url = StreamUrl.getUrl(getActivity(), mChannelId, StreamUrl.HTML5);
                     } else {
                         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
                         String protocol = sharedPreferences.getString(getActivity().getString(R.string.pref_protocol_key), "-1");
 
-                        url = StreamUrl.getUrl(getActivity(), mChannelId, Integer.valueOf(protocol)).toString();
+                        url = StreamUrl.getUrl(getActivity(), mChannelId, Integer.valueOf(protocol));
                     }
                     MediaInfo mediaInfo = Utils.buildMediaInfo(channelName, "SmoothStreams", url, channelIcon);
 
