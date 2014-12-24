@@ -1,3 +1,9 @@
+#####0.160#####
+changes:
+
+ - scrolling should be smoother, especially in the case where there are a large number of events/search results
+
+
 #####0.158#####
 changes:
 
