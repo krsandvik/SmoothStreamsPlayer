@@ -17,23 +17,38 @@ public class ResultAdapter extends CursorAdapter {
         super(context, c, autoRequery);
     }
 
+    private static class ViewHolder {
+        TextView eventTitle;
+        TextView eventChannel;
+        TextView eventDate;
+        TextView eventCategory;
+    }
+
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
-
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View retView = inflater.inflate(R.layout.search_result_row, parent, false);
+
+        ViewHolder viewHolder = new ViewHolder();
+        viewHolder.eventTitle = (TextView) retView.findViewById(R.id.result_name);
+        viewHolder.eventChannel = (TextView) retView.findViewById(R.id.result_channel);
+        viewHolder.eventDate = (TextView) retView.findViewById(R.id.result_time);
+        viewHolder.eventCategory = (TextView) retView.findViewById(R.id.result_category);
+        retView.setTag(viewHolder);
+
         return retView;
     }
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
+        ViewHolder viewHolder = (ViewHolder) view.getTag();
+
         String quality = cursor.getString(SearchableActivity.COL_EVENT_QUALITY);
         String language = cursor.getString(SearchableActivity.COL_EVENT_LANGUAGE);
         String title = cursor.getString(SearchableActivity.COL_EVENT_NAME);
         String category = cursor.getString(SearchableActivity.COL_EVENT_CATEGORY);
         long startDate = cursor.getLong(SearchableActivity.COL_EVENT_START_DATE);
         String channel = String.format("%02d", cursor.getInt(SearchableActivity.COL_EVENT_CHANNEL));
-
 
         SpannableString qualitySpannableString = new SpannableString("");
         SpannableString languageSpannableString = new SpannableString("");
@@ -45,16 +60,9 @@ public class ResultAdapter extends CursorAdapter {
             qualitySpannableString = Utils.getHighDefBadge();
         }
 
-        TextView eventTitle = (TextView) view.findViewById(R.id.result_name);
-        eventTitle.setText(TextUtils.concat(title, languageSpannableString, qualitySpannableString));
-
-        TextView eventChannel = (TextView) view.findViewById(R.id.result_channel);
-        eventChannel.setText("CH: " + channel);
-
-        TextView eventDate = (TextView) view.findViewById(R.id.result_time);
-        eventDate.setText(Utils.formatLongToString(startDate, TIME_FORMAT));
-
-        TextView eventCategory = (TextView) view.findViewById(R.id.result_category);
-        eventCategory.setText(category);
+        viewHolder.eventTitle.setText(TextUtils.concat(title, languageSpannableString, qualitySpannableString));
+        viewHolder.eventChannel.setText("CH: " + channel);
+        viewHolder.eventDate.setText(Utils.formatLongToString(startDate, TIME_FORMAT));
+        viewHolder.eventCategory.setText(category);
     }
 }

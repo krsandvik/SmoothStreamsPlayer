@@ -16,11 +16,11 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.Window;
-import android.view.WindowManager;
 
 import com.crashlytics.android.Crashlytics;
+import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Logger;
 import com.google.android.gms.analytics.Tracker;
 import com.google.sample.castcompanionlibrary.cast.VideoCastManager;
 import com.iosharp.android.ssplayer.service.SmoothService;
@@ -44,9 +44,13 @@ public class MainActivity extends ActionBarActivity {
             VideoCastManager.checkGooglePlayServices(this);
         }
 
+        if (BuildConfig.DEBUG) {
+            GoogleAnalytics.getInstance(this).setDryRun(true);
+            GoogleAnalytics.getInstance(this).getLogger().setLogLevel(Logger.LogLevel.VERBOSE);;
+        }
+
         googleAnalytics();
         setupActionBar();
-//        setupStatusBar();
         setupTabs();
 
 
@@ -55,13 +59,6 @@ public class MainActivity extends ActionBarActivity {
             mCastManager.reconnectSessionIfPossible(this, false);
 
         }
-    }
-
-    private void setupStatusBar() {
-        Window window = getWindow();
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-//        window.setStatusBarColor(getResources().getColor(R.c));
     }
 
     private void googleAnalytics() {
