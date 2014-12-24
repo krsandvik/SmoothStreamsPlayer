@@ -1,4 +1,4 @@
-package com.iosharp.android.ssplayer;
+package com.iosharp.android.ssplayer.fragment;
 
 import android.app.AlarmManager;
 import android.app.AlertDialog;
@@ -21,7 +21,10 @@ import android.widget.Toast;
 import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
+import com.iosharp.android.ssplayer.PlayerApplication;
+import com.iosharp.android.ssplayer.R;
 import com.iosharp.android.ssplayer.service.SmoothService;
+import com.iosharp.android.ssplayer.utils.Utils;
 
 public class AlertFragment extends DialogFragment {
     private static final String TAG = AlertFragment.class.getSimpleName();

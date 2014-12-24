@@ -1,4 +1,4 @@
-package com.iosharp.android.ssplayer;
+package com.iosharp.android.ssplayer.fragment;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.CheckBox;
+
+import com.iosharp.android.ssplayer.R;
 
 public class NoticeDialogFragment extends DialogFragment {
     private CheckBox mCheckBox;

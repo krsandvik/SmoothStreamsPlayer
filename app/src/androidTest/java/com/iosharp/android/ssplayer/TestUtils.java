@@ -2,6 +2,9 @@ package com.iosharp.android.ssplayer;
 
 import android.test.AndroidTestCase;
 
+import com.iosharp.android.ssplayer.fragment.AlertFragment;
+import com.iosharp.android.ssplayer.utils.Utils;
+
 import java.util.Date;
 
 public class TestUtils extends AndroidTestCase {

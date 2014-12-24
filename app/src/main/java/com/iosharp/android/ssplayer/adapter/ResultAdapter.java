@@ -1,4 +1,4 @@
-package com.iosharp.android.ssplayer;
+package com.iosharp.android.ssplayer.adapter;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -9,6 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
+
+import com.iosharp.android.ssplayer.R;
+import com.iosharp.android.ssplayer.activity.SearchableActivity;
+import com.iosharp.android.ssplayer.utils.Utils;
 
 public class ResultAdapter extends CursorAdapter {
     public static final String TIME_FORMAT = "EEE MMM dd HH:mm";

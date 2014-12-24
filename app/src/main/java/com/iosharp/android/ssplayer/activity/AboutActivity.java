@@ -1,4 +1,4 @@
-package com.iosharp.android.ssplayer;
+package com.iosharp.android.ssplayer.activity;
 
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
@@ -19,6 +19,8 @@ import android.widget.Toast;
 import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
+import com.iosharp.android.ssplayer.PlayerApplication;
+import com.iosharp.android.ssplayer.R;
 
 
 public class AboutActivity extends ActionBarActivity {

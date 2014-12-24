@@ -1,4 +1,4 @@
-package com.iosharp.android.ssplayer;
+package com.iosharp.android.ssplayer.activity;
 
 import android.app.SearchManager;
 import android.content.Context;
@@ -23,7 +23,13 @@ import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Logger;
 import com.google.android.gms.analytics.Tracker;
 import com.google.sample.castcompanionlibrary.cast.VideoCastManager;
+import com.iosharp.android.ssplayer.BuildConfig;
+import com.iosharp.android.ssplayer.PlayerApplication;
+import com.iosharp.android.ssplayer.R;
+import com.iosharp.android.ssplayer.fragment.ChannelListFragment;
+import com.iosharp.android.ssplayer.fragment.EventListFragment;
 import com.iosharp.android.ssplayer.service.SmoothService;
+import com.iosharp.android.ssplayer.utils.Utils;
 
 import io.fabric.sdk.android.Fabric;
 

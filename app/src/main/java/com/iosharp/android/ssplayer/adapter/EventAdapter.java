@@ -1,4 +1,4 @@
-package com.iosharp.android.ssplayer;
+package com.iosharp.android.ssplayer.adapter;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -14,15 +14,18 @@ import android.widget.TextView;
 
 import com.applidium.headerlistview.SectionAdapter;
 import com.crashlytics.android.Crashlytics;
+import com.iosharp.android.ssplayer.R;
 import com.iosharp.android.ssplayer.db.ChannelContract;
+import com.iosharp.android.ssplayer.fragment.AlertFragment;
 import com.iosharp.android.ssplayer.model.Event;
+import com.iosharp.android.ssplayer.utils.Utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-class EventAdapter extends SectionAdapter {
+public class EventAdapter extends SectionAdapter {
     private Context mContext;
     private ArrayList<ArrayList<Event>> mDateEvents;
     private ArrayList<String> mDate;

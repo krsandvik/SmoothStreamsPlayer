@@ -1,4 +1,4 @@
-package com.iosharp.android.ssplayer;
+package com.iosharp.android.ssplayer.fragment;
 
 
 import android.content.Context;
@@ -14,6 +14,9 @@ import com.applidium.headerlistview.HeaderListView;
 import com.crashlytics.android.Crashlytics;
 import com.google.sample.castcompanionlibrary.cast.VideoCastManager;
 import com.google.sample.castcompanionlibrary.widgets.MiniController;
+import com.iosharp.android.ssplayer.PlayerApplication;
+import com.iosharp.android.ssplayer.R;
+import com.iosharp.android.ssplayer.adapter.EventAdapter;
 import com.iosharp.android.ssplayer.model.Event;
 
 import java.util.ArrayList;

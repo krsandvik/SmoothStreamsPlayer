@@ -1,4 +1,4 @@
-package com.iosharp.android.ssplayer;
+package com.iosharp.android.ssplayer.activity;
 
 import android.app.FragmentManager;
 import android.content.SharedPreferences;
@@ -17,7 +17,12 @@ import android.support.v7.widget.Toolbar;
 
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
+import com.iosharp.android.ssplayer.PlayerApplication;
+import com.iosharp.android.ssplayer.R;
+import com.iosharp.android.ssplayer.db.SearchSuggestionsProvider;
+import com.iosharp.android.ssplayer.fragment.NoticeDialogFragment;
 import com.iosharp.android.ssplayer.tasks.FetchLoginInfoTask;
+import com.iosharp.android.ssplayer.utils.Utils;
 
 public class SettingsActivity extends ActionBarActivity {
 

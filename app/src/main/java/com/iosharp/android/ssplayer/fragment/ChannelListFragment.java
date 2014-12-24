@@ -1,4 +1,4 @@
-package com.iosharp.android.ssplayer;
+package com.iosharp.android.ssplayer.fragment;
 
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -26,6 +26,12 @@ import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.cast.MediaInfo;
 import com.google.sample.castcompanionlibrary.cast.VideoCastManager;
 import com.google.sample.castcompanionlibrary.widgets.MiniController;
+import com.iosharp.android.ssplayer.PlayerApplication;
+import com.iosharp.android.ssplayer.R;
+import com.iosharp.android.ssplayer.activity.SettingsActivity;
+import com.iosharp.android.ssplayer.adapter.ChannelAdapter;
+import com.iosharp.android.ssplayer.utils.StreamUrl;
+import com.iosharp.android.ssplayer.utils.Utils;
 import com.iosharp.android.ssplayer.videoplayer.VideoActivity;
 
 import static com.iosharp.android.ssplayer.PlayerApplication.TrackerName;

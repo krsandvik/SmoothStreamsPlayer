@@ -1,4 +1,4 @@
-package com.iosharp.android.ssplayer;
+package com.iosharp.android.ssplayer.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.preference.PreferenceManager;
 
 import com.crashlytics.android.Crashlytics;
+import com.iosharp.android.ssplayer.R;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;

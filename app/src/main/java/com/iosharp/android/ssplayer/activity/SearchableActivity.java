@@ -1,4 +1,4 @@
-package com.iosharp.android.ssplayer;
+package com.iosharp.android.ssplayer.activity;
 
 import android.app.SearchManager;
 import android.content.Context;
@@ -19,6 +19,11 @@ import android.widget.TextView;
 
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
+import com.iosharp.android.ssplayer.PlayerApplication;
+import com.iosharp.android.ssplayer.R;
+import com.iosharp.android.ssplayer.adapter.ResultAdapter;
+import com.iosharp.android.ssplayer.db.SearchSuggestionsProvider;
+import com.iosharp.android.ssplayer.fragment.AlertFragment;
 
 import java.util.Date;
 

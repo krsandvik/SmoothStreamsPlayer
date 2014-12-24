@@ -1,4 +1,4 @@
-package com.iosharp.android.ssplayer;
+package com.iosharp.android.ssplayer.adapter;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -11,11 +11,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.iosharp.android.ssplayer.R;
+import com.iosharp.android.ssplayer.fragment.ChannelListFragment;
+import com.iosharp.android.ssplayer.utils.Utils;
 import com.squareup.picasso.Picasso;
 
 import java.util.Date;
 
-class ChannelAdapter extends CursorAdapter {
+public class ChannelAdapter extends CursorAdapter {
 
     public ChannelAdapter(Context context, Cursor c) {
         super(context, c);

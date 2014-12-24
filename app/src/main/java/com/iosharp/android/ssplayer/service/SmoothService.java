@@ -12,13 +12,13 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
-import com.iosharp.android.ssplayer.AlertFragment;
-import com.iosharp.android.ssplayer.EventListFragment;
-import com.iosharp.android.ssplayer.MainActivity;
 import com.iosharp.android.ssplayer.PlayerApplication;
 import com.iosharp.android.ssplayer.R;
-import com.iosharp.android.ssplayer.Utils;
+import com.iosharp.android.ssplayer.activity.MainActivity;
 import com.iosharp.android.ssplayer.db.ChannelContract;
+import com.iosharp.android.ssplayer.fragment.AlertFragment;
+import com.iosharp.android.ssplayer.fragment.EventListFragment;
+import com.iosharp.android.ssplayer.utils.Utils;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
