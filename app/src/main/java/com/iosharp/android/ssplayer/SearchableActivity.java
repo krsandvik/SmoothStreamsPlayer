@@ -1,12 +1,12 @@
 package com.iosharp.android.ssplayer;
 
-import android.app.FragmentManager;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.SearchRecentSuggestions;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SearchView;
@@ -153,7 +153,7 @@ public class SearchableActivity extends ActionBarActivity {
                         b.putInt(AlertFragment.BUNDLE_CHANNEL, channel);
                         b.putLong(AlertFragment.BUNDLE_TIME, startLong);
 
-                        FragmentManager fm = getFragmentManager();
+                        FragmentManager fm = getSupportFragmentManager();
 
                         AlertFragment alertFragment = new AlertFragment();
                         alertFragment.setArguments(b);

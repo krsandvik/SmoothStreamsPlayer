@@ -17,11 +17,17 @@ import java.util.Date;
 
 class ChannelAdapter extends CursorAdapter {
 
-    ImageView mIcon;
-
     public ChannelAdapter(Context context, Cursor c) {
         super(context, c);
     }
+
+    private static class ViewHolder {
+        ImageView channelIcon;
+        TextView eventTitle;
+        TextView channelName;
+
+    }
+
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup viewGroup) {
@@ -29,35 +35,39 @@ class ChannelAdapter extends CursorAdapter {
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
         View retView = inflater.inflate(R.layout.channel_list_row, viewGroup, false);
 
+        ViewHolder holder = new ViewHolder();
+        holder.channelIcon = (ImageView) retView.findViewById(R.id.imageView1);
+        holder.eventTitle = (TextView) retView.findViewById(R.id.textView2);
+        holder.channelName = (TextView) retView.findViewById(R.id.textView1);
+        retView.setTag(holder);
+
         return retView;
     }
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        showIcon(view, context, cursor);
-        setCurrentEvent(view, cursor);
+        ViewHolder viewHolder = (ViewHolder) view.getTag();
 
-        ((TextView) view.findViewById(R.id.textView1))
-                .setText(cursor.getString(ChannelListFragment.COL_CHANNEL_NAME));
+        showIcon(viewHolder, context, cursor);
+        setCurrentEvent(viewHolder, cursor);
+
+        viewHolder.channelName.setText(cursor.getString(ChannelListFragment.COL_CHANNEL_NAME));
     }
 
-    private void showIcon(View view, Context context, Cursor cursor) {
+    private void showIcon(ViewHolder viewHolder, Context context, Cursor cursor) {
         String SMOOTHSTREAMS_ICON_BASE = "http://smoothstreams.tv/schedule/includes/images/uploads/";
         String channelIcon = cursor.getString(ChannelListFragment.COL_CHANNEL_ICON);
         String SMOOTHSTREAMS_ICON_URL = SMOOTHSTREAMS_ICON_BASE + channelIcon;
-
-        mIcon = (ImageView) view.findViewById(R.id.imageView1);
 
         Picasso.with(context)
                 .load(SMOOTHSTREAMS_ICON_URL)
                 .resize(100, 100)
                 .centerInside()
-                .into(mIcon);
+                .into(viewHolder.channelIcon);
     }
 
-    private void setCurrentEvent(View view, Cursor cursor) {
+    private void setCurrentEvent(ViewHolder viewHolder, Cursor cursor) {
         String id = cursor.getString(ChannelListFragment.COL_EVENT_ID);
-        TextView eventTitle = (TextView) view.findViewById(R.id.textView2);
 
         if (id != null) {
             Date now = new Date();
@@ -78,8 +88,8 @@ class ChannelAdapter extends CursorAdapter {
                     qualitySpannableString = Utils.getHighDefBadge();
                 }
 
-                eventTitle.setText(TextUtils.concat(title, languageSpannableString, qualitySpannableString));
-                eventTitle.setVisibility(View.VISIBLE);
+                viewHolder.eventTitle.setText(TextUtils.concat(title, languageSpannableString, qualitySpannableString));
+                viewHolder.eventTitle.setVisibility(View.VISIBLE);
             }
         }
     }
