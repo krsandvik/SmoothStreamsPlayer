@@ -60,13 +60,17 @@ public class ChannelAdapter extends CursorAdapter {
     private void showIcon(ViewHolder viewHolder, Context context, Cursor cursor) {
         String SMOOTHSTREAMS_ICON_BASE = "http://smoothstreams.tv/schedule/includes/images/uploads/";
         String channelIcon = cursor.getString(ChannelListFragment.COL_CHANNEL_ICON);
-        String SMOOTHSTREAMS_ICON_URL = SMOOTHSTREAMS_ICON_BASE + channelIcon;
 
-        Picasso.with(context)
-                .load(SMOOTHSTREAMS_ICON_URL)
-                .resize(100, 100)
-                .centerInside()
-                .into(viewHolder.channelIcon);
+
+        if (channelIcon != null || !channelIcon.equalsIgnoreCase("")) {
+            String SMOOTHSTREAMS_ICON_URL = SMOOTHSTREAMS_ICON_BASE + channelIcon;
+
+            Picasso.with(context)
+                    .load(SMOOTHSTREAMS_ICON_URL)
+                    .resize(100, 100)
+                    .centerInside()
+                    .into(viewHolder.channelIcon);
+        }
     }
 
     private void setCurrentEvent(ViewHolder viewHolder, Cursor cursor) {
@@ -80,19 +84,22 @@ public class ChannelAdapter extends CursorAdapter {
             String language = cursor.getString(ChannelListFragment.COL_EVENT_LANGUAGE);
             String quality = cursor.getString(ChannelListFragment.COL_EVENT_QUALITY);
 
-            if (now.after(startDate) && now.before(endDate)) {
-                SpannableString qualitySpannableString = new SpannableString("");
-                SpannableString languageSpannableString = new SpannableString("");
+            if (title != null || !title.equalsIgnoreCase("")) {
 
-                if (!language.equals("")) {
-                    languageSpannableString = Utils.getLanguageImg(mContext, language);
-                }
-                if (quality.equalsIgnoreCase("720p")) {
-                    qualitySpannableString = Utils.getHighDefBadge();
-                }
+                if (now.after(startDate) && now.before(endDate)) {
+                    SpannableString qualitySpannableString = new SpannableString("");
+                    SpannableString languageSpannableString = new SpannableString("");
 
-                viewHolder.eventTitle.setText(TextUtils.concat(title, languageSpannableString, qualitySpannableString));
-                viewHolder.eventTitle.setVisibility(View.VISIBLE);
+                    if (!language.equals("")) {
+                        languageSpannableString = Utils.getLanguageImg(mContext, language);
+                    }
+                    if (quality.equalsIgnoreCase("720p")) {
+                        qualitySpannableString = Utils.getHighDefBadge();
+                    }
+
+                    viewHolder.eventTitle.setText(TextUtils.concat(title, languageSpannableString, qualitySpannableString));
+                    viewHolder.eventTitle.setVisibility(View.VISIBLE);
+                }
             }
         }
     }
