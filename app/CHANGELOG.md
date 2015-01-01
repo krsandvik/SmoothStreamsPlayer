@@ -2,7 +2,7 @@
 changes:
 
  - scrolling should be smoother, especially in the case where there are a large number of events/search results
- - chromecast experience should be better (less crashes)
+ - chromecast experience should be better (less crashes when disconnecting from chromecast, etc)
 
 #####0.158#####
 changes:
