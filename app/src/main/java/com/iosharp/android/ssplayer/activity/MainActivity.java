@@ -60,9 +60,9 @@ public class MainActivity extends ActionBarActivity {
         setupTabs();
 
 
-        mCastManager = PlayerApplication.getCastManager(this);
+        mCastManager = PlayerApplication.getCastManager();
         if (mCastManager != null) {
-            mCastManager.reconnectSessionIfPossible(this, false);
+            mCastManager.reconnectSessionIfPossible();
 
         }
     }
@@ -116,6 +116,8 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onResume() {
         getChannels();
+
+        mCastManager = PlayerApplication.getCastManager();
 
         if (mCastManager != null) {
             mCastManager.incrementUiCounter();

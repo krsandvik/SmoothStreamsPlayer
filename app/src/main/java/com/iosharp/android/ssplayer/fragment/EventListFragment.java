@@ -114,13 +114,15 @@ public class EventListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mCastManager = PlayerApplication.getCastManager(getActivity());
+
    }
 
     @Override
     public void onResume() {
         super.onResume();
         updateEvents(getActivity());
+
+        mCastManager = PlayerApplication.getCastManager();
 
         if (mCastManager != null) {
             mCastManager.incrementUiCounter();

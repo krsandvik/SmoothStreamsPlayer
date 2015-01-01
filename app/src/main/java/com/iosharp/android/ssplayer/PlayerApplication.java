@@ -14,25 +14,29 @@ import com.google.sample.castcompanionlibrary.cast.VideoCastManager;
 import java.util.HashMap;
 
 public class PlayerApplication extends Application {
-    private static String APPLICATION_ID = "1586DC79";
+    private static String sApplicationId;
     private static String PROPERTY_ID = "UA-57141244-1";
-    private static VideoCastManager mCastMgr = null;
+    private static VideoCastManager sCastMgr = null;
 
-    public static VideoCastManager getCastManager(Context context) {
+    private void initializeCastManager() {
         if (!(Build.MODEL.contains("AFT") || Build.MANUFACTURER.equals("Amazon"))) {
-            if (null == mCastMgr) {
-                mCastMgr = VideoCastManager.initialize(context, APPLICATION_ID, null, null);
-                mCastMgr.enableFeatures(
+            sCastMgr = VideoCastManager.initialize(getApplicationContext(), sApplicationId, null, null);
+        }
+
+        if (sCastMgr != null ) {
+                sCastMgr.enableFeatures(
                         VideoCastManager.FEATURE_NOTIFICATION |
                                 VideoCastManager.FEATURE_LOCKSCREEN |
                                 VideoCastManager.FEATURE_WIFI_RECONNECT |
                                 VideoCastManager.FEATURE_DEBUGGING);
-
-            }
-            mCastMgr.setContext(context);
-            return mCastMgr;
         }
-        return null;
+    }
+
+    public static VideoCastManager getCastManager() {
+        if (sCastMgr == null) {
+            throw new IllegalStateException("Application has not been started");
+        }
+        return sCastMgr;
     }
 
     public static String getUserAgent(Context context) {
@@ -87,5 +91,7 @@ public class PlayerApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        sApplicationId = getString(R.string.chromecast_app_id);
+        initializeCastManager();
     }
 }

@@ -35,7 +35,6 @@ import com.iosharp.android.ssplayer.utils.Utils;
 import com.iosharp.android.ssplayer.videoplayer.VideoActivity;
 
 import static com.iosharp.android.ssplayer.PlayerApplication.TrackerName;
-import static com.iosharp.android.ssplayer.PlayerApplication.getCastManager;
 import static com.iosharp.android.ssplayer.db.ChannelContract.ChannelEntry;
 import static com.iosharp.android.ssplayer.db.ChannelContract.EventEntry;
 
@@ -80,7 +79,6 @@ public class ChannelListFragment extends Fragment implements LoaderManager.Loade
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mCastManager = getCastManager(getActivity());
     }
 
     private static boolean getDebugMode(Context context) {
@@ -127,6 +125,8 @@ public class ChannelListFragment extends Fragment implements LoaderManager.Loade
     @Override
     public void onResume() {
         super.onResume();
+
+        mCastManager = PlayerApplication.getCastManager();
         if (mCastManager != null) {
             mCastManager.incrementUiCounter();
         }

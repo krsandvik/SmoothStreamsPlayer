@@ -2,6 +2,7 @@
 <resources>
 
     <string name="app_name">SmoothStreams Player</string>
+    <string name="chromecast_app_id" translatable="false">1586DC79</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="action_search">Search</string>

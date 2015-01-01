@@ -59,7 +59,7 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mCastManager = PlayerApplication.getCastManager(this);
+        mCastManager = PlayerApplication.getCastManager();
         setContentView(R.layout.activity_video);
         hideSoftKeys();
 
