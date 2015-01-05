@@ -70,11 +70,7 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
         setupCastListeners();
         goFullscreen();
         getSupportActionBar().show();
-
-        mTracker = ((PlayerApplication) getApplication()).getTracker(PlayerApplication.TrackerName.APP_TRACKER);
-        mTracker.setScreenName(getString(R.string.ga_screen_video_player));
-        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
-        GoogleAnalytics.getInstance(this.getBaseContext()).dispatchLocalHits();
+        googleAnalytics();
 
 
         Bundle b = getIntent().getExtras();
@@ -94,6 +90,13 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
             mController = new VideoControllerView(this, false);
             mPlayer.setOnPreparedListener(this);
         }
+    }
+
+    private void googleAnalytics() {
+        mTracker = ((PlayerApplication) getApplication()).getTracker(PlayerApplication.TrackerName.APP_TRACKER);
+        mTracker.setScreenName(getString(R.string.ga_screen_video_player));
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+        GoogleAnalytics.getInstance(this.getBaseContext()).dispatchLocalHits();
     }
 
 
@@ -303,15 +306,17 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
     }
 
     private void showActionBar() {
-        getSupportActionBar().show();
+        if (getSupportActionBar().isShowing() == false) {
+            getSupportActionBar().show();
 
-        Handler h = new Handler();
-        h.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                getSupportActionBar().hide();
-            }
-        }, sDefaultTimeout);
+            Handler h = new Handler();
+            h.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    getSupportActionBar().hide();
+                }
+            }, sDefaultTimeout);
+        }
     }
 
 
