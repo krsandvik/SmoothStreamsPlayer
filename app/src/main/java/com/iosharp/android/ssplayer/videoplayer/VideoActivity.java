@@ -30,7 +30,6 @@ import com.google.android.gms.cast.ApplicationMetadata;
 import com.google.android.gms.cast.MediaInfo;
 import com.google.android.gms.cast.MediaMetadata;
 import com.google.sample.castcompanionlibrary.cast.VideoCastManager;
-import com.google.sample.castcompanionlibrary.cast.callbacks.IVideoCastConsumer;
 import com.google.sample.castcompanionlibrary.cast.callbacks.VideoCastConsumerImpl;
 import com.google.sample.castcompanionlibrary.utils.Utils;
 import com.iosharp.android.ssplayer.PlayerApplication;
@@ -41,9 +40,9 @@ import java.io.IOException;
 
 public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Callback, MediaPlayer.OnPreparedListener,
         VideoControllerView.MediaPlayerControl, MediaPlayer.OnErrorListener {
+    private static final String TAG = VideoActivity.class.getSimpleName();
 
     private static final int sDefaultTimeout = 3000;
-
 
     private SurfaceView mSurfaceView;
     private MediaPlayer mPlayer;
@@ -52,9 +51,8 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
     private SurfaceHolder mSurfaceHolder;
     private VideoCastManager mCastManager;
     private MediaInfo mSelectedMedia;
-    private int mChannelId;
-    private int mChannelsCount;
     private Tracker mTracker;
+    private VideoCastConsumerImpl mCastConsumer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,19 +74,18 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
         Bundle b = getIntent().getExtras();
         if (b != null) {
             mSelectedMedia = Utils.toMediaInfo(getIntent().getBundleExtra("media"));
-            mChannelId = b.getInt("channelid");
-            mChannelsCount = b.getInt("channelSize");
 
-
-            mURL = mSelectedMedia.getContentId();
             String title = mSelectedMedia.getMetadata().getString(MediaMetadata.KEY_TITLE);
             getSupportActionBar().setTitle(title);
+
+            mURL = mSelectedMedia.getContentId();
 
             mSurfaceHolder = mSurfaceView.getHolder();
             mSurfaceHolder.addCallback(this);
             mPlayer = new MediaPlayer();
             mController = new VideoControllerView(this, false);
             mPlayer.setOnPreparedListener(this);
+
         }
     }
 
@@ -103,8 +100,6 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
     @Override
     protected void onResume() {
         super.onResume();
-
-
         try {
             mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
             mPlayer.setDataSource(mURL);
@@ -115,6 +110,7 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
         }
 
         if (mCastManager != null) {
+            mCastManager.addVideoCastConsumer(mCastConsumer);
             mCastManager.incrementUiCounter();
         }
     }
@@ -122,6 +118,7 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        Log.v(TAG, "onTouchEvent");
         mController.show();
         showActionBar();
         return false;
@@ -144,8 +141,8 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
         mPlayer.setOnPreparedListener(null);
         mPlayer.reset();
 
-
         if (mCastManager != null) {
+            mCastManager.removeVideoCastConsumer(mCastConsumer);
             mCastManager.decrementUiCounter();
         }
     }
@@ -279,16 +276,24 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
 
     private void setupCastListeners() {
         if (mCastManager != null) {
-            IVideoCastConsumer videoCastConsumer = new VideoCastConsumerImpl() {
+            mCastConsumer = new VideoCastConsumerImpl() {
                 @Override
                 public void onApplicationConnected(ApplicationMetadata appMetadata, String sessionId, boolean wasLaunched) {
                     super.onApplicationConnected(appMetadata, sessionId, wasLaunched);
-                    finish();
-                    loadRemoteMedia(false);
-                }
-            };
 
-            mCastManager.addVideoCastConsumer(videoCastConsumer);
+                    if (mSelectedMedia != null) {
+
+                        try {
+                            loadRemoteMedia(true);
+                            finish();
+                        } catch (Exception e) {
+                            Crashlytics.logException(e);
+                        }
+                    }
+
+                }
+
+            };
         }
     }
 
