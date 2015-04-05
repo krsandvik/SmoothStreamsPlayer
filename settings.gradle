@@ -1,1 +1,1 @@
-include ':app', ':HeaderListView', ':CastCompanionLibrary'
+include ':app', ':CastCompanionLibrary', ':HeaderListView'
