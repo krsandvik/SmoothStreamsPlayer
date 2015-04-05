@@ -12,8 +12,8 @@ import android.view.ViewGroup;
 
 import com.applidium.headerlistview.HeaderListView;
 import com.crashlytics.android.Crashlytics;
-import com.google.sample.castcompanionlibrary.cast.VideoCastManager;
-import com.google.sample.castcompanionlibrary.widgets.MiniController;
+import com.google.android.libraries.cast.companionlibrary.cast.VideoCastManager;
+import com.google.android.libraries.cast.companionlibrary.widgets.MiniController;
 import com.iosharp.android.ssplayer.PlayerApplication;
 import com.iosharp.android.ssplayer.R;
 import com.iosharp.android.ssplayer.adapter.EventAdapter;

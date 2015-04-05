@@ -9,7 +9,7 @@ import android.os.Build;
 import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
-import com.google.sample.castcompanionlibrary.cast.VideoCastManager;
+import com.google.android.libraries.cast.companionlibrary.cast.VideoCastManager;
 
 import java.util.HashMap;
 

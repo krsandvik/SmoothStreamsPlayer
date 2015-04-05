@@ -16,18 +16,20 @@
     <string name="preferences_stream_settings">Stream Settings</string>
     <string name="preferences_server_location">Server Location</string>
     <string name="preferences_high_quality">High Quality</string>
-    <string name="preferences_europe">Europe (Random)</string>
-    <string name="preferences_amsterdam_i3d">Europe (Amsterdam - i3d)</string>
-    <string name="preferences_amsterdam_evo">Europe (Amsterdam - Evo)</string>
-    <string name="preferences_london">Europe (London)</string>
-    <string name="preferences_united_states">United States (Random)</string>
-    <string name="preferences_east">United States (East)</string>
-    <string name="preferences_west">United States (West)</string>
+
+    <string name="preferences_europe">EU Random</string>
+    <string name="preferences_amsterdam_i3d">EU (NL-i3d)</string>
+    <string name="preferences_amsterdam_evo">EU (NL-Evo)</string>
+    <string name="preferences_london">EU (UK-London)</string>
+    <string name="preferences_united_states">US All</string>
+    <string name="preferences_east">US East</string>
+    <string name="preferences_west">US West</string>
     <string name="preferences_asia">Asia</string>
+
     <string name="preferences_protocol">Protocol</string>
     <string name="preferences_other">Other</string>
-        <string name="preferences_clear_search_history">Clear local search history</string>
-        <string name="preferences_clear_search_history_hint">Remove searches you have performed from this device</string>
+    <string name="preferences_clear_search_history">Clear local search history</string>
+    <string name="preferences_clear_search_history_hint">Remove searches you have performed from this device</string>
     <string name="pref_service_username_key" translatable="false">pref_service_username_key</string>
     <string name="pref_service_password_key" translatable="false">pref_service_password_key</string>
     <string name="pref_service_key" translatable="false">pref_service_key</string>
@@ -49,15 +51,19 @@
 
     <string-array name="list_services" translatable="false">
         <item translatable="false">Live247</item>
-        <item translatable="false">MyStreams</item>
+        <item translatable="false">MyStreams/uSport</item>
         <item translatable="false">StarStreams</item>
-        <item translatable="false">MMA-TV</item>
+        <item translatable="false">MMA Pro</item>
+        <item translatable="false">MMA SR+</item>
+        <item translatable="false">StreamTVnow</item>
     </string-array>
     <string-array name="list_services_values" translatable="false">
         <item translatable="false">live247</item>
         <item translatable="false">mystreams</item>
         <item translatable="false">starstreams</item>
         <item translatable="false">mma-tv</item>
+        <item translatable="false">mma-sr</item>
+        <item translatable="false">streamtvnow</item>
     </string-array>
     <string-array name="list_servers" translatable="false">
         <item>@string/preferences_europe</item>
@@ -79,6 +85,18 @@
         <item translatable="false">dNAw.smoothstreams.tv</item>
         <item translatable="false">dSG.smoothstreams.tv</item>
     </string-array>
+    <string-array name="list_server_streamtvnow_values" translatable="false">
+        <item translatable="false">dNAe.smoothstreams.tv</item>
+        <item translatable="false">d71.smoothstreams.tv</item>
+        <item translatable="false">dSG.smoothstreams.tv</item>
+    </string-array>
+    <string-array name="list_server_streamtvnow" translatable="false">
+        <item>@string/preferences_east</item>
+        <item>@string/preferences_amsterdam_evo</item>
+        <item>@string/preferences_asia</item>
+    </string-array>
+
+
 
     <string name="title_activity_video">VideoActivity</string>
     <string name="title_activity_about">About</string>
@@ -142,12 +160,10 @@
     <string-array name="list_stream_protocols" translatable="false">
         <item translatable="false">HLS (HTML5)</item>
         <item translatable="false">RTMP</item>
-        <item translatable="false">RTSP</item>
     </string-array>
     <string-array name="list_stream_protocols_values" translatable="false">
         <item translatable="false">0</item>
         <item translatable="false">1</item>
-        <item translatable="false">2</item>
     </string-array>
 
     <string name="alert_ok">OK</string>

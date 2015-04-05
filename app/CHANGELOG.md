@@ -1,7 +1,10 @@
-#####0.170#####
+#####0.2#####
 changes:
 
- - now fixes daylight savings time
+ - now correctly accounts for daylight savings time
+ - added MMA Pro, MMA SR+, StreamTVnow services
+ - renamed servers and services to fall in line with Kodi plugin
+ - removed RTSP option
  - update some of the dependencies
 
 #####0.164#####

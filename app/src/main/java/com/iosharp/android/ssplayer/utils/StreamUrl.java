@@ -39,6 +39,7 @@ public class StreamUrl {
 
         String port = null;
 
+        // HLS
         if (protocol == 0) {
             if (service.equals("live247")) {
                 port = "12935";
@@ -51,8 +52,13 @@ public class StreamUrl {
 
             } else if (service.equals("mma-tv")) {
                 port = "5545";
+            } else if (service.equals("mma-sr")) {
+                port = "4935";
+            } else if (server.equals("streamtvnow")) {
+                port = "61935";
             }
         } else {
+        // RTMP
             if (service.equals("live247")) {
                 port = "2935";
 
@@ -64,6 +70,10 @@ public class StreamUrl {
 
             } else if (service.equals("mma-tv")) {
                 port = "5540";
+            } else if (service.equals("mma-sr")) {
+                port = "4935";
+            } else if (service.equals("streamtvnow")) {
+                port = "6935";
             }
         }
 

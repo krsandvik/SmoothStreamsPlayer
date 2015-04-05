@@ -11,6 +11,7 @@ import android.preference.Preference;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
+import android.preference.PreferenceScreen;
 import android.provider.SearchRecentSuggestions;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
@@ -24,7 +25,12 @@ import com.iosharp.android.ssplayer.fragment.NoticeDialogFragment;
 import com.iosharp.android.ssplayer.tasks.FetchLoginInfoTask;
 import com.iosharp.android.ssplayer.utils.Utils;
 
+
+
+
 public class SettingsActivity extends ActionBarActivity {
+
+    private static final int INDEX_SERVERS = 5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,6 +113,26 @@ public class SettingsActivity extends ActionBarActivity {
                     FetchLoginInfoTask fetchLoginInfoTask = new FetchLoginInfoTask(getActivity());
                     fetchLoginInfoTask.execute();
                 }
+            }
+            //StreamTVnow only works on certain servers.
+            if (key.equals(getString(R.string.pref_service_key))) {
+                sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                String service = sharedPreferences.getString(getString(R.string.pref_service_key), "");
+
+                ListPreference servers = (ListPreference) findPreference(getString(R.string.pref_server_key));
+                if (service.equals("streamtvnow")) {
+                    servers.setEntries(R.array.list_server_streamtvnow);
+                    servers.setEntryValues(R.array.list_server_streamtvnow_values);
+
+                    PreferenceScreen screen = getPreferenceScreen();
+                    screen.onItemClick(null, null, INDEX_SERVERS, 0);
+
+                } else {
+                    servers.setEntries(R.array.list_servers);
+                    servers.setEntryValues(R.array.list_servers_values);
+                }
+
+
             }
 
             if (key.equals(getString(R.string.pref_protocol_key))) {

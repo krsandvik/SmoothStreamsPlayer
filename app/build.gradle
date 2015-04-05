@@ -23,8 +23,8 @@ android {
         applicationId "com.iosharp.android.ssplayer"
         minSdkVersion 14
         targetSdkVersion 21
-        versionCode 35
-        versionName "0.164"
+        versionCode 40
+        versionName "0.2"
     }
     buildTypes {
         release {
@@ -45,6 +45,7 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:22.0.0'
     compile 'com.android.support:support-v4:22.0.0'
+    compile 'com.google.android.gms:play-services-analytics:7.0.0'
     compile project(':HeaderListView')
     compile project(':CastCompanionLibrary')
     compile 'com.squareup.okhttp:okhttp:2.3.0'

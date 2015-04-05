@@ -22,7 +22,7 @@ import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Logger;
 import com.google.android.gms.analytics.Tracker;
-import com.google.sample.castcompanionlibrary.cast.VideoCastManager;
+import com.google.android.libraries.cast.companionlibrary.cast.VideoCastManager;
 import com.iosharp.android.ssplayer.BuildConfig;
 import com.iosharp.android.ssplayer.PlayerApplication;
 import com.iosharp.android.ssplayer.R;
@@ -131,14 +131,6 @@ public class MainActivity extends ActionBarActivity {
             mCastManager.decrementUiCounter();
         }
         super.onPause();
-    }
-
-    @Override
-    protected void onDestroy() {
-        if (mCastManager != null) {
-            mCastManager.clearContext(this);
-        }
-        super.onDestroy();
     }
 
     public void setupActionBar() {

@@ -24,8 +24,8 @@ import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.cast.MediaInfo;
-import com.google.sample.castcompanionlibrary.cast.VideoCastManager;
-import com.google.sample.castcompanionlibrary.widgets.MiniController;
+import com.google.android.libraries.cast.companionlibrary.cast.VideoCastManager;
+import com.google.android.libraries.cast.companionlibrary.widgets.MiniController;
 import com.iosharp.android.ssplayer.PlayerApplication;
 import com.iosharp.android.ssplayer.R;
 import com.iosharp.android.ssplayer.activity.SettingsActivity;
@@ -34,6 +34,7 @@ import com.iosharp.android.ssplayer.utils.StreamUrl;
 import com.iosharp.android.ssplayer.utils.Utils;
 import com.iosharp.android.ssplayer.videoplayer.VideoActivity;
 
+import static com.google.android.libraries.cast.companionlibrary.utils.Utils.mediaInfoToBundle;
 import static com.iosharp.android.ssplayer.PlayerApplication.TrackerName;
 import static com.iosharp.android.ssplayer.db.ChannelContract.ChannelEntry;
 import static com.iosharp.android.ssplayer.db.ChannelContract.EventEntry;
@@ -104,11 +105,11 @@ public class ChannelListFragment extends Fragment implements LoaderManager.Loade
                         .build());
                 GoogleAnalytics.getInstance(getActivity().getBaseContext()).dispatchLocalHits();
 
-                mCastManager.startCastControllerActivity(context, info, 0, true);
+                mCastManager.startVideoCastControllerActivity(context, info, 0, true);
 
             } else {
                 Intent intent = new Intent(context, VideoActivity.class);
-                intent.putExtra("media", com.google.sample.castcompanionlibrary.utils.Utils.fromMediaInfo(info));
+                intent.putExtra("media", mediaInfoToBundle(info));
                 intent.putExtra("channel", mChannelId);
 
                 t.send(new HitBuilders.EventBuilder()

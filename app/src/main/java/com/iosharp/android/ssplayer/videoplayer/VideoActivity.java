@@ -29,9 +29,9 @@ import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.cast.ApplicationMetadata;
 import com.google.android.gms.cast.MediaInfo;
 import com.google.android.gms.cast.MediaMetadata;
-import com.google.sample.castcompanionlibrary.cast.VideoCastManager;
-import com.google.sample.castcompanionlibrary.cast.callbacks.VideoCastConsumerImpl;
-import com.google.sample.castcompanionlibrary.utils.Utils;
+import com.google.android.libraries.cast.companionlibrary.cast.VideoCastManager;
+import com.google.android.libraries.cast.companionlibrary.cast.callbacks.VideoCastConsumerImpl;
+import com.google.android.libraries.cast.companionlibrary.utils.Utils;
 import com.iosharp.android.ssplayer.PlayerApplication;
 import com.iosharp.android.ssplayer.R;
 
@@ -73,7 +73,7 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
 
         Bundle b = getIntent().getExtras();
         if (b != null) {
-            mSelectedMedia = Utils.toMediaInfo(getIntent().getBundleExtra("media"));
+            mSelectedMedia = Utils.bundleToMediaInfo(getIntent().getBundleExtra("media"));
 
             String title = mSelectedMedia.getMetadata().getString(MediaMetadata.KEY_TITLE);
             getSupportActionBar().setTitle(title);
@@ -298,7 +298,7 @@ public class VideoActivity extends ActionBarActivity implements SurfaceHolder.Ca
     }
 
     private void loadRemoteMedia(boolean autoPlay) {
-        mCastManager.startCastControllerActivity(this, mSelectedMedia, 0, autoPlay);
+        mCastManager.startVideoCastControllerActivity(this, mSelectedMedia, 0, autoPlay);
     }
 
 
