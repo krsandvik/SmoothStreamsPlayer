@@ -1,3 +1,8 @@
+#####0.164#####
+changes:
+
+ - video player can be either in 'landscape' or 'reversed landscape'
+
 #####0.163#####
 changes:
 
