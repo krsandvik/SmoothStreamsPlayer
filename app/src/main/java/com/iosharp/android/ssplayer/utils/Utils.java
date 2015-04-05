@@ -47,9 +47,9 @@ public class Utils {
         try {
             convertedDate = dateFormat.parse(dateString);
             // If we adjust justDate for DST, we could be an hour behind and the date is not correct.
-//            if (isDst()) {
-//                return adjustForDst(convertedDate);
-//            }
+            if (isDst()) {
+                return adjustForDst(convertedDate);
+            }
             return convertedDate.getTime();
         } catch (ParseException e) {
             Crashlytics.logException(e);
@@ -89,15 +89,15 @@ public class Utils {
                 .build();
     }
 
-    private boolean isDst() {
+    private static boolean isDst() {
         return SimpleTimeZone.getDefault().inDaylightTime(new Date());
     }
 
-    private Date adjustForDst(Date date) {
+    private static Long adjustForDst(Date date) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         cal.add(Calendar.HOUR, -1);
-        return cal.getTime();
+        return cal.getTime().getTime();
     }
 
     public static SpannableString getHighDefBadge() {
