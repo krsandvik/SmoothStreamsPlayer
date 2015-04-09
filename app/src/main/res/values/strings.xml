@@ -103,7 +103,7 @@
     <string name="action_about">About</string>
     <string name="about_version">Version</string>
     <string name="about_developed_by">Developed by aaearon</string>
-    <string name="about_body" translatable="false">\nA video player for the SmoothStreams.tv Networks (Live247.tv / MyStreams.tv / StarStreams.tv / MMA-TV.net / TFR) with Chromecast support.</string>
+    <string name="about_body" translatable="false">\nA video player for the SmoothStreams.tv Networks (Live247.tv / MyStreams.tv / uSport / StarStreams.tv / MMA-TV.net / TFR / StreamTVnow) with Chromecast support.</string>
     <string name="event_header_row_channel">CH</string>
     <string name="event_header_row_time">TIME</string>
     <string name="event_header_row_name">NAME</string>

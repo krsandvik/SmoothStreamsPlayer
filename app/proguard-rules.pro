@@ -25,5 +25,5 @@
 -keep class com.crashlytics.** { *; }
 -keep class android.support.** { *; }
 -keep interface android.support.** { *; }
--keep class com.google.sample.** { *; }
+-keep class com.google.android.** { *; }
 -keep class com.applidium.headerlistview.** { *; }

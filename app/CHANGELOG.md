@@ -1,3 +1,8 @@
+#####0.21#####
+changes:
+
+ - casting should no longer crash the app
+
 #####0.2#####
 changes:
 
