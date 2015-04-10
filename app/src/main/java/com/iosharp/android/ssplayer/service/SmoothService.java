@@ -50,7 +50,7 @@ public class SmoothService extends IntentService {
         String channelsJsonStr = null;
 
         try {
-            final String SMOOTHSTREAMS_JSON_FEED = "http://smoothstreams.tv/schedule/feed.json";
+            final String SMOOTHSTREAMS_JSON_FEED = "http://cdn.smoothstreams.tv/schedule/feed.json";
 
             URL url = new URL(SMOOTHSTREAMS_JSON_FEED);
 
