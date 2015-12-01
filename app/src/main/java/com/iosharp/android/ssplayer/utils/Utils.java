@@ -62,7 +62,7 @@ public class Utils {
         String uid = sharedPreferences.getString(c.getString(R.string.pref_ss_uid_key), null);
         String password = sharedPreferences.getString(c.getString(R.string.pref_ss_password_key), null);
 
-        if (uid != null && password != null) {
+        if (password != null) {
             return true;
         }
 

@@ -48,37 +48,50 @@ public class FetchLoginInfoTask extends AsyncTask<Void, Void, Void> {
         mService = mService.trim();
     }
 
-
-    private String getServiceBaseUrl(String service) {
-        if (service.equals("mma-tv")) {
-            return "http://www.mma-tv.net/loginForm.php";
-        } else if (service.equals("starstreams")) {
-            return "http://starstreams.tv/t.php";
-        } else {
-            return "http://smoothstreams.tv/login.php";
+    private String getServiceParam(String service) {
+        if (service.equals("live247")){
+            return "view247";
+        }else if (service.equals("mystreams")){
+            return "viewms";
+        }else if (service.equals("starstreams")){
+            return "viewss";
+        }else if (service.equals("mma-tv")) {
+            return "mma-tv";
+        } else if (service.equals("mma-sr")) {
+            return "mma-sr";
+        } else if (service.equals("streamtvnow")){
+            return "viewstvn";
+        }else{
+            return null;
         }
     }
 
     @Override
     protected Void doInBackground(Void... voids) {
         final String USER_AGENT = PlayerApplication.getUserAgent(mContext);
+
         final OkHttpClient client = new OkHttpClient();
         String loginJsonStr = null;
 
         try {
-            final String SMOOTHSTREAMS_BASE_URL = getServiceBaseUrl(mService);
+            final String SMOOTHSTREAMS_BASE_URL = "http://smoothstreams.tv/schedule/admin/dash_new/hash_api.php"; //getServiceBaseUrl(mService);
 
             final String USERNAME_PARAM = "username";
             final String PASSWORD_PARAM = "password";
             final String SITE_PARAM = "site";
 
-            Uri builtUri = Uri.parse(SMOOTHSTREAMS_BASE_URL).buildUpon()
-                    .appendQueryParameter(USERNAME_PARAM, mUsername)
-                    .appendQueryParameter(PASSWORD_PARAM, mPassword)
-                    .appendQueryParameter(SITE_PARAM, mService)
-                    .build();
+            /*  Uri.parse is stripping out characters like + signs. Since we're passing +'s we can't do that.
+			Uri builtUri = Uri.parse(SMOOTHSTREAMS_BASE_URL).buildUpon()
+					.appendQueryParameter(USERNAME_PARAM, mUsername)
+					.appendQueryParameter(PASSWORD_PARAM, URLEncoder.encode(mPassword, "UTF-8"))
+					.appendQueryParameter(SITE_PARAM, getServiceParam(mService))
+					.build();
 
-            URL url = new URL(builtUri.toString());
+            */
+
+            String builtUrl = SMOOTHSTREAMS_BASE_URL + "?" + USERNAME_PARAM + "=" + Uri.encode(mUsername) + "&" + PASSWORD_PARAM + "=" + Uri.encode(mPassword) + "&" + SITE_PARAM + "=" + getServiceParam(mService);
+
+            URL url = new URL(builtUrl);
 
             Request request = new Request.Builder()
                     .url(url)
@@ -105,16 +118,13 @@ public class FetchLoginInfoTask extends AsyncTask<Void, Void, Void> {
         try {
 
             JSONObject response = new JSONObject(responseStr);
-
-            if (response.has("id")) {
-                String username = response.getString("id");
-                String password = response.getString("password");
-
-                setServiceCredentials(username, password);
-            } else if (response.has("error")) {
+            if (response.has("error")) {
                 String message = response.getString("error");
                 showToastMethod("ERROR: " + message);
-            } else {
+            }else if (response.has("hash")) {
+                String password = response.getString("hash");
+                setServiceCredentials(mUsername, password);
+            }else{
                 showToastMethod("ERROR: Unknown response!");
                 Log.e(TAG, "Unknown response!");
             }
@@ -125,7 +135,7 @@ public class FetchLoginInfoTask extends AsyncTask<Void, Void, Void> {
 
     public void setServiceCredentials(String username, String password) {
         mEditor = mSharedPreferences.edit();
-        mEditor.putString(mContext.getString(R.string.pref_ss_uid_key), username);
+        mEditor.putString(mContext.getString(R.string.pref_ss_uid_key), mUsername);
         mEditor.putString(mContext.getString(R.string.pref_ss_password_key), password);
         mEditor.commit();
 

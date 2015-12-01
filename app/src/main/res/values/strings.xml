@@ -13,6 +13,7 @@
     <string name="preferences_service">Service</string>
     <string name="preferences_username">Username</string>
     <string name="preferences_password">Password</string>
+    <string name="preferences_hash">Pass Hash</string>
     <string name="preferences_stream_settings">Stream Settings</string>
     <string name="preferences_server_location">Server Location</string>
     <string name="preferences_high_quality">High Quality</string>
