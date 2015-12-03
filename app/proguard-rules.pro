@@ -21,7 +21,7 @@
 -dontwarn okio.**
 -dontwarn com.crashlytics.**
 
--libraryjars libs
+#-libraryjars libs
 -keep class com.crashlytics.** { *; }
 -keep class android.support.** { *; }
 -keep interface android.support.** { *; }

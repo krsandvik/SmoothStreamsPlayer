@@ -41,12 +41,9 @@ public class SettingsActivity extends ActionBarActivity {
 
         getFragmentManager().beginTransaction().replace(R.id.container, new SettingsFragment()).commit();
 
-
         Tracker t = ((PlayerApplication) getApplication()).getTracker(PlayerApplication.TrackerName.APP_TRACKER);
         t.setScreenName(getString(R.string.ga_screen_settings));
         t.send(new HitBuilders.ScreenViewBuilder().build());
-
-
     }
 
     public void setupActionBar() {

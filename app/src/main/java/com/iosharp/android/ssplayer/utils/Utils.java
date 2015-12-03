@@ -20,6 +20,7 @@ import com.google.android.gms.cast.MediaInfo;
 import com.google.android.gms.cast.MediaMetadata;
 import com.google.android.gms.common.images.WebImage;
 import com.iosharp.android.ssplayer.R;
+import com.iosharp.android.ssplayer.tasks.FetchLoginInfoTask;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -59,13 +60,20 @@ public class Utils {
 
     public static boolean checkForSetServiceCredentials(Context c) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(c);
-        String uid = sharedPreferences.getString(c.getString(R.string.pref_ss_uid_key), null);
+        Long validTime = sharedPreferences.getLong(c.getString(R.string.pref_ss_valid_key),0);
         String password = sharedPreferences.getString(c.getString(R.string.pref_ss_password_key), null);
 
         if (password != null) {
+            long curTime = System.currentTimeMillis();
+            if(curTime>=validTime){
+                FetchLoginInfoTask loginTask = new FetchLoginInfoTask(c, true);
+                loginTask.execute();
+                password = sharedPreferences.getString(c.getString(R.string.pref_ss_password_key), null);
+                if(password==null)
+                    return false;
+            }
             return true;
         }
-
         return false;
     }
 

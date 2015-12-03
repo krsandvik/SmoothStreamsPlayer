@@ -59,7 +59,6 @@ public class MainActivity extends ActionBarActivity {
         setupActionBar();
         setupTabs();
 
-
         mCastManager = PlayerApplication.getCastManager();
         if (mCastManager != null) {
             mCastManager.reconnectSessionIfPossible();

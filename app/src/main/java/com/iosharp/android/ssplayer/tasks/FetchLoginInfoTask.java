@@ -33,6 +33,13 @@ public class FetchLoginInfoTask extends AsyncTask<Void, Void, Void> {
     private String mUsername;
     private String mPassword;
     private String mService;
+    private boolean isRevalidating = false;
+
+    public FetchLoginInfoTask(Context context, boolean isRevalidating) {
+        this(context);
+        this.isRevalidating = isRevalidating;
+
+    }
 
     public FetchLoginInfoTask(Context context) {
         mContext = context;
@@ -68,6 +75,7 @@ public class FetchLoginInfoTask extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected Void doInBackground(Void... voids) {
+        setServiceCredentials((long)0,"");
         final String USER_AGENT = PlayerApplication.getUserAgent(mContext);
 
         final OkHttpClient client = new OkHttpClient();
@@ -120,10 +128,20 @@ public class FetchLoginInfoTask extends AsyncTask<Void, Void, Void> {
             JSONObject response = new JSONObject(responseStr);
             if (response.has("error")) {
                 String message = response.getString("error");
-                showToastMethod("ERROR: " + message);
+                if(!isRevalidating) {
+                    showToastMethod("ERROR: " + message);
+                }else{
+                    showToastMethod("Unable to Revalidate \nERROR: " + message);
+                }
             }else if (response.has("hash")) {
                 String password = response.getString("hash");
-                setServiceCredentials(mUsername, password);
+                Integer validMinutes = response.getInt("valid") -5; //subtract 5 minutes for good measure
+                long curTime = System.currentTimeMillis();
+                Long endTime = curTime + (validMinutes*60*1000);
+                setServiceCredentials(endTime, password);
+                if (!isRevalidating)
+                   showToastMethod("Login Successful");
+
             }else{
                 showToastMethod("ERROR: Unknown response!");
                 Log.e(TAG, "Unknown response!");
@@ -133,21 +151,22 @@ public class FetchLoginInfoTask extends AsyncTask<Void, Void, Void> {
         }
     }
 
-    public void setServiceCredentials(String username, String password) {
+    public void setServiceCredentials(Long endTime, String password) {
+
         mEditor = mSharedPreferences.edit();
-        mEditor.putString(mContext.getString(R.string.pref_ss_uid_key), mUsername);
+        mEditor.putLong(mContext.getString(R.string.pref_ss_valid_key), endTime);
         mEditor.putString(mContext.getString(R.string.pref_ss_password_key), password);
         mEditor.commit();
 
-        showToastMethod("Saved service id and password");
         Log.i(TAG,
-                "SUCCESS: serviceId: " + username
+                "SUCCESS: Valid Until: " + endTime.toString()
                         + ", servicePassword: "
                         + password.replaceAll(".", "*"));
 
     }
 
-    private void showToastMethod(String text) {
+    public void showToastMethod(String text) {
+
         final String toastText = text;
 
         Handler handler = new Handler(mContext.getMainLooper());

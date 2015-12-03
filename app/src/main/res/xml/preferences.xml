@@ -17,10 +17,6 @@
             android:inputType="textPassword"
             android:key="@string/pref_service_password_key"
             android:title="@string/preferences_password"/>
-        <EditTextPreference
-            android:inputType="textNoSuggestions"
-            android:key="@string/pref_ss_password_key"
-            android:title="@string/preferences_hash"/>
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/preferences_stream_settings">
         <ListPreference
