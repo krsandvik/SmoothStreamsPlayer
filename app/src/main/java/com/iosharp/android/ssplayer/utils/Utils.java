@@ -28,6 +28,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.SimpleTimeZone;
 import java.util.TimeZone;
+import java.util.concurrent.ExecutionException;
 
 public class Utils {
 
@@ -67,7 +68,13 @@ public class Utils {
             long curTime = System.currentTimeMillis();
             if(curTime>=validTime){
                 FetchLoginInfoTask loginTask = new FetchLoginInfoTask(c, true);
-                loginTask.execute();
+                try {
+                    loginTask.execute().get();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                }
                 password = sharedPreferences.getString(c.getString(R.string.pref_ss_password_key), null);
                 if(password==null)
                     return false;
