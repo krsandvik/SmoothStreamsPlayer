@@ -56,26 +56,26 @@ public class FetchLoginInfoTask extends AsyncTask<Void, Void, Void> {
     }
 
     private String getServiceParam(String service) {
-        if (service.equals("live247")){
+        if (service.equals("live247")) {
             return "view247";
-        }else if (service.equals("mystreams")){
+        } else if (service.equals("mystreams")) {
             return "viewms";
-        }else if (service.equals("starstreams")){
+        } else if (service.equals("starstreams")) {
             return "viewss";
-        }else if (service.equals("mma-tv")) {
-            return "mma-tv";
+        } else if (service.equals("mma-tv")) {
+            return "viewmma";
         } else if (service.equals("mma-sr")) {
-            return "mma-sr";
-        } else if (service.equals("streamtvnow")){
+            return "viewmmasr";
+        } else if (service.equals("streamtvnow")) {
             return "viewstvn";
-        }else{
+        } else {
             return null;
         }
     }
 
     @Override
     protected Void doInBackground(Void... voids) {
-        setServiceCredentials((long)0,"");
+        setServiceCredentials((long) 0, "");
         final String USER_AGENT = PlayerApplication.getUserAgent(mContext);
 
         final OkHttpClient client = new OkHttpClient();
@@ -83,13 +83,14 @@ public class FetchLoginInfoTask extends AsyncTask<Void, Void, Void> {
 
         try {
             final String SMOOTHSTREAMS_BASE_URL = "http://smoothstreams.tv/schedule/admin/dash_new/hash_api.php"; //getServiceBaseUrl(mService);
+            final String MMA_BASE_URL = "http://www.MMA-TV.net/loginForm.php";
 
             final String USERNAME_PARAM = "username";
             final String PASSWORD_PARAM = "password";
             final String SITE_PARAM = "site";
 
             /*  Uri.parse is stripping out characters like + signs. Since we're passing +'s we can't do that.
-			Uri builtUri = Uri.parse(SMOOTHSTREAMS_BASE_URL).buildUpon()
+            Uri builtUri = Uri.parse(SMOOTHSTREAMS_BASE_URL).buildUpon()
 					.appendQueryParameter(USERNAME_PARAM, mUsername)
 					.appendQueryParameter(PASSWORD_PARAM, URLEncoder.encode(mPassword, "UTF-8"))
 					.appendQueryParameter(SITE_PARAM, getServiceParam(mService))
@@ -97,7 +98,11 @@ public class FetchLoginInfoTask extends AsyncTask<Void, Void, Void> {
 
             */
 
-            String builtUrl = SMOOTHSTREAMS_BASE_URL + "?" + USERNAME_PARAM + "=" + Uri.encode(mUsername) + "&" + PASSWORD_PARAM + "=" + Uri.encode(mPassword) + "&" + SITE_PARAM + "=" + getServiceParam(mService);
+
+            String builtUrl = (mService.indexOf("mma") >= 0 ? MMA_BASE_URL : SMOOTHSTREAMS_BASE_URL) + "?"
+                    + USERNAME_PARAM + "=" + Uri.encode(mUsername) + "&"
+                    + PASSWORD_PARAM + "=" + Uri.encode(mPassword) + "&"
+                    + SITE_PARAM + "=" + getServiceParam(mService);
 
             URL url = new URL(builtUrl);
 
@@ -128,21 +133,21 @@ public class FetchLoginInfoTask extends AsyncTask<Void, Void, Void> {
             JSONObject response = new JSONObject(responseStr);
             if (response.has("error")) {
                 String message = response.getString("error");
-                if(!isRevalidating) {
+                if (!isRevalidating) {
                     showToastMethod("ERROR: " + message);
-                }else{
+                } else {
                     showToastMethod("Unable to Revalidate \nERROR: " + message);
                 }
-            }else if (response.has("hash")) {
+            } else if (response.has("hash")) {
                 String password = response.getString("hash");
-                Integer validMinutes = response.getInt("valid") -5; //subtract 5 minutes for good measure
+                Integer validMinutes = response.getInt("valid") - 5; //subtract 5 minutes for good measure
                 long curTime = System.currentTimeMillis();
-                Long endTime = curTime + (validMinutes*60*1000);
+                Long endTime = curTime + (validMinutes * 60 * 1000);
                 setServiceCredentials(endTime, password);
                 if (!isRevalidating)
-                   showToastMethod("Login Successful");
+                    showToastMethod("Login Successful");
 
-            }else{
+            } else {
                 showToastMethod("ERROR: Unknown response!");
                 Log.e(TAG, "Unknown response!");
             }

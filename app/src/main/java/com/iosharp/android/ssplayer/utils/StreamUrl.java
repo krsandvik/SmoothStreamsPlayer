@@ -50,9 +50,9 @@ public class StreamUrl {
             } else if (service.equals("starstreams")) {
                 port = "3665";
             } else if (service.equals("mma-tv")) {
-                port = "5545";
+                port = "3645";
             } else if (service.equals("mma-sr")) {
-                port = "4935";
+                port = "3645";
             } else if (service.equals("streamtvnow")) {
                 port = "3615";
             }
@@ -70,7 +70,7 @@ public class StreamUrl {
             } else if (service.equals("mma-tv")) {
                 port = "3645";
             } else if (service.equals("mma-sr")) {
-                port = "4935";
+                port = "3645";
             } else if (service.equals("streamtvnow")) {
                 port = "3615";
             }
@@ -83,9 +83,9 @@ public class StreamUrl {
         }else if (service.equals("starstreams")){
             servicePath = "viewss";
         }else if (service.equals("mma-tv")) {
-            servicePath = "mma-tv";
+            servicePath = "viewmma";
         } else if (service.equals("mma-sr")) {
-            servicePath = "mma-sr";
+            servicePath = "viewmmasr";
         } else if (service.equals("streamtvnow")){
             servicePath = "viewstvn";
         }else{
