@@ -44,17 +44,17 @@ public class StreamUrl {
         // HLS
         if (protocol == 0) {
             if (service.equals("live247")) {
-                port = "3625";
+                port = "9100";
             } else if (service.equals("mystreams")) {
-                port = "3655";
+                port = "9100";
             } else if (service.equals("starstreams")) {
-                port = "3665";
+                port = "9100";
             } else if (service.equals("mma-tv")) {
-                port = "3645";
+                port = "9100";
             } else if (service.equals("mma-sr")) {
-                port = "3645";
+                port = "9100";
             } else if (service.equals("streamtvnow")) {
-                port = "3615";
+                port = "9100";
             }
         } else {
         // RTMP
