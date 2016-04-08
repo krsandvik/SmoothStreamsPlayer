@@ -73,15 +73,15 @@
         <item>@string/preferences_amsterdam_evo</item>
         <item>@string/preferences_london</item>
         <item>@string/preferences_united_states</item>
-        <item>@string/preferences_east</item>
-        <item>@string/preferences_west</item>
+        <item>@string/preferences_us_east</item>
+        <item>@string/preferences_us_west</item>
         <item>@string/preferences_asia</item>
     </string-array>
     <string-array name="list_servers_values" translatable="false">
         <item translatable="false">dEU.smoothstreams.tv</item>
-        <item translatable="false">d77.smoothstreams.tv</item>
-        <item translatable="false">d71.smoothstreams.tv</item>
-        <item translatable="false">d11.smoothstreams.tv</item>
+        <item translatable="false">deu.nl1.smoothstreams.tv</item>
+        <item translatable="false">deu.nl2.smoothstreams.tv</item>
+        <item translatable="false">deu.uk.smoothstreams.tv</item>
         <item translatable="false">dNA.smoothstreams.tv</item>
         <item translatable="false">dNAe.smoothstreams.tv</item>
         <item translatable="false">dNAw.smoothstreams.tv</item>
@@ -89,11 +89,11 @@
     </string-array>
     <string-array name="list_server_streamtvnow_values" translatable="false">
         <item translatable="false">dNAe.smoothstreams.tv</item>
-        <item translatable="false">d71.smoothstreams.tv</item>
+        <item translatable="false">deu.nl2.smoothstreams.tv</item>
         <item translatable="false">dSG.smoothstreams.tv</item>
     </string-array>
     <string-array name="list_server_streamtvnow" translatable="false">
-        <item>@string/preferences_east</item>
+        <item>@string/preferences_united_states</item>
         <item>@string/preferences_amsterdam_evo</item>
         <item>@string/preferences_asia</item>
     </string-array>
