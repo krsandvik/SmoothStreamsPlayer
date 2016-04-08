@@ -23,8 +23,8 @@
     <string name="preferences_amsterdam_evo">EU (NL-Evo)</string>
     <string name="preferences_london">EU (UK-London)</string>
     <string name="preferences_united_states">US All</string>
-    <string name="preferences_east">US East</string>
-    <string name="preferences_west">US West</string>
+    <string name="preferences_us_east">US East</string>
+    <string name="preferences_us_west">US West</string>
     <string name="preferences_asia">Asia</string>
 
     <string name="preferences_protocol">Protocol</string>

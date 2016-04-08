@@ -113,22 +113,10 @@ public class SettingsActivity extends ActionBarActivity {
             }
             //StreamTVnow only works on certain servers.
             if (key.equals(getString(R.string.pref_service_key))) {
-                sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-                String service = sharedPreferences.getString(getString(R.string.pref_service_key), "");
 
                 ListPreference servers = (ListPreference) findPreference(getString(R.string.pref_server_key));
-                if (service.equals("streamtvnow")) {
-                    servers.setEntries(R.array.list_server_streamtvnow);
-                    servers.setEntryValues(R.array.list_server_streamtvnow_values);
-
-                    PreferenceScreen screen = getPreferenceScreen();
-                    screen.onItemClick(null, null, INDEX_SERVERS, 0);
-
-                } else {
-                    servers.setEntries(R.array.list_servers);
-                    servers.setEntryValues(R.array.list_servers_values);
-                }
-
+                servers.setEntries(R.array.list_servers);
+                servers.setEntryValues(R.array.list_servers_values);
 
             }
 
